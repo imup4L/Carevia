@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#1a3a6b" />
+  <title>CareVia Solutions LLC — Dental Staffing in Seattle</title>
+  <meta name="description" content="CareVia connects dental professionals with top clinics in the Seattle area. Find shifts fast, apply instantly, and work on your terms." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="home">
+
+<!-- NAV -->
+<div class="nav-wrap">
+  <div class="container">
+    <nav class="nav">
+      <a class="logo" href="index.html">
+        <div class="logo-mark"></div>
+        <span><span class="logo-text"><span class="care">Care</span><span class="via">Via</span></span><span class="logo-sub">Solutions</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="active">Home</a>
+        <a href="find-shifts.html">Find Shifts</a>
+        <a href="for-clinics.html">For Clinics</a>
+        <a href="how-it-works.html">How It Works</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <a class="pill btn-outline" href="login.html">Log In</a>
+        <a class="pill btn-primary" href="signup.html">Sign Up</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </nav>
+    <div class="mobile-panel" id="mobilePanel" hidden>
+      <div class="stack">
+        <a href="index.html">Home</a>
+        <a href="find-shifts.html">Find Shifts</a>
+        <a href="for-clinics.html">For Clinics</a>
+        <a href="how-it-works.html">How It Works</a>
+        <a href="contact.html">Contact</a>
+        <div class="actions">
+          <a class="pill btn-outline" href="login.html">Log In</a>
+          <a class="pill btn-primary" href="signup.html">Sign Up</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="reveal">
+        <div class="kicker">Seattle, WA • Dental staffing made simple</div>
+        <h1>Find Dental Shifts in Seattle — Fast &amp; Easy</h1>
+        <p>Connect dental professionals with top clinics across Seattle. Pick up shifts on your schedule, confirm instantly.</p>
+        <div class="hero-ctas">
+          <a class="pill btn-primary" href="find-shifts.html">Find Shifts Now</a>
+          <a class="pill btn-green" href="for-clinics.html">Post a Shift</a>
+          <span class="chip">Instant confirmations</span>
+        </div>
+        <div class="hero-meta">
+          <span>Verified clinics</span><span class="dotsep"></span>
+          <span>Seattle-area coverage</span><span class="dotsep"></span>
+          <span>App-style experience</span>
+        </div>
+      </div>
+      <div class="reveal" style="animation-delay:.15s">
+        <div class="app-card">
+          <div class="app-top">
+            <div class="app-badge"><span class="mini"></span>Shift Finder</div>
+            <div class="status"><span>Seattle</span><span class="signal"><span></span><span></span><span></span><span></span></span></div>
+          </div>
+          <div class="app-body">
+            <div class="app-search">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="rgba(26,58,107,.7)" stroke-width="2"/><path d="M16.2 16.2 21 21" stroke="rgba(26,58,107,.7)" stroke-width="2" stroke-linecap="round"/></svg>
+              <input type="text" id="heroSearchInput" placeholder="Search shifts…" readonly />
+              <a class="mini-pill" href="find-shifts.html">Browse</a>
+            </div>
+            <!-- Live shifts injected here -->
+            <div id="heroShifts">
+              <div style="text-align:center;padding:24px 0;font-size:.8rem;color:var(--muted);font-weight:600">Loading latest shifts…</div>
+            </div>
+            <a href="find-shifts.html" style="display:block;text-align:center;font-size:.78rem;color:var(--blue);font-weight:700;padding-top:6px;text-decoration:none">View all open shifts →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- HOW IT WORKS PREVIEW -->
+<section class="section section-tight">
+  <div class="container">
+    <div class="section-title reveal">
+      <div><div class="chip" style="background:rgba(37,99,235,.08);border-color:rgba(37,99,235,.2);color:var(--navy2)">How it works</div><h2>Simple steps. Real shifts.</h2></div>
+      <p>CareVia helps you get from profile to confirmed shift quickly — with a clean, app-like experience.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="num">1</div><div><h3>Create your profile</h3><p>Set your role, availability, and preferences in minutes.</p></div></div>
+      <div class="step reveal"><div class="num">2</div><div><h3>Browse available shifts near Seattle</h3><p>See locations, hours, and rates — all on easy-to-scan cards.</p></div></div>
+      <div class="step reveal"><div class="num">3</div><div><h3>Apply and get confirmed instantly</h3><p>Tap apply, get notified fast, and show up ready to work.</p></div></div>
+    </div>
+    <div class="reveal" style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
+      <a class="pill btn-primary" href="how-it-works.html">Learn More</a>
+      <a class="pill btn-outline-dark" href="signup.html">Get Started</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot">
+      <div class="reveal">
+        <a class="logo" href="index.html"><div class="logo-mark"></div><span><span class="logo-text"><span class="care">Care</span><span class="via">Via</span></span><span class="logo-sub">Solutions</span></span></a>
+        <p class="tagline">Dental staffing for Seattle, WA — simple shifts for professionals and clinics.</p>
+        <div class="copyright">© 2025 CareVia Solutions LLC</div>
+      </div>
+      <div class="foot-links reveal">
+        <div class="links">
+          <a href="how-it-works.html">About</a>
+          <a href="contact.html#privacy">Privacy Policy</a>
+          <a href="contact.html#terms">Terms</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="contact">
+          <div><strong>Seattle Office</strong></div>
+          <div>Phone: <a href="tel:+12065550199">(206) 555-0199</a></div>
+          <div>Email: <a href="mailto:ceravia0@gmail.com">ceravia0@gmail.com</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- DEMO FAB -->
+<button class="demo-fab" id="demoFab">
+  <span class="bubble"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 3v3M17 3v3" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M4 8h16" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M6 6h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z" stroke="white" stroke-width="2"/></svg></span>
+  <span class="label">Schedule a Demo</span>
+</button>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <header><h3 id="modalTitle">Schedule a Demo</h3><button class="close" id="modalClose"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></button></header>
+    <div class="body">
+      <p>Tell us where to send demo details. We'll follow up with a quick walkthrough for your Seattle-area clinic.</p>
+      <form id="demoForm" novalidate>
+        <div class="form-row">
+          <input type="email" name="email" placeholder="Work email address" required />
+          <button class="pill btn-green" type="submit">Request Demo</button>
+        </div>
+        <div class="error" id="demoError"></div>
+        <div class="success" id="demoSuccess"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  const API_BASE = window.CAREVIA_API_BASE || 'http://localhost:4000';
+
+  // ── Reveal on scroll
+  const obs = new IntersectionObserver(
+          els => els.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+          { threshold: 0.1 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // ── Hamburger
+  document.getElementById('hamburger')?.addEventListener('click', function() {
+    const panel = document.getElementById('mobilePanel');
+    const open = panel.hidden;
+    panel.hidden = !open;
+    this.setAttribute('aria-expanded', String(open));
+  });
+
+  // ── Demo FAB + modal
+  const backdrop = document.getElementById('modalBackdrop');
+  document.getElementById('demoFab')?.addEventListener('click', () => backdrop.classList.add('open'));
+  document.getElementById('modalClose')?.addEventListener('click', () => backdrop.classList.remove('open'));
+  backdrop?.addEventListener('click', e => { if (e.target === backdrop) backdrop.classList.remove('open'); });
+  document.getElementById('demoForm')?.addEventListener('submit', e => {
+    e.preventDefault();
+    const email = e.target.email.value.trim();
+    if (!email || !email.includes('@')) { document.getElementById('demoError').textContent = 'Please enter a valid email.'; return; }
+    document.getElementById('demoError').textContent = '';
+    document.getElementById('demoSuccess').textContent = "Thanks! We'll be in touch soon.";
+    e.target.reset();
+  });
+
+  // ── Helpers
+  function fmtDate(d) {
+    if (!d) return '—';
+    try { return new Date(d + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }); }
+    catch(e) { return d; }
+  }
+  function fmtTime(t) {
+    if (!t) return null;
+    try {
+      var p = t.split(':'), h = parseInt(p[0]), m = p[1], ampm = h >= 12 ? 'PM' : 'AM';
+      return (h % 12 || 12) + ':' + m + ' ' + ampm;
+    } catch(e) { return t; }
+  }
+
+  // ── Render up to 2 latest shifts in hero app card
+  function renderHeroShifts(shifts) {
+    var container = document.getElementById('heroShifts');
+    if (!shifts || shifts.length === 0) {
+      container.innerHTML = '<div style="text-align:center;padding:20px 0;font-size:.8rem;color:var(--muted);font-weight:600">No open shifts yet — check back soon.</div>';
+      return;
+    }
+    var preview = shifts.slice(0, 2);
+    container.innerHTML = preview.map(function(s, i) {
+      var role  = s.role || 'Dental Role';
+      var city  = s.city || 'Seattle';
+      var clinic = s.clinic_name || '';
+      var pay   = s.pay_per_hour ? '$' + s.pay_per_hour + '/hr' : '';
+      var date  = fmtDate(s.date);
+      var st    = fmtTime(s.start_time), et = fmtTime(s.end_time);
+      var time  = (st && et) ? st + ' – ' + et : date;
+      return '<div class="mock-shift" style="opacity:' + (i === 0 ? '1' : '.88') + '">'
+              + '<div class="row">'
+              +   '<div><h3>' + role + '</h3>'
+              +   '<div class="muted" style="font-size:.72rem;font-weight:700;margin-top:2px">' + city + (clinic ? ' · ' + clinic : '') + '</div></div>'
+              +   (pay ? '<div class="rate">' + pay + '</div>' : '')
+              + '</div>'
+              + '<div class="meta">' + date + (st && et ? ' · ' + st + ' – ' + et : '') + '</div>'
+              + '<div class="cta">'
+              +   '<a class="pill btn-primary" href="login.html" style="font-size:.72rem;padding:5px 12px">Apply</a>'
+              +   '<span class="badge-new">Open</span>'
+              + '</div>'
+              + '</div>';
+    }).join('');
+  }
+
+  // ── Fetch live shifts
+  fetch(API_BASE + '/api/shifts')
+          .then(function(r) { return r.ok ? r.json() : Promise.reject(r.status); })
+          .then(function(data) { renderHeroShifts(data.shifts || []); })
+          .catch(function() {
+            document.getElementById('heroShifts').innerHTML =
+                    '<div style="text-align:center;padding:18px 0;font-size:.78rem;color:var(--muted);font-weight:600">'
+                    + '<a href="find-shifts.html" style="color:var(--blue);font-weight:700">Browse all open shifts →</a></div>';
+          });
+
+</script>
+</body>
+</html>

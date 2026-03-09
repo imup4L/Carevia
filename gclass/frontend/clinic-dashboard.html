@@ -1,0 +1,1199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Clinic Dashboard — CareVia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:#1a3a6b; --navy-dark:#0d1f3c;
+      --blue:#2563eb; --blue-mid:#1a56db; --blue-light:#eff6ff;
+      --green:#059669; --green-bright:#10b981; --green-light:#d1fae5;
+      --red:#dc2626; --red-light:#fee2e2;
+      --gold:#d97706; --gold-light:#fef3c7;
+      --bg:#f0f4f9; --card:#ffffff; --border:#dde3ec;
+      --text:#0f172a; --muted:#64748b;
+      --sidebar-w:258px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex}
+
+    /* ── SIDEBAR ── */
+    .sidebar{
+      width:var(--sidebar-w);
+      background:linear-gradient(180deg,#060d1a 0%,#0a1428 60%,#0d1f3c 100%);
+      min-height:100vh;display:flex;flex-direction:column;
+      position:fixed;top:0;left:0;z-index:100;
+      border-right:1px solid rgba(255,255,255,0.05);
+    }
+    .sidebar-logo{padding:24px 20px 20px;display:flex;align-items:center;justify-content:space-between}
+    .brand{font-family:'Poppins',sans-serif;font-size:1.3rem;font-weight:800;color:#fff;display:flex;align-items:center;gap:10px;letter-spacing:-0.02em}
+    .brand-icon{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#2563eb,#10b981);display:flex;align-items:center;justify-content:center;font-size:0.95rem;flex-shrink:0;box-shadow:0 4px 16px rgba(37,99,235,0.45)}
+    .brand-text{display:flex;flex-direction:column;line-height:1}
+    .brand-care{color:#fff}
+    .brand-via{color:#34d399}
+    .clinic-badge{font-family:'Poppins',sans-serif;font-size:0.58rem;background:rgba(37,99,235,0.25);color:#93c5fd;padding:3px 8px;border-radius:999px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;border:1px solid rgba(37,99,235,0.3)}
+    .logo-dot{width:8px;height:8px;background:#34d399;border-radius:50%;flex-shrink:0;animation:glow 2.5s ease-in-out infinite}
+    @keyframes glow{0%,100%{box-shadow:0 0 4px #34d399,0 0 8px #34d399}50%{box-shadow:0 0 10px #34d399,0 0 22px rgba(52,211,153,0.4)}}
+
+    .sidebar-user{margin:0 12px 8px;padding:14px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:14px}
+    .user-card-row{display:flex;align-items:center;gap:11px}
+    .user-avatar{width:40px;height:40px;border-radius:12px;flex-shrink:0;background:linear-gradient(135deg,#2563eb,#10b981);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:1rem;box-shadow:0 4px 12px rgba(37,99,235,0.35)}
+    .user-info{min-width:0;flex:1}
+    .user-name{font-weight:700;color:#fff;font-size:0.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:'Poppins',sans-serif}
+    .user-role{display:inline-flex;align-items:center;gap:4px;font-size:0.64rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin-top:3px;background:rgba(37,99,235,0.15);color:#93c5fd;padding:2px 7px;border-radius:999px;border:1px solid rgba(37,99,235,0.22)}
+
+    .sidebar-nav{padding:6px 12px;flex:1;overflow-y:auto}
+    .sidebar-nav::-webkit-scrollbar{width:0}
+    .nav-label{font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.13em;color:rgba(255,255,255,0.22);padding:0 8px;margin:16px 0 4px}
+    .nav-label:first-child{margin-top:4px}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:10px;cursor:pointer;color:rgba(255,255,255,0.45);font-size:0.83rem;font-weight:500;transition:all 0.15s;margin-bottom:1px;text-decoration:none;position:relative;border:1px solid transparent}
+    .nav-item:hover{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.9);border-color:rgba(255,255,255,0.05)}
+    .nav-item.active{background:rgba(37,99,235,0.2);color:#fff;border-color:rgba(37,99,235,0.3);font-weight:600}
+    .nav-item.active::before{content:'';position:absolute;left:-12px;top:50%;transform:translateY(-50%);width:3px;height:18px;background:linear-gradient(180deg,#2563eb,#10b981);border-radius:0 3px 3px 0}
+    .nav-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.88rem;flex-shrink:0;background:rgba(255,255,255,0.06);transition:all 0.15s}
+    .nav-item:hover .nav-icon{background:rgba(255,255,255,0.1)}
+    .nav-item.active .nav-icon{background:rgba(37,99,235,0.28);box-shadow:0 2px 8px rgba(37,99,235,0.25)}
+    .nav-label-text{flex:1}
+    .nav-divider{height:1px;background:rgba(255,255,255,0.05);margin:10px 0}
+
+    .sidebar-bottom{padding:12px 12px 20px}
+    .sb-help-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:12px;margin-bottom:8px}
+    .sb-help-text{font-size:0.72rem;color:rgba(255,255,255,0.35);line-height:1.5;margin-bottom:8px}
+    .sb-help-btn{font-size:0.72rem;font-weight:600;color:#60a5fa;background:rgba(37,99,235,0.12);border:1px solid rgba(37,99,235,0.22);border-radius:7px;padding:5px 10px;cursor:pointer;width:100%;text-align:center;transition:all 0.15s;display:block}
+    .sb-help-btn:hover{background:rgba(37,99,235,0.22)}
+    .logout-btn{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:10px;cursor:pointer;color:rgba(255,255,255,0.35);font-size:0.83rem;font-weight:500;transition:all 0.15s;background:none;border:1px solid transparent;width:100%;text-align:left;font-family:'DM Sans',sans-serif}
+    .logout-btn:hover{background:rgba(239,68,68,0.1);color:#f87171;border-color:rgba(239,68,68,0.15)}
+    .logout-icon{width:30px;height:30px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.85rem;background:rgba(255,255,255,0.06)}
+
+    .main{margin-left:var(--sidebar-w);flex:1;padding:32px;animation:fadeUp 0.5s ease both}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    .page{display:none}
+    .page.active{display:block}
+
+    .topbar{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;gap:16px;flex-wrap:wrap}
+    .topbar h1{font-family:'Poppins',sans-serif;font-size:1.75rem;color:var(--navy);font-weight:800;letter-spacing:-0.02em}
+    .topbar p{color:var(--muted);font-size:0.9rem;margin-top:2px}
+
+    /* Stats */
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+    @media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}}
+    .stat-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px 20px;box-shadow:0 2px 12px rgba(26,58,107,0.06);transition:transform 0.18s,box-shadow 0.18s;position:relative;overflow:hidden}
+    .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#2563eb,#10b981);border-radius:18px 18px 0 0}
+    .stat-card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(26,58,107,0.12)}
+    .stat-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:12px}
+    .stat-label{font-size:0.68rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;font-family:'Poppins',sans-serif}
+    .stat-value{font-family:'Poppins',sans-serif;font-size:2.4rem;font-weight:800;color:var(--navy);margin-top:4px;line-height:1}
+    .stat-sub{font-size:0.72rem;font-weight:600;margin-top:6px}
+
+    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:20px;box-shadow:0 2px 12px rgba(26,58,107,0.06)}
+    .card-title{font-family:'Poppins',sans-serif;font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
+
+    /* Buttons */
+    .btn{padding:10px 22px;border-radius:999px;border:none;font-family:'Poppins',sans-serif;font-weight:700;font-size:0.85rem;cursor:pointer;transition:all 0.18s}
+    .btn-primary{background:linear-gradient(135deg,#1a3a6b,#2563eb);color:#fff;box-shadow:0 4px 14px rgba(37,99,235,0.3)}
+    .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(37,99,235,0.42)}
+    .btn-green{background:linear-gradient(135deg,#059669,#10b981);color:#fff;box-shadow:0 4px 12px rgba(5,150,105,0.28)}
+    .btn-green:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(5,150,105,0.38)}
+    .btn-red{background:var(--red);color:#fff}
+    .btn-red:hover{background:#b91c1c}
+    .btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text)}
+    .btn-outline:hover{border-color:var(--blue);color:var(--blue)}
+    .btn-sm{padding:6px 16px;font-size:0.78rem}
+
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    @media(max-width:600px){.form-grid{grid-template-columns:1fr}}
+    .form-group{display:flex;flex-direction:column;gap:6px}
+    .form-group.full{grid-column:1/-1}
+    label{font-size:0.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;font-family:'Poppins',sans-serif}
+    input,select,textarea{padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--text);background:#fff;outline:none;transition:border-color 0.18s,box-shadow 0.18s}
+    input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,0.1)}
+    textarea{resize:vertical;min-height:90px}
+
+    .shift-item{border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;background:#fff;transition:box-shadow 0.15s}
+    .shift-item:hover{box-shadow:0 4px 18px rgba(26,58,107,0.1)}
+    .shift-title{font-weight:700;font-size:0.95rem;font-family:'Poppins',sans-serif;color:var(--navy)}
+    .shift-meta{font-size:0.78rem;color:var(--muted);margin-top:4px;line-height:1.6}
+    .shift-actions{display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap}
+
+    .badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;font-family:'Poppins',sans-serif}
+    .badge-open{background:#dbeafe;color:#1d4ed8}
+    .badge-filled{background:var(--green-light);color:var(--green)}
+    .badge-closed{background:#f1f5f9;color:var(--muted)}
+    .badge-pending{background:var(--gold-light);color:#92400e}
+    .badge-accepted{background:var(--green-light);color:var(--green)}
+    .badge-rejected{background:var(--red-light);color:var(--red)}
+
+    /* ── FILTER BAR ── */
+    .filter-bar{display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap}
+    .filter-tabs{display:flex;background:#fff;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(26,58,107,0.07)}
+    .app-filter-btn{padding:9px 18px;border:none;background:none;color:#64748b;font-family:'Poppins',sans-serif;font-weight:600;font-size:0.75rem;cursor:pointer;transition:all 0.15s;border-right:1px solid #e2e8f0;display:flex;align-items:center;gap:6px}
+    .app-filter-btn:last-child{border-right:none}
+    .app-filter-btn .count-dot{background:#e2e8f0;color:#64748b;font-size:0.65rem;font-weight:800;padding:1px 6px;border-radius:999px}
+    .app-filter-btn.active{background:linear-gradient(135deg,#1a3a6b,#2563eb);color:#fff}
+    .app-filter-btn.active .count-dot{background:rgba(255,255,255,0.2);color:#fff}
+
+    /* ── APPLICANT CARDS ── */
+    .applicant-card{background:#fff;border-radius:16px;margin-bottom:16px;overflow:hidden;border:1px solid #e8edf5;box-shadow:0 1px 4px rgba(26,58,107,0.06);transition:box-shadow 0.2s,transform 0.2s}
+    .applicant-card:hover{box-shadow:0 6px 28px rgba(26,58,107,0.12);transform:translateY(-2px)}
+    .applicant-card.status-accepted{border-top:3px solid #10b981}
+    .applicant-card.status-rejected{border-top:3px solid #ef4444;opacity:0.7}
+    .applicant-card.status-pending{border-top:3px solid #f59e0b}
+
+    .app-header{display:flex;align-items:center;gap:14px;padding:18px 22px}
+    .app-header-inner{display:contents}
+    .app-avatar{width:44px;height:44px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.95rem;font-weight:800;color:#fff;letter-spacing:-0.02em}
+    .app-header-info{flex:1;min-width:0}
+    .app-name{font-size:0.97rem;font-weight:700;color:#0f172a;letter-spacing:-0.01em;font-family:'Poppins',sans-serif}
+    .app-meta{display:flex;gap:14px;flex-wrap:wrap;margin-top:4px}
+    .app-meta span{display:inline-flex;align-items:center;gap:4px;font-size:0.72rem;color:#64748b;font-weight:500}
+    .app-meta strong{color:#334155;font-weight:700}
+    .app-header-actions{display:flex;gap:8px;flex-shrink:0;align-items:center}
+    .app-status-badge{font-size:0.68rem;font-weight:700;padding:4px 10px;border-radius:6px;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap;font-family:'Poppins',sans-serif}
+    .asb-pending{background:#fffbeb;color:#b45309;border:1px solid #fde68a}
+    .asb-accepted{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0}
+    .asb-rejected{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
+
+    .btn-accept{display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,#059669,#10b981);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-family:'Poppins',sans-serif;font-weight:700;font-size:0.76rem;cursor:pointer;transition:all 0.15s;letter-spacing:0.01em;box-shadow:0 3px 10px rgba(5,150,105,0.25)}
+    .btn-accept:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(5,150,105,0.38)}
+    .btn-reject{display:inline-flex;align-items:center;gap:5px;background:#fff;color:#dc2626;border:1.5px solid #fca5a5;border-radius:8px;padding:7px 14px;font-family:'Poppins',sans-serif;font-weight:700;font-size:0.76rem;cursor:pointer;transition:all 0.15s;letter-spacing:0.01em}
+    .btn-reject:hover{background:#fef2f2;border-color:#dc2626}
+
+    .app-divider{height:1px;background:#f1f5f9;margin:0}
+    .app-body{padding:16px 22px 18px}
+    .app-cover-letter{display:flex;gap:12px;background:#f0f7ff;border:1px solid #bfdbfe;border-radius:10px;padding:14px 16px;margin-bottom:14px}
+    .app-cover-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px;width:28px;height:28px;background:#dbeafe;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:0.85rem}
+    .app-cover-inner{flex:1;min-width:0}
+    .app-cover-label{font-size:0.6rem;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;color:#2563eb;margin-bottom:5px;font-family:'Poppins',sans-serif}
+    .app-cover-text{font-size:0.82rem;color:#1e3a5f;line-height:1.65;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+    .app-cover-text.expanded{-webkit-line-clamp:unset}
+    .app-cover-expand{font-size:0.7rem;color:#2563eb;font-weight:600;cursor:pointer;background:none;border:none;padding:4px 0 0;font-family:'Poppins',sans-serif;display:block}
+
+    .app-info-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+    @media(max-width:900px){.app-info-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:500px){.app-info-grid{grid-template-columns:1fr}}
+    .app-info-block{background:#f9fafb;border:1px solid #eef1f6;border-radius:10px;padding:11px 13px;transition:background 0.12s}
+    .app-info-block:hover{background:#f1f5f9}
+    .aib-label{font-size:0.58rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#94a3b8;margin-bottom:5px;display:flex;align-items:center;gap:4px;font-family:'Poppins',sans-serif}
+    .aib-value{font-size:0.82rem;font-weight:600;color:#0f172a;line-height:1.4}
+    .aib-value.muted{color:#94a3b8;font-weight:400;font-style:italic;font-size:0.78rem}
+
+    .cert-pill{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:5px;font-size:0.68rem;font-weight:700;margin:2px 2px 0 0;white-space:nowrap}
+    .cert-yes{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0}
+    .cert-no{background:#f8fafc;color:#94a3b8;border:1px solid #e2e8f0}
+    .cert-blue{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
+
+    .avail-yes{color:#059669;font-weight:700}
+    .avail-maybe{color:#d97706;font-weight:700}
+    .avail-no{color:#94a3b8}
+
+    .app-footer{padding:10px 22px;background:#fafbfc;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .app-footer-left{display:flex;gap:16px;flex-wrap:wrap;font-size:0.7rem;color:#94a3b8;font-weight:500}
+    .app-footer-left span{display:flex;align-items:center;gap:5px}
+    .app-footer-left a{color:#2563eb;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:4px}
+    .app-footer-left a:hover{text-decoration:underline}
+    .app-footer-note{font-size:0.68rem;color:#94a3b8;font-style:italic}
+
+    .pill{display:inline-block;background:#f1f5f9;color:#0f172a;padding:3px 10px;border-radius:999px;font-size:0.72rem;font-weight:600;margin:2px}
+    .pill.green{background:#ecfdf5;color:#059669}
+    .pill.blue{background:#dbeafe;color:#1d4ed8}
+    .applicant-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+    .applicant-name{font-weight:700;font-size:0.95rem;font-family:'Poppins',sans-serif}
+    .applicant-meta{font-size:0.78rem;color:var(--muted);margin-top:3px}
+    .applicant-actions{display:flex;gap:8px}
+    .resume-tag{display:inline-flex;align-items:center;gap:4px;font-size:0.75rem;color:var(--blue);background:#eff6ff;padding:4px 10px;border-radius:999px;font-weight:600;cursor:pointer;border:none}
+    .resume-tag:hover{background:#dbeafe}
+
+    /* ── MODALS ── */
+    .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(10,20,40,0.7);backdrop-filter:blur(4px);z-index:200;align-items:center;justify-content:center}
+    .modal-backdrop.open{display:flex}
+    .modal{background:#fff;border-radius:20px;padding:28px;width:min(560px,95vw);max-height:85vh;overflow-y:auto;animation:fadeUp 0.3s ease both;box-shadow:0 24px 80px rgba(10,20,40,0.35)}
+    .modal-title{font-family:'Poppins',sans-serif;font-size:1.25rem;font-weight:800;color:var(--navy);margin-bottom:20px;display:flex;justify-content:space-between;align-items:center}
+    .modal-close{background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--muted)}
+    .modal-close:hover{color:var(--text)}
+
+    /* ── MESSAGING ── */
+    .message-layout{display:grid;grid-template-columns:280px 1fr;gap:0;height:600px;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:#fff}
+    .msg-list{border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column;background:#fafbfc}
+    .msg-list-header{padding:14px 16px;font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);border-bottom:1px solid var(--border);flex-shrink:0;font-family:'Poppins',sans-serif}
+    .msg-contact{padding:14px 16px;cursor:pointer;border-bottom:1px solid #f1f5f9;transition:background 0.15s;position:relative}
+    .msg-contact:hover{background:#f1f5f9}
+    .msg-contact.active{background:#eff6ff;border-left:3px solid var(--blue)}
+    .msg-contact-name{font-weight:700;font-size:0.85rem;color:var(--navy);font-family:'Poppins',sans-serif}
+    .msg-contact-role{font-size:0.68rem;color:var(--muted);margin-top:1px;font-weight:500}
+    .msg-contact-preview{font-size:0.74rem;color:var(--muted);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .msg-contact-status{display:inline-block;font-size:0.62rem;font-weight:700;padding:2px 7px;border-radius:999px;margin-top:4px;font-family:'Poppins',sans-serif}
+    .mcs-accepted{background:#ecfdf5;color:#065f46}
+    .mcs-pending{background:#fffbeb;color:#92400e}
+    .mcs-rejected{background:#fef2f2;color:#991b1b}
+    .msg-unread-dot{width:8px;height:8px;background:var(--blue);border-radius:50%;position:absolute;right:14px;top:50%;transform:translateY(-50%)}
+    .msg-empty-list{padding:24px 16px;text-align:center;color:var(--muted);font-size:0.82rem}
+    .msg-chat{display:flex;flex-direction:column;background:#fff}
+    .msg-chat-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0}
+    .msg-chat-avatar{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:0.85rem;flex-shrink:0}
+    .msg-chat-name{font-weight:700;font-size:0.9rem;color:var(--navy);font-family:'Poppins',sans-serif}
+    .msg-chat-sub{font-size:0.72rem;color:var(--muted);margin-top:1px}
+    .msg-chat-body{flex:1;padding:16px 20px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;background:#f8fafc}
+    .msg-bubble-wrap{display:flex;flex-direction:column}
+    .msg-bubble-wrap.sent{align-items:flex-end}
+    .msg-bubble-wrap.recv{align-items:flex-start}
+    .msg-bubble{max-width:70%;padding:10px 14px;border-radius:16px;font-size:0.84rem;line-height:1.55;word-break:break-word}
+    .msg-bubble.sent{background:linear-gradient(135deg,#1a3a6b,#2563eb);color:#fff;border-bottom-right-radius:4px}
+    .msg-bubble.recv{background:#fff;color:var(--text);border-bottom-left-radius:4px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+    .msg-time{font-size:0.62rem;color:#94a3b8;margin-top:3px;padding:0 2px}
+    .msg-date-divider{text-align:center;font-size:0.65rem;color:#94a3b8;font-weight:600;margin:8px 0;text-transform:uppercase;letter-spacing:0.08em}
+    .msg-input-row{padding:12px 16px;border-top:1px solid var(--border);display:flex;gap:10px;background:#fff;flex-shrink:0}
+    .msg-input-row input{flex:1;border-radius:10px;padding:10px 14px;font-size:0.85rem}
+    .msg-input-row button{border-radius:999px;padding:10px 18px;flex-shrink:0}
+    .msg-placeholder{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--muted);padding:40px}
+    .msg-placeholder-icon{font-size:3rem;opacity:0.4}
+    .msg-placeholder-text{font-size:0.9rem;font-weight:500;text-align:center}
+
+    .empty{text-align:center;padding:32px;color:var(--muted)}
+    .empty-icon{font-size:2.5rem;margin-bottom:8px}
+
+    .success-msg{color:var(--green);font-size:0.85rem;font-weight:600;display:none}
+    .save-bar{margin-top:20px;display:flex;gap:10px;align-items:center}
+
+    .worker-detail-section{margin-bottom:16px}
+    .worker-detail-section h4{font-size:0.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;font-family:'Poppins',sans-serif}
+    .worker-detail-section p{font-size:0.9rem;color:var(--text);line-height:1.6}
+    .skill-tag{display:inline-block;background:#f1f5f9;color:var(--navy);padding:4px 12px;border-radius:999px;font-size:0.78rem;font-weight:600;margin:3px}
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+
+  <div class="sidebar-logo">
+    <div class="brand">
+      <div class="brand-icon">🦷</div>
+      <div class="brand-text">
+        <span><span class="brand-care">Care</span><span class="brand-via">Via</span></span>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="clinic-badge">Clinic</span>
+      <div class="logo-dot"></div>
+    </div>
+  </div>
+
+  <div class="sidebar-user">
+    <div class="user-card-row">
+      <div class="user-avatar" id="avatarInitial">C</div>
+      <div class="user-info">
+        <div class="user-name" id="sidebarName">Loading...</div>
+        <div class="user-role">🏥 Clinic</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-label">Main</div>
+
+    <a class="nav-item active" data-page="dashboard" onclick="showPage('dashboard',this)">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label-text">Dashboard</span>
+    </a>
+    <a class="nav-item" data-page="shifts" onclick="showPage('shifts',this)">
+      <span class="nav-icon">📋</span>
+      <span class="nav-label-text">My Shifts</span>
+    </a>
+    <a class="nav-item" data-page="applicants" onclick="showPage('applicants',this)">
+      <span class="nav-icon">👥</span>
+      <span class="nav-label-text">Applicants</span>
+    </a>
+    <a class="nav-item" data-page="messages" onclick="showPage('messages',this)">
+      <span class="nav-icon">💬</span>
+      <span class="nav-label-text">Messages</span>
+    </a>
+
+    <div class="nav-divider"></div>
+    <div class="nav-label">Settings</div>
+
+    <a class="nav-item" data-page="profile" onclick="showPage('profile',this)">
+      <span class="nav-icon">🏥</span>
+      <span class="nav-label-text">Clinic Profile</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <div class="sb-help-card">
+      <div class="sb-help-text">Need help posting shifts or reviewing applicants?</div>
+      <button class="sb-help-btn" onclick="document.getElementById('supportModal').classList.add('open')">Contact Support</button>
+    </div>
+    <button class="logout-btn" onclick="doLogout()">
+      <span class="logout-icon">🚪</span>
+      <span>Log Out</span>
+    </button>
+  </div>
+
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- DASHBOARD -->
+  <div class="page active" id="page-dashboard">
+    <div class="topbar">
+      <div>
+        <h1>Clinic Dashboard</h1>
+        <p>Manage your shifts and find the best dental professionals.</p>
+      </div>
+      <button class="btn btn-primary" onclick="showPage('shifts',document.querySelector('[data-page=shifts]'));openPostShift()">+ Post a Shift</button>
+    </div>
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(37,99,235,0.1);color:#2563eb">📋</div>
+        <div class="stat-label">Active Shifts</div>
+        <div class="stat-value" id="statActive">—</div>
+        <div class="stat-sub" style="color:var(--blue)">Open now</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(245,158,11,0.1);color:#d97706">👥</div>
+        <div class="stat-label">Applicants</div>
+        <div class="stat-value" id="statApplicants">—</div>
+        <div class="stat-sub" style="color:var(--gold)">Awaiting review</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(16,185,129,0.1);color:#10b981">✅</div>
+        <div class="stat-label">Filled</div>
+        <div class="stat-value" id="statFilled">—</div>
+        <div class="stat-sub" style="color:var(--green)">This month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(139,92,246,0.1);color:#7c3aed">🗂️</div>
+        <div class="stat-label">Total Shifts</div>
+        <div class="stat-value" id="statTotal">—</div>
+        <div class="stat-sub" style="color:#7c3aed">All time</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Recent Shifts <a href="#" onclick="showPage('shifts',document.querySelector('[data-page=shifts]'));return false;" style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:var(--blue);text-decoration:none;font-weight:600">View all →</a></div>
+      <div id="dashShiftList"><div class="empty"><div class="empty-icon">⏳</div><p>Loading...</p></div></div>
+    </div>
+  </div>
+
+  <!-- SHIFTS -->
+  <div class="page" id="page-shifts">
+    <div class="topbar">
+      <div><h1>My Shifts</h1><p>Post and manage your open shifts.</p></div>
+      <button class="btn btn-primary" onclick="openPostShift()">+ Post New Shift</button>
+    </div>
+    <div class="card">
+      <div id="fullShiftList"><div class="empty"><div class="empty-icon">⏳</div><p>Loading...</p></div></div>
+    </div>
+  </div>
+
+  <!-- APPLICANTS -->
+  <div class="page" id="page-applicants">
+    <div class="topbar">
+      <div>
+        <h1>Applicants</h1>
+        <p>Review workers who applied to your shifts.</p>
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      <div class="filter-tabs">
+        <button onclick="filterApps('all',this)" class="app-filter-btn active">All <span class="count-dot" id="countAll">—</span></button>
+        <button onclick="filterApps('pending',this)" class="app-filter-btn">Pending <span class="count-dot" id="countPending">—</span></button>
+        <button onclick="filterApps('accepted',this)" class="app-filter-btn">Accepted <span class="count-dot" id="countAccepted">—</span></button>
+        <button onclick="filterApps('rejected',this)" class="app-filter-btn">Rejected <span class="count-dot" id="countRejected">—</span></button>
+      </div>
+      <span id="appCountLabel" style="font-size:0.75rem;color:var(--muted);font-weight:500"></span>
+    </div>
+
+    <div id="applicantList"><div class="empty"><div class="empty-icon">⏳</div><p>Loading applicants...</p></div></div>
+  </div>
+
+  <!-- MESSAGES -->
+  <div class="page" id="page-messages">
+    <div class="topbar">
+      <div><h1>Messages</h1><p>Contact workers or view announcements from CareVia.</p></div>
+    </div>
+    <!-- Tab switcher -->
+    <div style="display:flex;gap:8px;margin-bottom:16px">
+      <button id="tabDirect" onclick="switchMsgTab('direct')" class="btn btn-primary btn-sm" style="border-radius:999px">💬 Direct Messages</button>
+      <button id="tabAnnounce" onclick="switchMsgTab('announce')" class="btn btn-outline btn-sm" style="border-radius:999px;position:relative">
+        📢 Announcements <span id="announcesBadge" style="display:none;position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;font-size:0.6rem;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800"></span>
+      </button>
+    </div>
+
+    <div id="directMsgPanel" class="card" style="padding:0;overflow:hidden">
+      <div class="message-layout">
+        <div class="msg-list">
+          <div class="msg-list-header">Conversations</div>
+          <div id="msgContactList">
+            <div class="msg-empty-list">⏳ Loading conversations...</div>
+          </div>
+        </div>
+        <div class="msg-chat" id="msgChatPanel">
+          <div class="msg-placeholder">
+            <div class="msg-placeholder-icon">💬</div>
+            <div class="msg-placeholder-text">Select a worker to start messaging.<br>You can message any applicant.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="announceMsgPanel" style="display:none">
+      <div id="announceList" class="card" style="padding:20px;min-height:200px">
+        <div style="text-align:center;color:#94a3b8;padding:40px 0">⏳ Loading announcements...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLINIC PROFILE -->
+  <div class="page" id="page-profile">
+    <div class="topbar"><div><h1>Clinic Profile</h1><p>Keep your clinic info up to date.</p></div></div>
+    <div class="card">
+      <div class="form-grid">
+        <div class="form-group"><label>Clinic Name</label><input type="text" id="cName" placeholder="Seattle Dental Group"/></div>
+        <div class="form-group"><label>Contact Email</label><input type="email" id="cEmail" placeholder="contact@clinic.com"/></div>
+        <div class="form-group"><label>Phone</label><input type="tel" id="cPhone" placeholder="(206) 555-0000"/></div>
+        <div class="form-group"><label>Address</label><input type="text" id="cAddress" placeholder="123 Main St, Seattle, WA"/></div>
+        <div class="form-group"><label>Specialty</label>
+          <select id="cSpecialty">
+            <option>General Dentistry</option>
+            <option>Orthodontics</option>
+            <option>Oral Surgery</option>
+            <option>Pediatric Dentistry</option>
+            <option>Periodontics</option>
+            <option>Endodontics</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Practice Size</label>
+          <select id="cSize">
+            <option>Solo practice (1 dentist)</option>
+            <option>Small (2–5 dentists)</option>
+            <option>Medium (6–10 dentists)</option>
+            <option>Large (10+ dentists)</option>
+          </select>
+        </div>
+        <div class="form-group full"><label>About the Clinic</label><textarea id="cAbout" placeholder="Tell workers about your clinic, culture, and what makes you a great place to work..."></textarea></div>
+      </div>
+      <div class="save-bar">
+        <button class="btn btn-primary" onclick="saveClinicProfile()">Save Profile</button>
+        <span class="success-msg" id="profileSaved">✓ Saved!</span>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- POST SHIFT MODAL -->
+<div class="modal-backdrop" id="postShiftModal">
+  <div class="modal">
+    <div class="modal-title">
+      Post a New Shift
+      <button class="modal-close" onclick="closeModal('postShiftModal')">✕</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-group"><label>Job Title</label>
+        <select id="sTitle">
+          <option>Dental Hygienist</option>
+          <option>Dental Assistant</option>
+          <option>Dental Receptionist</option>
+          <option>Office Manager</option>
+          <option>Orthodontic Assistant</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Hourly Rate ($)</label><input type="number" id="sRate" placeholder="62"/></div>
+      <div class="form-group"><label>Shift Date</label><input type="date" id="sDate"/></div>
+      <div class="form-group"><label>Start Time</label><input type="time" id="sStart" value="08:00"/></div>
+      <div class="form-group"><label>End Time</label><input type="time" id="sEnd" value="17:00"/></div>
+      <div class="form-group"><label>Location / Address</label><input type="text" id="sLocation" placeholder="Capitol Hill, Seattle"/></div>
+      <div class="form-group full"><label>Notes for Applicants</label><textarea id="sNotes" placeholder="Any special requirements, parking info, software used, etc."></textarea></div>
+    </div>
+    <div class="save-bar">
+      <button class="btn btn-primary" onclick="postShift()">Post Shift</button>
+      <button class="btn btn-outline" onclick="closeModal('postShiftModal')">Cancel</button>
+      <span class="success-msg" id="shiftPosted">✓ Shift posted!</span>
+    </div>
+  </div>
+</div>
+
+<!-- REJECT CONFIRMATION MODAL -->
+<div class="modal-backdrop" id="rejectConfirmModal">
+  <div class="modal" style="max-width:420px">
+    <div style="text-align:center;padding:8px 0 20px">
+      <div style="font-size:2.5rem;margin-bottom:12px">📋</div>
+      <div style="font-family:'Poppins',sans-serif;font-size:1.2rem;font-weight:800;color:var(--navy);margin-bottom:8px">Not moving forward?</div>
+      <div style="font-size:0.88rem;color:var(--muted);line-height:1.6;margin-bottom:20px">
+        A professional rejection message will be automatically sent to <strong id="rejectWorkerName"></strong> letting them know you've moved on.
+      </div>
+      <div style="background:#f8fafc;border:1px solid var(--border);border-left:3px solid #94a3b8;border-radius:8px;padding:14px 16px;text-align:left;font-size:0.82rem;color:#334155;line-height:1.65;margin-bottom:24px;font-style:italic">
+        "Thank you for your interest and taking the time to apply. After careful consideration, we have decided to move forward with other candidates whose experience more closely matches our current needs. We appreciate your time and encourage you to apply for future openings. Best of luck in your job search!"
+      </div>
+      <div style="display:flex;gap:10px;justify-content:center">
+        <button id="rejectConfirmBtn" class="btn btn-red" style="min-width:140px;border-radius:999px">Send & Reject</button>
+        <button class="btn btn-outline" onclick="closeModal('rejectConfirmModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKER DETAIL MODAL -->
+<div class="modal-backdrop" id="workerModal">
+  <div class="modal">
+    <div class="modal-title">
+      <span id="workerModalName">Worker Profile</span>
+      <button class="modal-close" onclick="closeModal('workerModal')">✕</button>
+    </div>
+    <div id="workerModalBody"></div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="js/auth.js"></script>
+<script>
+  const API = window.CAREVIA_API_BASE || "http://localhost:4000";
+  const token = () => localStorage.getItem("carevia_token");
+
+  window.addEventListener("DOMContentLoaded", async () => {
+    if (!token()) { window.location.href = "login.html"; return; }
+    try {
+      const res = await fetch(`${API}/api/auth/me`, { headers: { Authorization: `Bearer ${token()}` }});
+      if (!res.ok) { window.location.href = "login.html"; return; }
+      const { profile } = await res.json();
+      if (profile.role !== "clinic") { window.location.href = "worker-dashboard.html"; return; }
+      const name = profile.clinic_name || profile.full_name || "Clinic";
+      document.getElementById("sidebarName").textContent = name;
+      document.getElementById("avatarInitial").textContent = name.charAt(0).toUpperCase();
+      document.getElementById("cName").value = profile.clinic_name || "";
+      document.getElementById("cPhone").value = profile.phone || "";
+    } catch(e) { console.error(e); }
+    loadShifts();
+    loadApplicants();
+  });
+
+  let allShifts = [];
+
+  async function loadShifts() {
+    try {
+      const res = await fetch(`${API}/api/shifts`, { headers: { Authorization: `Bearer ${token()}` }});
+      const data = await res.json();
+      allShifts = data.shifts || data || [];
+
+      document.getElementById("statTotal").textContent = allShifts.length;
+      document.getElementById("statActive").textContent = allShifts.filter(s => s.status === "open" || !s.status).length;
+      document.getElementById("statFilled").textContent = allShifts.filter(s => s.status === "filled").length;
+
+      const html = allShifts.length ? allShifts.map(shiftCard).join("") : `<div class="empty"><div class="empty-icon">📭</div><p>No shifts yet. Post your first shift!</p></div>`;
+      document.getElementById("dashShiftList").innerHTML = html;
+      document.getElementById("fullShiftList").innerHTML = html;
+    } catch(e) {
+      document.getElementById("dashShiftList").innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><p>Could not load shifts.</p></div>`;
+      document.getElementById("fullShiftList").innerHTML = document.getElementById("dashShiftList").innerHTML;
+    }
+  }
+
+  function shiftCard(s) {
+    const status = s.status || "open";
+    return `
+    <div class="shift-item">
+      <div>
+        <div class="shift-title">${s.role || "Dental Shift"}</div>
+        <div class="shift-meta">
+          📍 ${s.address || s.city || "Seattle"} &nbsp;•&nbsp;
+          📅 ${s.date || "TBD"} &nbsp;•&nbsp;
+          💰 ${s.pay_per_hour ? "$"+s.pay_per_hour+"/hr" : "TBD"}<br>
+          ${s.description ? "📝 "+s.description : ""}
+        </div>
+        <div style="margin-top:8px"><span class="badge badge-${status}">${status}</span></div>
+      </div>
+      <div class="shift-actions">
+        <button class="btn btn-outline btn-sm" onclick="editShift('${s.id}')">Edit</button>
+        <button class="btn btn-red btn-sm" onclick="deleteShift('${s.id}')">Delete</button>
+      </div>
+    </div>`;
+  }
+
+  async function postShift() {
+    const body = {
+      role:         document.getElementById("sTitle").value,
+      pay_per_hour: document.getElementById("sRate").value,
+      date:         document.getElementById("sDate").value,
+      start_time:   document.getElementById("sStart").value,
+      end_time:     document.getElementById("sEnd").value,
+      address:      document.getElementById("sLocation").value,
+      description:  document.getElementById("sNotes").value,
+      city:         "Seattle"
+    };
+    try {
+      const res = await fetch(`${API}/api/shifts`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` },
+        body: JSON.stringify(body)
+      });
+      if (res.ok) {
+        document.getElementById("shiftPosted").style.display = "block";
+        setTimeout(() => {
+          closeModal("postShiftModal");
+          document.getElementById("shiftPosted").style.display = "none";
+          loadShifts();
+        }, 1200);
+      } else {
+        const d = await res.json();
+        alert(d.error || "Could not post shift.");
+      }
+    } catch(e) { alert("Server error. Is your backend running?"); }
+  }
+
+  async function deleteShift(id) {
+    if (!confirm("Delete this shift?")) return;
+    try {
+      await fetch(`${API}/api/shifts/${id}`, { method: "DELETE", headers: { Authorization: `Bearer ${token()}` }});
+      loadShifts();
+    } catch(e) { alert("Could not delete."); }
+  }
+
+  function editShift(id) { alert("Edit shift coming soon! Shift ID: " + id); }
+
+  async function loadApplicants() {
+    const listEl = document.getElementById("applicantList");
+    listEl.innerHTML = `<div class="empty"><div class="empty-icon">⏳</div><p>Loading applicants...</p></div>`;
+    try {
+      const shiftsRes = await fetch(`${API}/api/shifts`, { headers: { Authorization: `Bearer ${token()}` }});
+      const shiftsData = await shiftsRes.json();
+      const shifts = shiftsData.shifts || [];
+
+      if (!shifts.length) {
+        listEl.innerHTML = `<div class="empty"><div class="empty-icon">📭</div><p>No shifts yet — post a shift first.</p></div>`;
+        document.getElementById("statApplicants").textContent = "0";
+        return;
+      }
+
+      const results = await Promise.all(
+              shifts.map(s =>
+                      fetch(`${API}/api/applications/shift/${s.id}`, { headers: { Authorization: `Bearer ${token()}` }})
+                              .then(r => r.json())
+                              .then(d => (d.applications || []).map(a => ({ ...a, shift_role: s.role, shift_date: s.date })))
+                              .catch(() => [])
+              )
+      );
+
+      const allApps = results.flat();
+      document.getElementById("statApplicants").textContent = allApps.filter(a => (a.status || "pending") === "pending").length;
+      const lbl = document.getElementById('appCountLabel');
+      if (lbl) lbl.textContent = allApps.length + ' applicant' + (allApps.length !== 1 ? 's' : '');
+
+      if (!allApps.length) {
+        listEl.innerHTML = `<div class="empty"><div class="empty-icon">📭</div><p>No applicants yet.</p></div>`;
+        return;
+      }
+
+      allApps.sort((a,b) => {
+        const order = { pending:0, accepted:1, rejected:2 };
+        return (order[a.status||'pending']||0) - (order[b.status||'pending']||0);
+      });
+
+      const countAll = allApps.length;
+      const countPending = allApps.filter(a=>(a.status||'pending')==='pending').length;
+      const countAccepted = allApps.filter(a=>a.status==='accepted').length;
+      const countRejected = allApps.filter(a=>a.status==='rejected').length;
+      const setCount = (id, n) => { const el=document.getElementById(id); if(el) el.textContent=n; };
+      setCount('countAll', countAll);
+      setCount('countPending', countPending);
+      setCount('countAccepted', countAccepted);
+      setCount('countRejected', countRejected);
+
+      listEl.innerHTML = allApps.map(a => {
+        const status = (a.status || 'pending').toLowerCase();
+        const statusBadgeClass = { pending:'asb-pending', accepted:'asb-accepted', rejected:'asb-rejected' };
+        const statusLabel = { pending:'⏳ Pending', accepted:'✅ Accepted', rejected:'✗ Not Moving Forward' };
+        const initials = (a.worker_name||"W").split(" ").map(w=>w[0]).join("").substring(0,2).toUpperCase();
+        const avatarPalette = [
+          ["#2563eb","#6366f1"],["#10b981","#059669"],
+          ["#f59e0b","#ef4444"],["#8b5cf6","#ec4899"],
+          ["#0ea5e9","#2563eb"],["#f97316","#ef4444"]
+        ];
+        const [c1,c2] = avatarPalette[(a.id||0) % avatarPalette.length];
+        const avatarBg = `linear-gradient(135deg,${c1},${c2})`;
+        const submittedDate = a.applied_at ? new Date(a.applied_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : "—";
+        const cprOk  = a.cpr  && a.cpr.toLowerCase().includes('current');
+        const xrayOk = a.xray && a.xray.toLowerCase().includes('yes');
+        const availMap = {
+          yes:     '<span class="avail-yes">✓ Available</span>',
+          maybe:   '<span class="avail-maybe">~ Needs confirmation</span>',
+          partial: '<span style="color:#7c3aed;font-weight:700">⏰ Partial</span>'
+        };
+        const showActions = status === 'pending';
+
+        return `
+        <div class="applicant-card status-${status}" id="app-${a.id}">
+          <div class="app-header">
+            <div class="app-header-inner">
+              <div class="app-avatar" style="background:${avatarBg}">${initials}</div>
+              <div class="app-header-info">
+                <div class="app-name">${a.worker_name || "Worker"}</div>
+                <div class="app-meta">
+                  <span>🦷 <strong>${a.shift_role || "Shift"}</strong></span>
+                  <span>📅 ${a.shift_date || "TBD"}</span>
+                  <span>🕐 Applied ${submittedDate}</span>
+                </div>
+              </div>
+              <div class="app-header-actions">
+                <span class="app-status-badge ${statusBadgeClass[status]||'asb-pending'}">${statusLabel[status]||status}</span>
+                ${showActions ? `
+                  <button class="btn-accept" onclick="updateApp(String('${a.id}').split(':')[0],'accepted')">✓ Accept</button>
+                  <button class="btn-reject" data-appid="${a.id}" data-name="${(a.worker_name||'Applicant').replace(/"/g,'&quot;')}" onclick="confirmReject(this)">✗ Reject</button>
+                ` : ''}
+              </div>
+            </div>
+          </div>
+
+          <div class="app-divider"></div>
+
+          <div class="app-body">
+            ${a.cover_letter ? `
+            <div class="app-cover-letter">
+              <div class="app-cover-icon">✉️</div>
+              <div class="app-cover-inner">
+                <div class="app-cover-label">Message to Clinic</div>
+                <div class="app-cover-text" id="cover-${a.id}">${a.cover_letter}</div>
+                <button class="app-cover-expand" onclick="toggleCover('${a.id}',this)">Show more ↓</button>
+              </div>
+            </div>` : ''}
+
+            <div class="app-info-grid">
+              <div class="app-info-block">
+                <div class="aib-label">🎓 Experience</div>
+                <div class="aib-value ${a.experience?'':'muted'}">${a.experience||'Not specified'}</div>
+              </div>
+              <div class="app-info-block">
+                <div class="aib-label">🪪 License #</div>
+                <div class="aib-value ${a.license?'':'muted'}">${a.license||'Not provided'}</div>
+              </div>
+              <div class="app-info-block">
+                <div class="aib-label">💻 Dental Software</div>
+                <div class="aib-value ${a.software?'':'muted'}">${a.software||'Not specified'}</div>
+              </div>
+              <div class="app-info-block">
+                <div class="aib-label">📅 Availability</div>
+                <div class="aib-value">${availMap[a.availability]||`<span class="muted">Not specified</span>`}</div>
+              </div>
+              <div class="app-info-block" style="grid-column:span 2">
+                <div class="aib-label">🏅 Certifications</div>
+                <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">
+                  <span class="cert-pill ${cprOk?'cert-yes':'cert-no'}">❤️ CPR: ${a.cpr||'Not listed'}</span>
+                  <span class="cert-pill ${xrayOk?'cert-blue':'cert-no'}">☢️ X-Ray: ${a.xray||'Not listed'}</span>
+                </div>
+              </div>
+              <div class="app-info-block" style="grid-column:span 2">
+                <div class="aib-label">📣 How They Found Us</div>
+                <div class="aib-value ${a.source?'':'muted'}">${a.source||'Not specified'}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="app-footer">
+            <div class="app-footer-left">
+              <span>#${a.id}</span>
+              <span>Submitted ${submittedDate}</span>
+              ${a.resume_name ? `<a href="#" onclick="downloadResume(event,${a.id},'${(a.resume_name||'').replace(/'/g,'&#39;')}')">📎 ${a.resume_name}</a>` : '<span style="color:#94a3b8;font-style:italic">No resume uploaded</span>'}
+            </div>
+            ${!showActions && status === 'accepted' ? `<button onclick="event.stopPropagation();openConvFromApplicant(${a.id},'${(a.worker_name||'Worker').replace(/'/g,"\'")}')" style="font-size:0.72rem;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:999px;padding:5px 14px;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:700">💬 Message</button>` : ''}
+            ${!showActions && status === 'rejected' ? `<span class="app-footer-note" style="color:#991b1b">✉️ Rejection notice sent</span>` : ''}
+            ${showActions ? `<button onclick="event.stopPropagation();openConvFromApplicant(${a.id},'${(a.worker_name||'Worker').replace(/'/g,"\'")}')" style="font-size:0.72rem;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:999px;padding:5px 14px;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:700">💬 Message</button>` : ''}
+          </div>
+        </div>`;
+      }).join("");
+    } catch(e) {
+      console.error(e);
+      listEl.innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><p>Could not load applicants.</p></div>`;
+    }
+  }
+
+  async function downloadResume(e, appId, fileName) {
+    e.preventDefault();
+    try {
+      const res = await fetch(`${API}/api/upload/resume/${appId}`, {
+        headers: { Authorization: `Bearer ${token()}` }
+      });
+      const data = await res.json();
+      if (!res.ok) { alert(data.error || "Could not get resume download link."); return; }
+      const a = document.createElement("a");
+      a.href = data.url; a.target = "_blank"; a.download = fileName || "resume";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    } catch(e) { alert("Could not download resume."); }
+  }
+
+  function openConvFromApplicant(appId, workerName) {
+    showPage('messages', document.querySelector('[data-page=messages]'));
+    setTimeout(() => {
+      const app = (typeof allApplicantsForMsg !== 'undefined' ? allApplicantsForMsg : []).find(a => a.id == appId);
+      openConversation(appId, workerName, app?.shift_role || 'Shift', app?.status || 'pending');
+    }, 300);
+  }
+
+  function toggleCover(id, btn) {
+    const el = document.getElementById('cover-' + id);
+    if (!el) return;
+    el.classList.toggle('expanded');
+    btn.textContent = el.classList.contains('expanded') ? 'Show less ↑' : 'Show more ↓';
+  }
+
+  function filterApps(status, btn) {
+    document.querySelectorAll('.app-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const cards = document.querySelectorAll('.applicant-card');
+    let shown = 0;
+    cards.forEach(card => {
+      const match = status === 'all' || card.classList.contains('status-' + status);
+      card.style.display = match ? '' : 'none';
+      if (match) shown++;
+    });
+    const lbl = document.getElementById('appCountLabel');
+    if (lbl) lbl.textContent = shown + ' applicant' + (shown !== 1 ? 's' : '');
+  }
+
+  function confirmReject(btn) {
+    const raw = btn.getAttribute('data-appid') || '';
+    const id = raw.includes(':') ? raw.split(':')[0] : raw;
+    const name = btn.getAttribute('data-name') || 'this applicant';
+    const modal = document.getElementById('rejectConfirmModal');
+    document.getElementById('rejectWorkerName').textContent = name;
+    document.getElementById('rejectConfirmBtn').onclick = function() {
+      closeModal('rejectConfirmModal');
+      updateApp(id, 'rejected', true);
+    };
+    modal.classList.add('open');
+  }
+
+  async function updateApp(id, status, sendAutoMessage) {
+    try {
+      const appId = Number(String(id).split(':')[0]);
+      const res = await fetch(`${API}/api/applications/${appId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` },
+        body: JSON.stringify({ status })
+      });
+      const resData = await res.json();
+      if (res.ok) {
+        if (status === 'rejected' && sendAutoMessage) {
+          try {
+            const convRes = await fetch(`${API}/api/messages/start/${appId}`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` }
+            });
+            if (convRes.ok) {
+              const convData = await convRes.json();
+              await fetch(`${API}/api/messages/${convData.conversation.id}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` },
+                body: JSON.stringify({ text: "Thank you for your interest and taking the time to apply. After careful consideration, we have decided to move forward with other candidates whose experience more closely matches our current needs. We appreciate your time and encourage you to apply for future openings. Best of luck in your job search!" })
+              });
+            }
+          } catch(e) { console.warn("Auto-message failed:", e); }
+        }
+        loadApplicants();
+      } else {
+        alert("Could not update application: " + (resData.error || "Unknown error"));
+      }
+    } catch(e) { alert("Server error."); }
+  }
+
+  function viewWorker(a) {
+    document.getElementById("workerModalName").textContent = a.worker_name || a.full_name || "Worker";
+    document.getElementById("workerModalBody").innerHTML = `
+    <div class="worker-detail-section"><h4>Contact</h4><p>📧 ${a.email || "N/A"} &nbsp; 📞 ${a.phone || "N/A"}</p></div>
+    <div class="worker-detail-section"><h4>Applied For</h4><p>${a.shift_title || "Shift"}</p></div>
+    <div class="worker-detail-section"><h4>Experience</h4><p>${a.experience || "Not specified"}</p></div>
+    <div class="worker-detail-section"><h4>Skills</h4><p>${(a.skills || "Not listed").split(",").map(s => `<span class="skill-tag">${s.trim()}</span>`).join("")}</p></div>
+    <div class="worker-detail-section"><h4>Bio</h4><p>${a.bio || "No bio provided."}</p></div>
+    <div class="worker-detail-section"><h4>Resume</h4><p>${a.resume_url ? `<a href="${a.resume_url}" target="_blank" class="btn btn-primary btn-sm">📄 Download Resume</a>` : "No resume uploaded yet."}</p></div>
+    <div style="margin-top:20px;display:flex;gap:10px">
+      <button class="btn btn-green" onclick="updateApp('${a.id}','accepted');closeModal('workerModal')">✓ Accept</button>
+      <button class="btn btn-red" onclick="updateApp('${a.id}','rejected');closeModal('workerModal')">✗ Reject</button>
+      <button class="btn btn-outline" onclick="showPage('messages',document.querySelector('[data-page=messages]'));closeModal('workerModal')">💬 Message</button>
+    </div>`;
+    document.getElementById("workerModal").classList.add("open");
+  }
+
+  // ── MESSAGING ──
+  let activeConvId = null;
+  let lastWorkerName = '', lastShiftRole = '', lastBg = '', lastInitials = '';
+  let msgPollTimer = null;
+  let allApplicantsForMsg = [];
+
+  async function loadMessages() {
+    try {
+      const shiftsRes = await fetch(`${API}/api/shifts`, { headers: { Authorization: `Bearer ${token()}` }});
+      const shiftsData = await shiftsRes.json();
+      const shifts = shiftsData.shifts || [];
+
+      const results = await Promise.all(
+              shifts.map(s =>
+                      fetch(`${API}/api/applications/shift/${s.id}`, { headers: { Authorization: `Bearer ${token()}` }})
+                              .then(r => r.json())
+                              .then(d => (d.applications || []).map(a => ({ ...a, shift_role: s.role, shift_date: s.date })))
+                              .catch(() => [])
+              )
+      );
+      allApplicantsForMsg = results.flat();
+
+      const convRes = await fetch(`${API}/api/messages/conversations`, { headers: { Authorization: `Bearer ${token()}` }});
+      const convData = await convRes.json();
+      const convs = convData.conversations || [];
+      const convMap = {};
+      convs.forEach(c => { if (c.application_id) convMap[c.application_id] = c; });
+
+      renderContactList(allApplicantsForMsg, convMap);
+      if (!activeConvId && convs.length > 0) {
+        const first = allApplicantsForMsg.find(a => convMap[String(a.id).split(':')[0]]);
+        if (first) {
+          const cid = String(first.id).split(':')[0];
+          openConversation(cid, first.worker_name||'Worker', first.shift_role||'Shift', first.status||'pending');
+        }
+      }
+    } catch(e) {
+      console.error("loadMessages error:", e);
+      document.getElementById("msgContactList").innerHTML = '<div class="msg-empty-list">⚠️ Could not load contacts.</div>';
+    }
+  }
+
+  function renderContactList(applicants, convMap) {
+    const el = document.getElementById("msgContactList");
+    if (!applicants.length) {
+      el.innerHTML = '<div class="msg-empty-list">No applicants yet.<br>Post a shift to get applicants.</div>';
+      return;
+    }
+    const statusColors = ["linear-gradient(135deg,#2563eb,#6366f1)","linear-gradient(135deg,#10b981,#059669)","linear-gradient(135deg,#f59e0b,#ef4444)","linear-gradient(135deg,#8b5cf6,#ec4899)"];
+    el.innerHTML = applicants.map(a => {
+      const initials = (a.worker_name||"W").split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase();
+      const bg = statusColors[Number(String(a.id||0).split(':')[0]) % statusColors.length];
+      const conv = convMap[String(a.id).split(':')[0]] || convMap[a.id];
+      const preview = conv?.last_message ? conv.last_message.slice(0, 40) + (conv.last_message.length > 40 ? '...' : '') : 'No messages yet';
+      const statusClass = {accepted:'mcs-accepted',pending:'mcs-pending',rejected:'mcs-rejected'}[a.status||'pending'] || 'mcs-pending';
+      const statusLabel = {accepted:'Accepted',pending:'Pending',rejected:'Rejected'}[a.status||'pending'] || 'Pending';
+      const mcid = String(a.id||0).split(':')[0];
+      return `<div class="msg-contact" id="contact-app-${mcid}" data-appid="${mcid}" data-name="${(a.worker_name||'Worker').replace(/"/g,'&quot;')}" data-role="${a.shift_role||'Shift'}" data-status="${a.status||'pending'}" onclick="openConversation(this.dataset.appid,this.dataset.name,this.dataset.role,this.dataset.status)">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:34px;height:34px;border-radius:9px;background:${bg};display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:0.78rem;flex-shrink:0">${initials}</div>
+          <div style="min-width:0;flex:1">
+            <div class="msg-contact-name">${a.worker_name||'Worker'}</div>
+            <div class="msg-contact-role">🦷 ${a.shift_role||'Shift'}</div>
+          </div>
+          <span class="msg-contact-status ${statusClass}">${statusLabel}</span>
+        </div>
+        <div class="msg-contact-preview" style="margin-top:6px">${preview}</div>
+      </div>`;
+    }).join("");
+  }
+
+  async function openConversation(appId, workerName, shiftRole, appStatus) {
+    const cleanAppId = Number(String(appId).split(':')[0]);
+    appId = cleanAppId;
+
+    document.querySelectorAll('.msg-contact').forEach(c => c.classList.remove('active'));
+    const contactEl = document.getElementById('contact-app-' + appId);
+    if (contactEl) contactEl.classList.add('active');
+
+    const panel = document.getElementById("msgChatPanel");
+    const initials = (workerName||'W').split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase();
+    const statusColors = ["linear-gradient(135deg,#2563eb,#6366f1)","linear-gradient(135deg,#10b981,#059669)","linear-gradient(135deg,#f59e0b,#ef4444)","linear-gradient(135deg,#8b5cf6,#ec4899)"];
+    const bg = statusColors[appId % statusColors.length];
+
+    panel.innerHTML = `
+      <div class="msg-chat-header">
+        <div class="msg-chat-avatar" style="background:${bg}">${initials}</div>
+        <div><div class="msg-chat-name">${workerName}</div><div class="msg-chat-sub">🦷 ${shiftRole}</div></div>
+      </div>
+      <div class="msg-chat-body" id="msgChatBody"><div style="text-align:center;color:var(--muted);font-size:0.85rem;margin:auto">⏳ Loading...</div></div>
+      <div class="msg-input-row">
+        <input type="text" id="msgInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+        <button class="btn btn-primary btn-sm" onclick="sendMsg()">Send →</button>
+      </div>`;
+
+    try {
+      const res = await fetch(`${API}/api/messages/start/${appId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` }
+      });
+      const data = await res.json();
+      if (!res.ok) { alert(data.error || "Could not start conversation"); return; }
+      activeConvId = Number(String(data.conversation.id).split(':')[0]);
+      lastWorkerName = workerName; lastShiftRole = shiftRole; lastBg = bg; lastInitials = initials;
+      await renderMessages(workerName, shiftRole, bg, initials);
+
+      clearInterval(msgPollTimer);
+      msgPollTimer = setInterval(() => renderMessages(workerName, shiftRole, bg, initials), 4000);
+    } catch(e) { console.error("openConversation error:", e); }
+  }
+
+  async function renderMessages(workerName, shiftRole, bg, initials) {
+    if (!activeConvId) return;
+    try {
+      const res = await fetch(`${API}/api/messages/${activeConvId}`, { headers: { Authorization: `Bearer ${token()}` }});
+      const data = await res.json();
+      const msgs = data.messages || [];
+      const body = document.getElementById("msgChatBody");
+      if (!body) return;
+      const wasAtBottom = body.scrollHeight - body.clientHeight <= body.scrollTop + 50;
+
+      body.innerHTML = msgs.length ? msgs.map(m => {
+        const isSent = m.sender_role === 'clinic';
+        const time = new Date(m.created_at).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+        return `<div class="msg-bubble-wrap ${isSent?'sent':'recv'}">
+          <div class="msg-bubble ${isSent?'sent':'recv'}">${m.text}</div>
+          <div class="msg-time">${isSent?'You':''+m.sender_name} · ${time}</div>
+        </div>`;
+      }).join("") : '<div style="text-align:center;color:var(--muted);font-size:0.82rem;margin-top:20px">No messages yet. Say hello! 👋</div>';
+
+      if (wasAtBottom || msgs.length === 0) body.scrollTop = body.scrollHeight;
+      loadMessages();
+    } catch(e) { console.error("renderMessages error:", e); }
+  }
+
+  async function sendMsg() {
+    const input = document.getElementById("msgInput");
+    const text = input.value.trim();
+    if (!text || !activeConvId) return;
+    input.value = "";
+    input.disabled = true;
+    try {
+      await fetch(`${API}/api/messages/${activeConvId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token()}` },
+        body: JSON.stringify({ text })
+      });
+      await renderMessages(lastWorkerName, lastShiftRole, lastBg, lastInitials);
+    } catch(e) { alert("Could not send message."); }
+    input.disabled = false;
+    input.focus();
+  }
+
+  function saveClinicProfile() {
+    const msg = document.getElementById("profileSaved");
+    msg.style.display = "block";
+    setTimeout(() => msg.style.display = "none", 3000);
+  }
+
+  function switchMsgTab(tab) {
+    document.getElementById('directMsgPanel').style.display = tab === 'direct' ? '' : 'none';
+    document.getElementById('announceMsgPanel').style.display = tab === 'announce' ? '' : 'none';
+    document.getElementById('tabDirect').className = tab === 'direct' ? 'btn btn-primary btn-sm' : 'btn btn-outline btn-sm';
+    document.getElementById('tabDirect').style.borderRadius = '999px';
+    document.getElementById('tabAnnounce').className = tab === 'announce' ? 'btn btn-primary btn-sm' : 'btn btn-outline btn-sm';
+    document.getElementById('tabAnnounce').style.borderRadius = '999px';
+    if (tab === 'announce') loadAnnouncements();
+  }
+
+  async function loadAnnouncements() {
+    const el = document.getElementById('announceList');
+    try {
+      const r = await fetch(`${API}/api/auth/broadcasts`, { headers: { Authorization: `Bearer ${token()}` }});
+      const d = await r.json();
+      const items = d.broadcasts || [];
+      if (!items.length) {
+        el.innerHTML = '<div style="text-align:center;color:#94a3b8;padding:40px 0;font-size:0.88rem">📭 No announcements yet.</div>';
+        return;
+      }
+      el.innerHTML = items.map(b => `
+        <div style="border:1.5px solid #e2e8f0;border-radius:12px;padding:18px 20px;margin-bottom:12px;background:#fff">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <span style="width:32px;height:32px;background:linear-gradient(135deg,#1a3a6b,#2563eb);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;flex-shrink:0">📢</span>
+            <div style="flex:1">
+              <div style="font-weight:700;font-size:0.9rem;color:#1e293b;font-family:'Poppins',sans-serif">${b.subject}</div>
+              <div style="font-size:0.72rem;color:#94a3b8;margin-top:1px">${new Date(b.sent_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'})}</div>
+            </div>
+            <span style="font-size:0.68rem;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;padding:2px 8px;border-radius:999px;font-weight:600;white-space:nowrap">From CareVia</span>
+          </div>
+          <div style="font-size:0.855rem;color:#475569;line-height:1.65;white-space:pre-line;padding-left:42px">${b.message}</div>
+        </div>`).join('');
+    } catch(e) {
+      el.innerHTML = '<div style="color:#ef4444;text-align:center;padding:20px">Could not load announcements.</div>';
+    }
+  }
+
+  function showPage(name, el) {
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+    document.getElementById("page-"+name).classList.add("active");
+    if (el) el.classList.add("active");
+    if (name === 'messages') {
+      clearInterval(msgPollTimer);
+      activeConvId = null;
+      loadMessages();
+    } else {
+      clearInterval(msgPollTimer);
+    }
+  }
+
+  function openPostShift() { document.getElementById("postShiftModal").classList.add("open"); }
+  function closeModal(id) { document.getElementById(id).classList.remove("open"); }
+  function doLogout() { document.getElementById("logoutModal").classList.add("open"); }
+  function confirmLogout() { localStorage.removeItem("carevia_token"); window.location.href = "login.html"; }
+
+  function sendSupportEmail() {
+    const name    = document.getElementById("supName").value.trim();
+    const email   = document.getElementById("supEmail").value.trim();
+    const message = document.getElementById("supMessage").value.trim();
+    if (!name || !email || !message) { alert("Please fill in all fields."); return; }
+    const subject = encodeURIComponent("Clinic Support Request from " + name);
+    const body    = encodeURIComponent("From: " + name + "\nEmail: " + email + "\n\nMessage:\n" + message);
+    window.location.href = `mailto:support@carevia.com?subject=${subject}&body=${body}`;
+    document.getElementById("supSuccess").style.display = "block";
+    setTimeout(() => document.getElementById("supportModal").classList.remove("open"), 2500);
+  }
+</script>
+
+<!-- LOGOUT CONFIRM MODAL -->
+<div class="modal-backdrop" id="logoutModal" style="z-index:9999">
+  <div style="background:#fff;border-radius:20px;max-width:380px;width:96vw;overflow:hidden;animation:fadeUp 0.3s ease both;box-shadow:0 24px 80px rgba(10,20,40,0.4)">
+    <div style="background:linear-gradient(135deg,#060d1a 0%,#1a3a6b 100%);padding:32px 28px 24px;text-align:center">
+      <div style="width:56px;height:56px;background:rgba(239,68,68,0.15);border:1.5px solid rgba(239,68,68,0.3);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 16px">🚪</div>
+      <div style="font-family:'Poppins',sans-serif;font-size:1.25rem;font-weight:800;color:#fff;margin-bottom:8px">Leaving so soon?</div>
+      <div style="font-size:0.83rem;color:rgba(255,255,255,0.5);line-height:1.6">You'll need to sign back in to access your dashboard.</div>
+    </div>
+    <div style="background:#fff;padding:20px 28px 24px;display:flex;flex-direction:column;gap:10px">
+      <button onclick="confirmLogout()" style="width:100%;padding:12px;background:#ef4444;color:#fff;border:none;border-radius:12px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif">Yes, log me out</button>
+      <button onclick="closeModal('logoutModal')" style="width:100%;padding:12px;background:#f1f5f9;color:#334155;border:none;border-radius:12px;font-size:0.88rem;font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif">Stay signed in</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT SUPPORT MODAL -->
+<div class="modal-backdrop" id="supportModal" style="z-index:9999">
+  <div style="background:#fff;border-radius:20px;max-width:480px;width:96vw;overflow:hidden;animation:fadeUp 0.3s ease both;box-shadow:0 24px 80px rgba(10,20,40,0.4)">
+    <div style="background:linear-gradient(135deg,#060d1a 0%,#1a3a6b 100%);padding:28px 28px 22px;text-align:center">
+      <div style="width:52px;height:52px;background:rgba(37,99,235,0.2);border:1.5px solid rgba(37,99,235,0.35);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin:0 auto 14px">🛟</div>
+      <div style="font-family:'Poppins',sans-serif;font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:6px">How can we help?</div>
+      <div style="font-size:0.8rem;color:rgba(255,255,255,0.5)">Our team usually responds within a few hours.</div>
+    </div>
+    <div style="background:#fff;padding:22px 24px 26px">
+      <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px 16px;margin-bottom:16px">
+        <div style="width:38px;height:38px;background:#eff6ff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">📞</div>
+        <div>
+          <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#94a3b8;margin-bottom:2px;font-family:'Poppins',sans-serif">Call Us</div>
+          <a href="tel:+12065550000" style="font-size:0.95rem;font-weight:700;color:#0f172a;text-decoration:none">(206) 555-0000</a>
+          <div style="font-size:0.72rem;color:#94a3b8;margin-top:1px">Mon–Fri, 9am–6pm PST</div>
+        </div>
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#64748b;display:block;margin-bottom:6px;font-family:'Poppins',sans-serif">Your Name</label>
+        <input id="supName" type="text" placeholder="Jane Smith" style="width:100%;padding:10px 13px;border:1.5px solid #e2e8f0;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.875rem;outline:none"/>
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#64748b;display:block;margin-bottom:6px;font-family:'Poppins',sans-serif">Your Email</label>
+        <input id="supEmail" type="email" placeholder="you@clinic.com" style="width:100%;padding:10px 13px;border:1.5px solid #e2e8f0;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.875rem;outline:none"/>
+      </div>
+      <div style="margin-bottom:18px">
+        <label style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#64748b;display:block;margin-bottom:6px;font-family:'Poppins',sans-serif">Message</label>
+        <textarea id="supMessage" rows="3" placeholder="Describe your issue or question..." style="width:100%;padding:10px 13px;border:1.5px solid #e2e8f0;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.875rem;outline:none;resize:vertical"></textarea>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button onclick="sendSupportEmail()" style="flex:1;padding:12px;background:linear-gradient(135deg,#1a3a6b,#2563eb);color:#fff;border:none;border-radius:11px;font-family:'Poppins',sans-serif;font-weight:700;font-size:0.88rem;cursor:pointer">Send Message</button>
+        <button onclick="document.getElementById('supportModal').classList.remove('open')" style="padding:12px 18px;background:#f1f5f9;color:#334155;border:none;border-radius:11px;font-family:'Poppins',sans-serif;font-weight:600;font-size:0.88rem;cursor:pointer">Cancel</button>
+      </div>
+      <div id="supSuccess" style="display:none;text-align:center;margin-top:14px;font-size:0.85rem;font-weight:600;color:#059669">✅ Message sent! We'll be in touch shortly.</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

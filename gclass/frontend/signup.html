@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>CareVia — Create Account</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --navy:#060d1a;--navy2:#0d1f3c;--blue:#2563eb;--green:#10b981;--green2:#34d399;
+      --text:#f8fafc;--muted:rgba(255,255,255,0.45);
+      --border:rgba(255,255,255,0.09);--inp:rgba(255,255,255,0.06);
+      --error:#f87171;--gold:#f59e0b;
+    }
+    html,body{height:100%}
+    body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
+
+    .bg-layer{position:fixed;inset:0;z-index:0;
+      background:radial-gradient(ellipse 900px 600px at 80% 0%,rgba(16,185,129,0.13) 0%,transparent 60%),
+      radial-gradient(ellipse 700px 500px at 10% 100%,rgba(37,99,235,0.15) 0%,transparent 55%),var(--navy);}
+    .bg-layer::after{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,0.04) 1px,transparent 1px);background-size:28px 28px;}
+
+    /* NAV */
+    .nav-wrap{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(6,13,26,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);height:64px;}
+    .nav-inner{max-width:1180px;margin:0 auto;padding:0 24px;height:100%;display:flex;align-items:center;gap:28px;}
+    .logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0;}
+    .logo-mark{width:32px;height:32px;background:linear-gradient(135deg,#1a3a6b,#2563eb);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:800;font-size:.88rem;color:white;box-shadow:0 4px 12px rgba(37,99,235,0.4);}
+    .logo-mark::after{content:'C';}
+    .logo-text{font-family:'Poppins',sans-serif;font-weight:800;font-size:1.05rem;line-height:1;}
+    .care{color:#fff;}.via{color:#34d399;}
+    .logo-sub{display:block;font-size:.58rem;color:rgba(255,255,255,.35);font-weight:500;letter-spacing:.07em;text-transform:uppercase;margin-top:1px;}
+    .nav-links{display:flex;align-items:center;gap:2px;flex:1;}
+    .nav-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:.845rem;font-weight:500;padding:6px 11px;border-radius:8px;transition:all .2s;}
+    .nav-links a:hover{color:#fff;background:rgba(255,255,255,.07);}
+    .nav-actions{display:flex;align-items:center;gap:7px;margin-left:auto;}
+    .pill{display:inline-flex;align-items:center;justify-content:center;padding:7px 17px;border-radius:999px;font-family:'Poppins',sans-serif;font-weight:600;font-size:.78rem;cursor:pointer;text-decoration:none;border:none;transition:all .2s;white-space:nowrap;}
+    .btn-outline-nav{background:transparent;border:1.5px solid rgba(255,255,255,.22);color:rgba(255,255,255,.75);}
+    .btn-outline-nav:hover{border-color:rgba(255,255,255,.45);color:#fff;}
+    .btn-primary-nav{background:linear-gradient(135deg,#1a3a6b,#2563eb);color:white;box-shadow:0 3px 12px rgba(37,99,235,.35);}
+    .btn-primary-nav:hover{transform:translateY(-1px);}
+    .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;margin-left:auto;}
+    .hamburger span{display:block;width:20px;height:2px;background:rgba(255,255,255,.75);border-radius:2px;}
+    .mobile-panel{background:rgba(6,13,26,.98);border-top:1px solid var(--border);padding:16px 24px 20px;}
+    .mobile-panel a{display:block;color:rgba(255,255,255,.65);text-decoration:none;font-size:.9rem;font-weight:500;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+    .mob-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+    @media(max-width:900px){.nav-links,.nav-actions{display:none;}.hamburger{display:flex;}}
+
+    /* PAGE */
+    .page{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:88px 20px 48px;position:relative;z-index:1;}
+
+    /* CARD */
+    .card{
+      width:100%;max-width:500px;
+      background:rgba(13,31,60,0.72);
+      backdrop-filter:blur(24px);
+      border:1px solid rgba(255,255,255,0.11);
+      border-radius:24px;
+      padding:36px 36px 32px;
+      box-shadow:0 32px 80px rgba(6,13,26,0.5),inset 0 1px 0 rgba(255,255,255,0.07);
+      animation:cardIn .5s cubic-bezier(.22,1,.36,1) both;
+    }
+    @keyframes cardIn{from{opacity:0;transform:translateY(20px) scale(.98);}to{opacity:1;transform:none;}}
+
+    /* brand */
+    .card-brand{display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:22px;}
+    .card-logo-mark{width:36px;height:36px;background:linear-gradient(135deg,#1a3a6b,#2563eb);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:800;font-size:.95rem;color:white;box-shadow:0 5px 16px rgba(37,99,235,.45);}
+    .card-logo-mark::after{content:'C';}
+    .card-logo-text{font-family:'Poppins',sans-serif;font-weight:800;font-size:1.2rem;}
+
+    /* ── PROGRESS BAR ── */
+    .progress-wrap{margin-bottom:26px;}
+    .progress-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+    .progress-step-label{font-family:'Poppins',sans-serif;font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+    .progress-count{font-family:'Poppins',sans-serif;font-size:.72rem;font-weight:600;color:rgba(255,255,255,.3);}
+    .progress-track{height:4px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;}
+    .progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#2563eb,#10b981);transition:width .4s cubic-bezier(.22,1,.36,1);}
+
+    /* step dots */
+    .step-dots{display:flex;justify-content:center;gap:8px;margin-bottom:20px;}
+    .step-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.12);transition:all .3s;}
+    .step-dot.done{background:#10b981;}
+    .step-dot.active{width:22px;border-radius:999px;background:linear-gradient(90deg,#2563eb,#10b981);}
+
+    /* headings */
+    .step-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:1.25rem;color:#fff;margin-bottom:5px;letter-spacing:-.02em;}
+    .step-sub{font-size:.835rem;color:var(--muted);margin-bottom:20px;line-height:1.5;}
+
+    /* error */
+    .err-box{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:10px;padding:10px 14px;font-size:.8rem;color:var(--error);margin-bottom:14px;display:none;}
+
+    /* role cards */
+    .role-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+    .rc{border:1.5px solid var(--border);border-radius:13px;padding:13px 10px;text-align:center;cursor:pointer;transition:all .18s;background:rgba(255,255,255,.03);}
+    .rc:hover{border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.04);}
+    .rc.sel{border-color:#10b981;background:rgba(16,185,129,.08);box-shadow:0 0 0 3px rgba(16,185,129,.08);}
+    .rc-icon{font-size:1.3rem;margin-bottom:5px;}
+    .rc-label{font-family:'Poppins',sans-serif;font-size:.8rem;font-weight:700;color:#fff;}
+    .rc-sub{font-size:.67rem;color:var(--muted);margin-top:3px;}
+
+    /* fields */
+    .fg{margin-bottom:13px;}
+    .fg label{display:block;font-size:.7rem;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.09em;margin-bottom:6px;}
+    .fg input,.fg select,.fg textarea{
+      width:100%;padding:11px 14px;
+      background:var(--inp);border:1px solid var(--border);
+      border-radius:11px;color:#fff;
+      font-family:'DM Sans',sans-serif;font-size:.875rem;font-weight:500;
+      outline:none;transition:border-color .2s,background .2s,box-shadow .2s;
+    }
+    .fg select option{background:#0d1f3c;color:#fff;}
+    .fg textarea{resize:vertical;min-height:80px;line-height:1.5;}
+    .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:rgba(52,211,153,.5);background:rgba(255,255,255,.08);box-shadow:0 0 0 3px rgba(16,185,129,.1);}
+    .fg input::placeholder,.fg textarea::placeholder{color:rgba(255,255,255,.2);}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+    .pw-wrap{position:relative;}
+    .pw-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:rgba(255,255,255,.3);padding:4px;transition:color .2s;display:flex;align-items:center;}
+    .pw-toggle:hover{color:rgba(255,255,255,.65);}
+    .pw-strength{height:3px;border-radius:999px;background:rgba(255,255,255,.07);margin-top:6px;overflow:hidden;}
+    .pw-strength-fill{height:100%;border-radius:999px;width:0%;transition:width .3s,background .3s;}
+
+    /* file upload */
+    .file-zone{
+      border:2px dashed rgba(255,255,255,.12);
+      border-radius:13px;padding:22px 16px;
+      text-align:center;cursor:pointer;
+      transition:all .2s;background:rgba(255,255,255,.02);
+      position:relative;
+    }
+    .file-zone:hover,.file-zone.drag{border-color:rgba(52,211,153,.4);background:rgba(52,211,153,.04);}
+    .file-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+    .file-icon{font-size:1.8rem;margin-bottom:8px;}
+    .file-label{font-family:'Poppins',sans-serif;font-size:.82rem;font-weight:700;color:rgba(255,255,255,.7);margin-bottom:4px;}
+    .file-sub{font-size:.73rem;color:var(--muted);}
+    .file-chosen{margin-top:10px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);border-radius:8px;padding:8px 12px;font-size:.78rem;color:#34d399;display:none;text-align:left;}
+    .file-chosen.vis{display:flex;align-items:center;gap:8px;}
+
+    /* checklist */
+    .checklist{display:flex;flex-direction:column;gap:8px;margin-bottom:4px;}
+    .check-item{
+      display:flex;align-items:flex-start;gap:11px;
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--border);
+      border-radius:11px;padding:12px 14px;
+      cursor:pointer;transition:all .18s;
+    }
+    .check-item:hover{background:rgba(255,255,255,.06);}
+    .check-item.checked{background:rgba(16,185,129,.07);border-color:rgba(16,185,129,.3);}
+    .check-box{
+      width:20px;height:20px;flex-shrink:0;
+      border:2px solid rgba(255,255,255,.2);
+      border-radius:6px;margin-top:1px;
+      display:flex;align-items:center;justify-content:center;
+      transition:all .18s;background:transparent;
+    }
+    .check-item.checked .check-box{background:#10b981;border-color:#10b981;}
+    .check-box svg{display:none;}
+    .check-item.checked .check-box svg{display:block;}
+    .check-text{flex:1;}
+    .check-title{font-size:.845rem;font-weight:600;color:#fff;line-height:1.3;}
+    .check-desc{font-size:.74rem;color:var(--muted);margin-top:3px;line-height:1.4;}
+
+    /* info box */
+    .info-box{background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.2);border-radius:11px;padding:12px 14px;font-size:.8rem;color:rgba(150,190,255,.85);line-height:1.6;margin-bottom:14px;}
+    .info-box strong{color:rgba(180,210,255,.95);}
+
+    /* nav buttons */
+    .btn-row{display:flex;gap:10px;margin-top:20px;}
+    .btn-go{
+      flex:1;padding:13px;
+      background:linear-gradient(135deg,#1a3a6b,#2563eb);
+      color:#fff;border:none;border-radius:13px;
+      font-family:'Poppins',sans-serif;font-size:.88rem;font-weight:700;
+      cursor:pointer;transition:all .22s;
+      box-shadow:0 6px 22px rgba(37,99,235,.38);
+    }
+    .btn-go:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(37,99,235,.52);}
+    .btn-go:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+    .btn-back{
+      padding:13px 18px;background:rgba(255,255,255,.05);
+      border:1px solid var(--border);border-radius:13px;
+      color:rgba(255,255,255,.6);font-family:'Poppins',sans-serif;
+      font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s;
+    }
+    .btn-back:hover{background:rgba(255,255,255,.09);color:#fff;}
+
+    /* pending screen */
+    .pending-screen{display:none;text-align:center;animation:cardIn .4s ease both;}
+    .pending-screen.vis{display:block;}
+    .pending-icon-wrap{width:72px;height:72px;margin:0 auto 18px;background:linear-gradient(135deg,rgba(245,158,11,.15),rgba(217,119,6,.08));border:2px solid rgba(245,158,11,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;}
+    .pending-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:1.3rem;color:#fff;margin-bottom:8px;}
+    .pending-sub{font-size:.845rem;color:var(--muted);line-height:1.65;margin-bottom:20px;}
+    .pending-steps{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:13px;padding:16px 18px;text-align:left;margin-bottom:20px;}
+    .pending-step{display:flex;align-items:flex-start;gap:10px;font-size:.82rem;color:rgba(255,255,255,.65);line-height:1.5;margin-bottom:10px;}
+    .pending-step:last-child{margin-bottom:0;}
+    .pending-step-num{width:22px;height:22px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,#1a3a6b,#2563eb);font-family:'Poppins',sans-serif;font-weight:700;font-size:.68rem;color:#fff;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+    .pending-home{display:inline-flex;align-items:center;gap:7px;color:rgba(255,255,255,.45);font-size:.8rem;text-decoration:none;border:1px solid var(--border);border-radius:999px;padding:9px 20px;transition:all .2s;}
+    .pending-home:hover{color:#fff;border-color:rgba(255,255,255,.3);}
+
+    .terms-note{font-size:.72rem;color:rgba(255,255,255,.28);text-align:center;margin-top:14px;line-height:1.6;}
+    .terms-note a{color:rgba(255,255,255,.42);text-decoration:none;}
+    .terms-note a:hover{color:rgba(255,255,255,.7);}
+    .switch-hint{text-align:center;font-size:.8rem;color:var(--muted);margin-top:16px;}
+    .switch-hint a{color:#34d399;text-decoration:none;font-weight:700;}
+    .switch-hint a:hover{text-decoration:underline;}
+    .hidden{display:none!important;}
+
+    .page-foot{position:relative;z-index:1;text-align:center;padding:0 20px 24px;font-size:.72rem;color:rgba(255,255,255,.2);}
+    .page-foot a{color:rgba(255,255,255,.28);text-decoration:none;}
+
+    @media(max-width:480px){.card{padding:24px 18px;}.two-col{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+<div class="bg-layer"></div>
+
+<!-- NAVBAR -->
+<div class="nav-wrap">
+  <div class="nav-inner">
+    <a class="logo" href="index.html">
+      <div class="logo-mark"></div>
+      <span><span class="logo-text"><span class="care">Care</span><span class="via">Via</span></span><span class="logo-sub">Solutions</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="find-shifts.html">Find Shifts</a>
+      <a href="for-clinics.html">For Clinics</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <a class="pill btn-outline-nav" href="login.html">Log In</a>
+      <a class="pill btn-primary-nav" href="signup.html">Sign Up</a>
+    </div>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-panel" id="mobilePanel" hidden>
+    <a href="index.html">Home</a>
+    <a href="find-shifts.html">Find Shifts</a>
+    <a href="for-clinics.html">For Clinics</a>
+    <a href="how-it-works.html">How It Works</a>
+    <a href="contact.html">Contact</a>
+    <div class="mob-actions">
+      <a class="pill btn-outline-nav" href="login.html">Log In</a>
+      <a class="pill btn-primary-nav" href="signup.html">Sign Up</a>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="page">
+  <div class="card">
+    <div class="card-brand">
+      <div class="card-logo-mark"></div>
+      <span class="card-logo-text"><span class="care">Care</span><span class="via">Via</span></span>
+    </div>
+
+    <div class="err-box" id="errBox"></div>
+
+    <!-- ════════════════════════════════════
+         STEP 1 — Role + Account Info
+    ════════════════════════════════════ -->
+    <div id="step1">
+      <div class="step-dots">
+        <div class="step-dot active" id="dot1"></div>
+        <div class="step-dot" id="dot2"></div>
+        <div class="step-dot" id="dot3"></div>
+        <div class="step-dot" id="dot4"></div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span class="progress-step-label">Step 1 of 4 — Account Type</span>
+          <span class="progress-count">25%</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:25%"></div></div>
+      </div>
+
+      <div class="step-title">Create your account</div>
+      <div class="step-sub">Join CareVia — free for dental professionals &amp; clinics.</div>
+
+      <div class="role-cards">
+        <div class="rc sel" id="rcWorker" onclick="pickRole('worker')">
+          <div class="rc-icon">🦷</div>
+          <div class="rc-label">Dental Pro</div>
+          <div class="rc-sub">Find shifts near you</div>
+        </div>
+        <div class="rc" id="rcClinic" onclick="pickRole('clinic')">
+          <div class="rc-icon">🏥</div>
+          <div class="rc-label">Clinic</div>
+          <div class="rc-sub">Post shifts &amp; hire</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="fg"><label>First Name</label><input type="text" id="sFirst" placeholder="Jane" autocomplete="given-name"/></div>
+        <div class="fg"><label>Last Name</label><input type="text" id="sLast" placeholder="Doe" autocomplete="family-name"/></div>
+      </div>
+      <div class="fg hidden" id="clinicFg">
+        <label>Clinic Name</label>
+        <input type="text" id="sClinic" placeholder="Seattle Dental Group"/>
+      </div>
+      <div class="fg">
+        <label>Email Address</label>
+        <input type="email" id="sEmail" placeholder="you@example.com" autocomplete="email"/>
+      </div>
+      <div class="two-col">
+        <div class="fg">
+          <label>Password</label>
+          <div class="pw-wrap">
+            <input type="password" id="sPass" placeholder="Min. 8 chars" autocomplete="new-password" oninput="checkStrength(this.value)"/>
+            <button class="pw-toggle" type="button" onclick="togglePw('sPass',this)" tabindex="-1">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+          </div>
+          <div class="pw-strength"><div class="pw-strength-fill" id="strengthFill"></div></div>
+        </div>
+        <div class="fg">
+          <label>Confirm Password</label>
+          <div class="pw-wrap">
+            <input type="password" id="sConfirm" placeholder="Repeat" autocomplete="new-password"/>
+            <button class="pw-toggle" type="button" onclick="togglePw('sConfirm',this)" tabindex="-1">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-go" onclick="step1Next()">Continue →</button>
+      </div>
+      <div class="terms-note">By signing up you agree to our <a href="contact.html#terms">Terms of Service</a> and <a href="contact.html#privacy">Privacy Policy</a>.</div>
+      <div class="switch-hint">Already have an account? <a href="login.html">Sign In</a></div>
+    </div>
+
+    <!-- ════════════════════════════════════
+         STEP 2 — Clinic Details (clinic only)
+    ════════════════════════════════════ -->
+    <div id="step2" class="hidden">
+      <div class="step-dots">
+        <div class="step-dot done" id="dot2_1"></div>
+        <div class="step-dot active" id="dot2_2"></div>
+        <div class="step-dot" id="dot2_3"></div>
+        <div class="step-dot" id="dot2_4"></div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span class="progress-step-label">Step 2 of 4 — Clinic Details</span>
+          <span class="progress-count">50%</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:50%"></div></div>
+      </div>
+      <div class="step-title">Tell us about your clinic</div>
+      <div class="step-sub">This information is reviewed by our team to verify your practice.</div>
+
+      <div class="two-col">
+        <div class="fg">
+          <label>Phone Number</label>
+          <input type="tel" id="sPhone" placeholder="(206) 555-0100"/>
+        </div>
+        <div class="fg">
+          <label>City</label>
+          <input type="text" id="sCity" placeholder="Seattle" value="Seattle"/>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Clinic Address</label>
+        <input type="text" id="sAddress" placeholder="123 Main St, Seattle, WA 98101"/>
+      </div>
+      <div class="fg">
+        <label>Dental Specialty</label>
+        <select id="sSpecialty">
+          <option value="">Select specialty...</option>
+          <option>General Dentistry</option>
+          <option>Orthodontics</option>
+          <option>Oral Surgery</option>
+          <option>Periodontics</option>
+          <option>Endodontics</option>
+          <option>Pediatric Dentistry</option>
+          <option>Prosthodontics</option>
+          <option>Cosmetic Dentistry</option>
+          <option>Multi-Specialty</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>NPI Number <span style="font-weight:400;text-transform:none;letter-spacing:0;color:rgba(255,255,255,.3)">(National Provider Identifier)</span></label>
+        <input type="text" id="sNpi" placeholder="10-digit NPI number" maxlength="10"/>
+      </div>
+      <div class="fg">
+        <label>Washington State Dental License Number</label>
+        <input type="text" id="sLicNum" placeholder="e.g. DN12345678"/>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-back" onclick="goStep(1)">← Back</button>
+        <button class="btn-go" onclick="step2Next()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════
+         STEP 3 — License Upload (clinic only)
+    ════════════════════════════════════ -->
+    <div id="step3" class="hidden">
+      <div class="step-dots">
+        <div class="step-dot done"></div>
+        <div class="step-dot done"></div>
+        <div class="step-dot active"></div>
+        <div class="step-dot"></div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span class="progress-step-label">Step 3 of 4 — Verification Docs</span>
+          <span class="progress-count">75%</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:75%"></div></div>
+      </div>
+      <div class="step-title">Upload verification documents</div>
+      <div class="step-sub">Securely upload your clinic credentials. Accepted: PDF, JPG, PNG (max 10MB each).</div>
+
+      <div class="info-box">
+        <strong>Why we ask for this:</strong> Washington State requires all dental staffing platforms to verify clinic credentials before connecting them with licensed professionals. Your documents are reviewed by our team and never shared publicly.
+      </div>
+
+      <!-- WA Dental License -->
+      <div class="fg">
+        <label>Washington State Dental License ✱</label>
+        <div class="file-zone" id="zone1" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,'licFile','zone1','chosen1')">
+          <input type="file" id="licFile" accept=".pdf,.jpg,.jpeg,.png" onchange="fileChosen(this,'chosen1')"/>
+          <div class="file-icon">📄</div>
+          <div class="file-label">Click or drag to upload license</div>
+          <div class="file-sub">PDF, JPG or PNG · max 10MB</div>
+        </div>
+        <div class="file-chosen" id="chosen1">
+          <span>✅</span><span id="chosen1Name"></span>
+        </div>
+      </div>
+
+      <!-- DEA Registration (optional) -->
+      <div class="fg">
+        <label>DEA Registration <span style="font-weight:400;text-transform:none;letter-spacing:0;color:rgba(255,255,255,.3)">(optional, if applicable)</span></label>
+        <div class="file-zone" id="zone2" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,'deaFile','zone2','chosen2')">
+          <input type="file" id="deaFile" accept=".pdf,.jpg,.jpeg,.png" onchange="fileChosen(this,'chosen2')"/>
+          <div class="file-icon">💊</div>
+          <div class="file-label">Click or drag to upload DEA cert</div>
+          <div class="file-sub">PDF, JPG or PNG · max 10MB</div>
+        </div>
+        <div class="file-chosen" id="chosen2">
+          <span>✅</span><span id="chosen2Name"></span>
+        </div>
+      </div>
+
+      <!-- Proof of business -->
+      <div class="fg">
+        <label>Business Registration / W-9 ✱</label>
+        <div class="file-zone" id="zone3" ondragover="dragOver(event,this)" ondragleave="dragLeave(this)" ondrop="dropFile(event,'bizFile','zone3','chosen3')">
+          <input type="file" id="bizFile" accept=".pdf,.jpg,.jpeg,.png" onchange="fileChosen(this,'chosen3')"/>
+          <div class="file-icon">🏢</div>
+          <div class="file-label">Click or drag to upload</div>
+          <div class="file-sub">State business license or W-9 · PDF, JPG or PNG</div>
+        </div>
+        <div class="file-chosen" id="chosen3">
+          <span>✅</span><span id="chosen3Name"></span>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-back" onclick="goStep(2)">← Back</button>
+        <button class="btn-go" onclick="step3Next()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════
+         STEP 4 — Requirements Checklist (clinic only)
+    ════════════════════════════════════ -->
+    <div id="step4" class="hidden">
+      <div class="step-dots">
+        <div class="step-dot done"></div>
+        <div class="step-dot done"></div>
+        <div class="step-dot done"></div>
+        <div class="step-dot active"></div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span class="progress-step-label">Step 4 of 4 — Confirm Requirements</span>
+          <span class="progress-count">Almost done!</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:92%"></div></div>
+      </div>
+      <div class="step-title">Confirm your clinic meets our standards</div>
+      <div class="step-sub">Please confirm each requirement. These are required by Washington State dental staffing regulations.</div>
+
+      <div class="checklist">
+        <div class="check-item" id="chk1" onclick="toggleCheck(this)">
+          <div class="check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="check-text">
+            <div class="check-title">Active Washington State Dental License</div>
+            <div class="check-desc">Our clinic holds a current, active dental practice license issued by the Washington State Department of Health.</div>
+          </div>
+        </div>
+        <div class="check-item" id="chk2" onclick="toggleCheck(this)">
+          <div class="check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="check-text">
+            <div class="check-title">OSHA &amp; HIPAA Compliance</div>
+            <div class="check-desc">Our practice is compliant with OSHA bloodborne pathogen standards and maintains HIPAA-compliant patient data practices.</div>
+          </div>
+        </div>
+        <div class="check-item" id="chk3" onclick="toggleCheck(this)">
+          <div class="check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="check-text">
+            <div class="check-title">Professional Liability Insurance</div>
+            <div class="check-desc">We carry active professional liability (malpractice) insurance covering all staff working at our location.</div>
+          </div>
+        </div>
+        <div class="check-item" id="chk4" onclick="toggleCheck(this)">
+          <div class="check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="check-text">
+            <div class="check-title">Safe &amp; Equitable Work Environment</div>
+            <div class="check-desc">We are committed to providing a safe, respectful, and non-discriminatory workplace for all temporary dental staff.</div>
+          </div>
+        </div>
+        <div class="check-item" id="chk5" onclick="toggleCheck(this)">
+          <div class="check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="check-text">
+            <div class="check-title">Payment Terms Agreement</div>
+            <div class="check-desc">We agree to pay dental professionals the posted hourly rate within 5 business days of shift completion via CareVia's payment system.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row" style="margin-top:20px">
+        <button class="btn-back" onclick="goStep(3)">← Back</button>
+        <button class="btn-go" id="submitBtn" onclick="doSignup()">Submit Application →</button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════
+         PENDING SCREEN
+    ════════════════════════════════════ -->
+    <div class="pending-screen" id="pendingScreen">
+      <div class="pending-icon-wrap">⏳</div>
+      <div class="pending-title">Application Submitted!</div>
+      <div class="pending-sub" id="pendingMsg">
+        Your clinic is <strong style="color:#f59e0b">pending admin approval</strong>.<br>
+        Check your email — we sent you confirmation.
+      </div>
+      <div class="pending-steps">
+        <div class="pending-step"><div class="pending-step-num">1</div><span>Our team has been notified and will review your documents &amp; application.</span></div>
+        <div class="pending-step"><div class="pending-step-num">2</div><span>Approval typically happens within <strong style="color:#fff">1 business day</strong>.</span></div>
+        <div class="pending-step"><div class="pending-step-num">3</div><span>You'll receive an <strong style="color:#fff">email notification</strong> the moment you're approved — then you can log in and start posting shifts.</span></div>
+      </div>
+      <a class="pending-home" href="index.html">← Back to CareVia home</a>
+    </div>
+
+  </div><!-- /card -->
+</div><!-- /page -->
+
+<div class="page-foot">
+  <a href="contact.html#privacy">Privacy Policy</a> &nbsp;·&nbsp;
+  <a href="contact.html#terms">Terms</a> &nbsp;·&nbsp;
+  © 2025 CareVia Solutions LLC
+</div>
+
+<script>
+  const API = window.CAREVIA_API_BASE || 'http://localhost:4000';
+  let role = 'worker';
+  let currentStep = 1;
+
+  // Hamburger
+  document.getElementById('hamburger')?.addEventListener('click', function(){
+    const p = document.getElementById('mobilePanel');
+    p.hidden = !p.hidden;
+  });
+
+  // Redirect if already authed
+  const tok = localStorage.getItem('carevia_token');
+  if(tok){
+    fetch(API+'/api/auth/me',{headers:{Authorization:'Bearer '+tok}})
+            .then(r=>r.ok?r.json():null)
+            .then(d=>{if(d?.profile?.role) redirect(d.profile.role);})
+            .catch(()=>{});
+  }
+
+  function redirect(r){
+    if(r==='admin') window.location.href='admin-dashboard.html';
+    else if(r==='clinic') window.location.href='clinic-dashboard.html';
+    else window.location.href='worker-dashboard.html';
+  }
+
+  function pickRole(r){
+    role = r;
+    document.getElementById('rcWorker').classList.toggle('sel', r==='worker');
+    document.getElementById('rcClinic').classList.toggle('sel', r==='clinic');
+    document.getElementById('clinicFg').classList.toggle('hidden', r!=='clinic');
+  }
+
+  function togglePw(id, btn){
+    const inp = document.getElementById(id);
+    const show = inp.type === 'password';
+    inp.type = show ? 'text' : 'password';
+    btn.style.color = show ? 'rgba(52,211,153,.8)' : 'rgba(255,255,255,.3)';
+  }
+
+  function checkStrength(v){
+    const fill = document.getElementById('strengthFill');
+    let score = 0;
+    if(v.length>=8) score++;
+    if(/[A-Z]/.test(v)) score++;
+    if(/[0-9]/.test(v)) score++;
+    if(/[^A-Za-z0-9]/.test(v)) score++;
+    fill.style.width = [0,30,55,78,100][score]+'%';
+    fill.style.background = ['','#ef4444','#f59e0b','#10b981','#10b981'][score]||'';
+  }
+
+  function showErr(msg){
+    const e = document.getElementById('errBox');
+    e.innerHTML = msg;
+    e.style.display = 'block';
+    e.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+  function clearErr(){ document.getElementById('errBox').style.display='none'; }
+
+  function goStep(n){
+    document.getElementById('step'+currentStep).classList.add('hidden');
+    currentStep = n;
+    document.getElementById('step'+currentStep).classList.remove('hidden');
+    clearErr();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  // ── Step 1: role + account info
+  function step1Next(){
+    clearErr();
+    const first = document.getElementById('sFirst').value.trim();
+    const last  = document.getElementById('sLast').value.trim();
+    const email = document.getElementById('sEmail').value.trim();
+    const pass  = document.getElementById('sPass').value;
+    const conf  = document.getElementById('sConfirm').value;
+    const clinic= document.getElementById('sClinic').value.trim();
+    if(!first||!last) return showErr('Please enter your first and last name.');
+    if(!email) return showErr('Please enter your email address.');
+    if(pass.length<8) return showErr('Password must be at least 8 characters.');
+    if(pass!==conf) return showErr('Passwords do not match.');
+    if(role==='clinic'&&!clinic) return showErr('Please enter your clinic name.');
+    // Workers skip straight to signup
+    if(role==='worker'){ doSignupWorker(); return; }
+    goStep(2);
+  }
+
+  // ── Step 2: clinic details
+  function step2Next(){
+    clearErr();
+    const phone = document.getElementById('sPhone').value.trim();
+    const address = document.getElementById('sAddress').value.trim();
+    const specialty = document.getElementById('sSpecialty').value;
+    const npi = document.getElementById('sNpi').value.trim();
+    const licNum = document.getElementById('sLicNum').value.trim();
+    if(!phone) return showErr('Please enter a phone number.');
+    if(!address) return showErr('Please enter your clinic address.');
+    if(!specialty) return showErr('Please select your dental specialty.');
+    if(!npi||npi.length!==10||!/^\d+$/.test(npi)) return showErr('Please enter a valid 10-digit NPI number.');
+    if(!licNum) return showErr('Please enter your Washington State dental license number.');
+    goStep(3);
+  }
+
+  // ── Step 3: file uploads
+  function step3Next(){
+    clearErr();
+    const lic = document.getElementById('licFile').files[0];
+    const biz = document.getElementById('bizFile').files[0];
+    if(!lic) return showErr('Please upload your Washington State Dental License.');
+    if(!biz) return showErr('Please upload your Business Registration or W-9.');
+    goStep(4);
+  }
+
+  // ── File upload helpers
+  function fileChosen(input, chosenId){
+    const file = input.files[0];
+    if(!file) return;
+    if(file.size > 10*1024*1024){ alert('File too large — max 10MB.'); input.value=''; return; }
+    const el = document.getElementById(chosenId);
+    el.classList.add('vis');
+    document.getElementById(chosenId+'Name').textContent = file.name;
+  }
+  function dragOver(e, zone){ e.preventDefault(); zone.classList.add('drag'); }
+  function dragLeave(zone){ zone.classList.remove('drag'); }
+  function dropFile(e, inputId, zoneId, chosenId){
+    e.preventDefault();
+    document.getElementById(zoneId).classList.remove('drag');
+    const file = e.dataTransfer.files[0];
+    if(!file) return;
+    const input = document.getElementById(inputId);
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    input.files = dt.files;
+    fileChosen(input, chosenId);
+  }
+
+  // ── Step 4: requirements checklist
+  function toggleCheck(el){
+    el.classList.toggle('checked');
+  }
+
+  // ── Worker signup (no extra steps)
+  async function doSignupWorker(){
+    const first = document.getElementById('sFirst').value.trim();
+    const last  = document.getElementById('sLast').value.trim();
+    const email = document.getElementById('sEmail').value.trim();
+    const pass  = document.getElementById('sPass').value;
+    const btn   = document.querySelector('#step1 .btn-go');
+    btn.disabled = true; btn.textContent = 'Creating account…';
+    clearErr();
+    try{
+      const r = await fetch(API+'/api/auth/signup',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({email, password:pass, full_name:first+' '+last, role:'worker'})
+      });
+      const d = await r.json();
+      if(!r.ok){ showErr(d.error||'Signup failed. Please try again.'); return; }
+      localStorage.setItem('carevia_token', d.token);
+      redirect(d.profile?.role || 'worker');
+    } catch(e){ showErr('Connection error — is the server running?'); }
+    finally{ btn.disabled=false; btn.textContent='Continue →'; }
+  }
+
+  // ── Clinic final submit (step 4)
+  async function doSignup(){
+    clearErr();
+    // All 5 checkboxes must be checked
+    const checks = ['chk1','chk2','chk3','chk4','chk5'];
+    const unchecked = checks.filter(id => !document.getElementById(id).classList.contains('checked'));
+    if(unchecked.length > 0){
+      return showErr(`Please confirm all ${unchecked.length} remaining requirement${unchecked.length>1?'s':''} to continue.`);
+    }
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true; btn.textContent = 'Submitting…';
+
+    const first    = document.getElementById('sFirst').value.trim();
+    const last     = document.getElementById('sLast').value.trim();
+    const email    = document.getElementById('sEmail').value.trim();
+    const pass     = document.getElementById('sPass').value;
+    const clinic   = document.getElementById('sClinic').value.trim();
+    const phone    = document.getElementById('sPhone').value.trim();
+    const address  = document.getElementById('sAddress').value.trim();
+    const specialty= document.getElementById('sSpecialty').value;
+    const npi      = document.getElementById('sNpi').value.trim();
+    const licNum   = document.getElementById('sLicNum').value.trim();
+    const city     = document.getElementById('sCity').value.trim() || 'Seattle';
+
+    const licFile = document.getElementById('licFile').files[0];
+    const deaFile = document.getElementById('deaFile').files[0];
+    const bizFile = document.getElementById('bizFile').files[0];
+
+    // Try to upload files — if it fails, store just the filename so signup still works
+    async function uploadDoc(file, label) {
+      if (!file) return null;
+      try {
+        const fd = new FormData();
+        fd.append('file', file);
+        fd.append('label', label);
+        fd.append('email', email);
+        const r = await fetch(API+'/api/auth/upload-doc', { method:'POST', body: fd });
+        const d = await r.json();
+        if (r.ok) return d; // { name, url, path }
+      } catch(e) {}
+      // Fallback — just store the filename
+      return { name: file.name, url: null, path: null };
+    }
+
+    let docs_submitted = {};
+    try {
+      btn.textContent = 'Uploading documents…';
+      const [lic, dea, biz] = await Promise.all([
+        uploadDoc(licFile, 'dental_license'),
+        uploadDoc(deaFile, 'dea'),
+        uploadDoc(bizFile, 'business_reg'),
+      ]);
+      docs_submitted = {
+        dental_license: lic || null,
+        dea: dea || null,
+        business_reg: biz || null,
+      };
+    } catch(e) {
+      // Don't block signup if upload fails
+      docs_submitted = {
+        dental_license: licFile ? { name: licFile.name, url: null } : null,
+        dea: deaFile ? { name: deaFile.name, url: null } : null,
+        business_reg: bizFile ? { name: bizFile.name, url: null } : null,
+      };
+    }
+
+    try{
+      btn.textContent = 'Submitting application…';
+      const body = {
+        email, password: pass,
+        full_name: first+' '+last,
+        role: 'clinic',
+        clinic_name: clinic,
+        phone, city, address, specialty,
+        npi_number: npi,
+        license_number: licNum,
+        docs_submitted,
+        requirements_confirmed: true,
+      };
+
+      const r = await fetch(API+'/api/auth/signup',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(body)
+      });
+      const d = await r.json();
+      if(!r.ok){ showErr(d.error||'Signup failed. Please try again.'); return; }
+
+      if(d.pending){
+        document.getElementById('step4').classList.add('hidden');
+        const ps = document.getElementById('pendingScreen');
+        ps.classList.add('vis');
+        document.getElementById('pendingMsg').innerHTML =
+                `<strong style="color:#fff">${clinic}</strong> is <strong style="color:#f59e0b">pending admin approval</strong>.<br>
+           We sent a confirmation to <strong style="color:#fff">${email}</strong>.`;
+        return;
+      }
+
+      localStorage.setItem('carevia_token', d.token);
+      redirect(d.profile?.role || 'clinic');
+
+    } catch(e){ showErr('Connection error — is the server running?'); }
+    finally{ btn.disabled=false; btn.textContent='Submit Application →'; }
+  }
+</script>
+</body>
+</html>

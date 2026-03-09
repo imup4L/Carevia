@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#1a3a6b" />
+  <title>Contact — CareVia Solutions LLC</title>
+  <meta name="description" content="Contact CareVia Solutions LLC in Seattle, WA. Sign up as a dental professional or dental clinic to get started." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="contact">
+
+<div class="nav-wrap">
+  <div class="container">
+    <nav class="nav">
+      <a class="logo" href="index.html"><div class="logo-mark"></div><span><span class="logo-text"><span class="care">Care</span><span class="via">Via</span></span><span class="logo-sub">Solutions</span></span></a>
+      <div class="nav-links">
+        <a href="index.html">Home</a><a href="find-shifts.html">Find Shifts</a><a href="for-clinics.html">For Clinics</a><a href="how-it-works.html">How It Works</a><a href="contact.html" class="active">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <a class="pill btn-outline" href="login.html">Log In</a>
+        <a class="pill btn-primary" href="signup.html">Sign Up</a>
+      </div>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </nav>
+    <div class="mobile-panel" id="mobilePanel" hidden>
+      <div class="stack">
+        <a href="index.html">Home</a><a href="find-shifts.html">Find Shifts</a><a href="for-clinics.html">For Clinics</a><a href="how-it-works.html">How It Works</a><a href="contact.html">Contact</a>
+        <div class="actions"><a class="pill btn-outline" href="login.html">Log In</a><a class="pill btn-primary" href="signup.html">Sign Up</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<header class="page-hero">
+  <div class="container">
+    <div class="reveal">
+      <div class="chip">Contact</div>
+      <h1 class="page-title">Let's get you staffed (or scheduled)</h1>
+      <p class="page-sub">Seattle-based support for dental professionals and clinics. Sign up below or reach us directly.</p>
+    </div>
+  </div>
+</header>
+
+<main class="section section-tight">
+  <div class="container">
+
+    <!-- Office bar -->
+    <div class="contact-bar reveal">
+      <div>
+        <h2>Seattle Office</h2>
+        <div class="sub">CareVia Solutions LLC · Seattle, WA</div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="pill btn-outline-dark" href="tel:+12065550199">📞 (206) 555-0199</a>
+        <a class="pill btn-primary" href="mailto:ceravia0@gmail.com">✉️ Email Us</a>
+      </div>
+    </div>
+
+    <!-- Sign up section -->
+    <section id="get-started">
+      <div class="section-title reveal">
+        <div>
+          <div class="chip" style="background:rgba(37,99,235,.08);border-color:rgba(37,99,235,.2);color:var(--navy2)">Get started</div>
+          <h2>Sign up in minutes</h2>
+        </div>
+        <p>Choose your path — dental professional or clinic — and we'll help you get rolling.</p>
+      </div>
+
+      <div class="signup-grid">
+        <div class="signup-card lift reveal">
+          <div style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#1a3a6b,#2563eb);margin-bottom:14px">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z" stroke="white" stroke-width="2"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <h3>I'm a Dental Professional</h3>
+          <p>Get notified about new shifts in Seattle and nearby neighborhoods.</p>
+          <form class="signup-form" id="proForm" novalidate>
+            <div class="form-row">
+              <input type="email" name="email" placeholder="Email address" required />
+              <button class="pill btn-primary" type="submit">Sign Up</button>
+            </div>
+            <div class="error" id="proError"></div>
+            <div class="success" id="proSuccess"></div>
+          </form>
+          <div class="muted-note">No spam. Just shifts that match your role.</div>
+        </div>
+
+        <div class="signup-card lift reveal">
+          <div style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#059669,#10b981);margin-bottom:14px">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z" stroke="white" stroke-width="2"/><path d="M9 22V12h6v10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>I'm a Dental Clinic</h3>
+          <p>Post shifts, match quickly, and keep your schedule fully staffed.</p>
+          <form class="signup-form" id="clinicForm" novalidate>
+            <div class="form-row">
+              <input type="email" name="email" placeholder="Work email address" required />
+              <button class="pill btn-green" type="submit">Get Started</button>
+            </div>
+            <div class="error" id="clinicError"></div>
+            <div class="success" id="clinicSuccess"></div>
+          </form>
+          <div class="muted-note">We'll follow up with onboarding steps and billing options.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Privacy + Terms placeholders -->
+    <section style="margin-top:32px">
+      <div class="chip" id="privacy" style="background:rgba(37,99,235,.08);border-color:rgba(37,99,235,.2);color:var(--navy2);margin-bottom:10px">Privacy Policy</div>
+      <div class="card reveal" style="padding:18px">
+        <p style="color:var(--muted);font-size:.875rem">Add your privacy policy here (or link to a dedicated policy page). This placeholder is for design / demo purposes.</p>
+      </div>
+    </section>
+
+    <section style="margin-top:16px">
+      <div class="chip" id="terms" style="background:rgba(37,99,235,.08);border-color:rgba(37,99,235,.2);color:var(--navy2);margin-bottom:10px">Terms of Service</div>
+      <div class="card reveal" style="padding:18px">
+        <p style="color:var(--muted);font-size:.875rem">Add your terms of service here (or link to a dedicated terms page). This placeholder is for design / demo purposes.</p>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="foot">
+      <div class="reveal"><a class="logo" href="index.html"><div class="logo-mark"></div><span><span class="logo-text"><span class="care">Care</span><span class="via">Via</span></span><span class="logo-sub">Solutions</span></span></a><p class="tagline">Dental staffing for Seattle, WA — simple shifts for professionals and clinics.</p><div class="copyright">© 2025 CareVia Solutions LLC</div></div>
+      <div class="foot-links reveal"><div class="links"><a href="how-it-works.html">About</a><a href="#privacy">Privacy Policy</a><a href="#terms">Terms</a><a href="contact.html">Contact</a></div><div class="contact"><div><strong>Seattle Office</strong></div><div>Phone: <a href="tel:+12065550199">(206) 555-0199</a></div><div>Email: <a href="mailto:ceravia0@gmail.com">ceravia0@gmail.com</a></div></div></div>
+    </div>
+  </div>
+</footer>
+
+<button class="demo-fab" id="demoFab"><span class="bubble"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 3v3M17 3v3" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M4 8h16" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M6 6h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z" stroke="white" stroke-width="2"/></svg></span><span class="label">Schedule a Demo</span></button>
+<div class="modal-backdrop" id="modalBackdrop"><div class="modal"><header><h3>Schedule a Demo</h3><button class="close" id="modalClose"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></button></header><div class="body"><p>Tell us where to send demo details.</p><form id="demoForm" novalidate><div class="form-row"><input type="email" name="email" placeholder="Work email address" required /><button class="pill btn-green" type="submit">Request Demo</button></div><div class="error" id="demoError"></div><div class="success" id="demoSuccess"></div></form></div></div></div>
+
+<script>
+  const obs = new IntersectionObserver(els => els.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  const ham = document.getElementById('hamburger'), panel = document.getElementById('mobilePanel');
+  ham?.addEventListener('click', () => { const o = panel.hidden; panel.hidden = !o; ham.setAttribute('aria-expanded', String(o)); });
+  const fab = document.getElementById('demoFab'), bd = document.getElementById('modalBackdrop'), cl = document.getElementById('modalClose');
+  fab?.addEventListener('click', () => bd.classList.add('open'));
+  cl?.addEventListener('click', () => bd.classList.remove('open'));
+  bd?.addEventListener('click', e => { if(e.target === bd) bd.classList.remove('open'); });
+
+  function handleForm(formId, errorId, successId) {
+    document.getElementById(formId)?.addEventListener('submit', e => {
+      e.preventDefault();
+      const email = e.target.email.value.trim();
+      if(!email || !email.includes('@')) { document.getElementById(errorId).textContent = 'Please enter a valid email.'; return; }
+      document.getElementById(errorId).textContent = '';
+      document.getElementById(successId).textContent = "Thanks! We'll be in touch soon.";
+      e.target.reset();
+    });
+  }
+  handleForm('proForm', 'proError', 'proSuccess');
+  handleForm('clinicForm', 'clinicError', 'clinicSuccess');
+  handleForm('demoForm', 'demoError', 'demoSuccess');
+</script>
+</body>
+</html>F

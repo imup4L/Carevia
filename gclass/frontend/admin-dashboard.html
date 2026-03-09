@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Super Admin — CareVia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:#1a3a6b; --navy-dark:#0d1f3c;
+      --blue:#2563eb; --blue-light:#eff6ff;
+      --green:#059669; --green-bright:#10b981; --green-light:#d1fae5;
+      --red:#dc2626; --red-light:#fee2e2;
+      --gold:#d97706; --gold-bright:#f59e0b; --gold-light:#fef3c7;
+      --purple:#7c3aed; --purple-light:#ede9fe;
+      --bg:#f0f4f9; --card:#ffffff; --border:#dde3ec;
+      --text:#0f172a; --muted:#64748b;
+      --sidebar-w:258px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex}
+
+    /* ── SIDEBAR ── */
+    .sidebar{
+      width:var(--sidebar-w);
+      background:linear-gradient(180deg,#060d1a 0%,#0a1428 60%,#0d1f3c 100%);
+      min-height:100vh;display:flex;flex-direction:column;
+      position:fixed;top:0;left:0;z-index:100;
+      border-right:1px solid rgba(255,255,255,0.05);
+    }
+    .sidebar-logo{padding:24px 20px 20px;display:flex;align-items:center;justify-content:space-between}
+    .brand{font-family:'Poppins',sans-serif;font-size:1.3rem;font-weight:800;color:#fff;display:flex;align-items:center;gap:10px;letter-spacing:-0.02em}
+    .brand-icon{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-size:0.95rem;flex-shrink:0;box-shadow:0 4px 16px rgba(245,158,11,0.45)}
+    .brand-text span{display:block;line-height:1}
+    .brand-care{color:#fff}
+    .brand-via{color:#34d399}
+    .admin-badge{font-family:'Poppins',sans-serif;font-size:0.58rem;background:rgba(245,158,11,0.25);color:#fcd34d;padding:3px 8px;border-radius:999px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;border:1px solid rgba(245,158,11,0.3)}
+    .logo-dot{width:8px;height:8px;background:#34d399;border-radius:50%;flex-shrink:0;animation:glow 2.5s ease-in-out infinite}
+    @keyframes glow{0%,100%{box-shadow:0 0 4px #34d399,0 0 8px #34d399}50%{box-shadow:0 0 10px #34d399,0 0 22px rgba(52,211,153,0.4)}}
+
+    .sidebar-user{margin:0 12px 8px;padding:14px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:14px}
+    .user-card-row{display:flex;align-items:center;gap:11px}
+    .user-avatar{width:40px;height:40px;border-radius:12px;flex-shrink:0;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:1rem;box-shadow:0 4px 12px rgba(245,158,11,0.35)}
+    .user-info{min-width:0;flex:1}
+    .user-name{font-weight:700;color:#fff;font-size:0.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:'Poppins',sans-serif}
+    .user-role{display:inline-flex;align-items:center;gap:4px;font-size:0.64rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin-top:3px;background:rgba(245,158,11,0.15);color:#fcd34d;padding:2px 7px;border-radius:999px;border:1px solid rgba(245,158,11,0.22)}
+
+    .sidebar-nav{padding:6px 12px;flex:1;overflow-y:auto}
+    .sidebar-nav::-webkit-scrollbar{width:0}
+    .nav-label{font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.13em;color:rgba(255,255,255,0.22);padding:0 8px;margin:16px 0 4px}
+    .nav-label:first-child{margin-top:4px}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:10px;cursor:pointer;color:rgba(255,255,255,0.45);font-size:0.83rem;font-weight:500;transition:all 0.15s;margin-bottom:1px;text-decoration:none;position:relative;border:1px solid transparent}
+    .nav-item:hover{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.9);border-color:rgba(255,255,255,0.05)}
+    .nav-item.active{background:rgba(245,158,11,0.18);color:#fff;border-color:rgba(245,158,11,0.28);font-weight:600}
+    .nav-item.active::before{content:'';position:absolute;left:-12px;top:50%;transform:translateY(-50%);width:3px;height:18px;background:linear-gradient(180deg,#f59e0b,#ef4444);border-radius:0 3px 3px 0}
+    .nav-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.88rem;flex-shrink:0;background:rgba(255,255,255,0.06);transition:all 0.15s}
+    .nav-item:hover .nav-icon{background:rgba(255,255,255,0.1)}
+    .nav-item.active .nav-icon{background:rgba(245,158,11,0.28);box-shadow:0 2px 8px rgba(245,158,11,0.25)}
+    .nav-label-text{flex:1}
+    .nav-divider{height:1px;background:rgba(255,255,255,0.05);margin:10px 0}
+
+    .sidebar-bottom{padding:12px 12px 20px}
+    .sb-help-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:12px;margin-bottom:8px}
+    .sb-help-text{font-size:0.72rem;color:rgba(255,255,255,0.35);line-height:1.5;margin-bottom:8px}
+    .sb-help-btn{font-size:0.72rem;font-weight:600;color:#fbbf24;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.22);border-radius:7px;padding:5px 10px;cursor:pointer;width:100%;text-align:center;transition:all 0.15s;display:block;font-family:'Poppins',sans-serif}
+    .sb-help-btn:hover{background:rgba(245,158,11,0.22)}
+    .logout-btn{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:10px;cursor:pointer;color:rgba(255,255,255,0.35);font-size:0.83rem;font-weight:500;transition:all 0.15s;background:none;border:1px solid transparent;width:100%;text-align:left;font-family:'DM Sans',sans-serif}
+    .logout-btn:hover{background:rgba(239,68,68,0.1);color:#f87171;border-color:rgba(239,68,68,0.15)}
+    .logout-icon{width:30px;height:30px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.85rem;background:rgba(255,255,255,0.06)}
+
+    /* ── MAIN ── */
+    .main{margin-left:var(--sidebar-w);flex:1;padding:32px;animation:fadeUp 0.5s ease both}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    .page{display:none}
+    .page.active{display:block}
+
+    .topbar{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;gap:16px;flex-wrap:wrap}
+    .topbar h1{font-family:'Poppins',sans-serif;font-size:1.75rem;color:var(--navy);font-weight:800;letter-spacing:-0.02em}
+    .topbar p{color:var(--muted);font-size:0.9rem;margin-top:2px}
+
+    /* Stats */
+    .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:28px}
+    @media(max-width:1200px){.stats{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}}
+    .stat-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px 20px;box-shadow:0 2px 12px rgba(26,58,107,0.06);transition:transform 0.18s,box-shadow 0.18s;position:relative;overflow:hidden}
+    .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#f59e0b,#ef4444);border-radius:18px 18px 0 0}
+    .stat-card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(26,58,107,0.12)}
+    .stat-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:12px}
+    .stat-label{font-size:0.68rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;font-family:'Poppins',sans-serif}
+    .stat-value{font-family:'Poppins',sans-serif;font-size:2.4rem;font-weight:800;color:var(--navy);margin-top:4px;line-height:1}
+    .stat-sub{font-size:0.72rem;font-weight:600;margin-top:6px}
+
+    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:20px;box-shadow:0 2px 12px rgba(26,58,107,0.06)}
+    .card-title{font-family:'Poppins',sans-serif;font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+
+    /* Buttons */
+    .btn{padding:10px 22px;border-radius:999px;border:none;font-family:'Poppins',sans-serif;font-weight:700;font-size:0.85rem;cursor:pointer;transition:all 0.18s;display:inline-flex;align-items:center;gap:6px}
+    .btn-gold{background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff;box-shadow:0 4px 14px rgba(217,119,6,0.3)}
+    .btn-gold:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(217,119,6,0.42)}
+    .btn-primary{background:linear-gradient(135deg,#1a3a6b,#2563eb);color:#fff;box-shadow:0 4px 14px rgba(37,99,235,0.3)}
+    .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(37,99,235,0.42)}
+    .btn-green{background:linear-gradient(135deg,#059669,#10b981);color:#fff;box-shadow:0 3px 10px rgba(5,150,105,0.25)}
+    .btn-green:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(5,150,105,0.35)}
+    .btn-red{background:var(--red);color:#fff}
+    .btn-red:hover{background:#b91c1c}
+    .btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text)}
+    .btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+    .btn-sm{padding:6px 14px;font-size:0.78rem}
+
+    /* Tables */
+    .table-wrap{overflow-x:auto}
+    table{width:100%;border-collapse:collapse;font-size:0.875rem}
+    th{text-align:left;padding:10px 14px;font-size:0.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;border-bottom:2px solid var(--border);font-family:'Poppins',sans-serif;background:#fafbfc}
+    td{padding:12px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
+    tr:last-child td{border-bottom:none}
+    tr:hover td{background:#f8fafc}
+
+    .badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;font-family:'Poppins',sans-serif}
+    .badge-open{background:#dbeafe;color:#1d4ed8}
+    .badge-filled{background:var(--green-light);color:var(--green)}
+    .badge-pending{background:var(--gold-light);color:#92400e}
+    .badge-accepted{background:var(--green-light);color:var(--green)}
+    .badge-rejected{background:var(--red-light);color:var(--red)}
+    .badge-worker{background:#dbeafe;color:#1d4ed8}
+    .badge-clinic{background:var(--green-light);color:var(--green)}
+    .badge-admin{background:var(--gold-light);color:#92400e}
+
+    .filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+    .filter-btn{padding:7px 16px;border-radius:999px;border:1.5px solid var(--border);background:#fff;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.15s;color:var(--muted);font-family:'Poppins',sans-serif}
+    .filter-btn.active{border-color:var(--gold);color:#92400e;background:var(--gold-light)}
+    .filter-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+    .search-bar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+    .search-bar input{flex:1;max-width:340px;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;transition:border-color 0.15s}
+    .search-bar input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(217,119,6,0.1)}
+
+    /* Worker avatar */
+    .w-avatar{width:34px;height:34px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:0.78rem;flex-shrink:0}
+
+    /* Clinic card grid */
+    .clinic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .clinic-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 1px 4px rgba(26,58,107,0.06);transition:box-shadow 0.2s,transform 0.2s;position:relative;overflow:hidden}
+    .clinic-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#2563eb)}
+    .clinic-card:hover{box-shadow:0 6px 24px rgba(26,58,107,0.12);transform:translateY(-2px)}
+    .clinic-card-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+    .clinic-avatar{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#059669,#10b981);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:1rem;flex-shrink:0}
+    .clinic-name{font-family:'Poppins',sans-serif;font-weight:700;font-size:0.95rem;color:var(--navy)}
+    .clinic-email{font-size:0.75rem;color:var(--muted);margin-top:2px}
+    .clinic-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+    .clinic-stat{background:#f8fafc;border:1px solid #eef1f6;border-radius:8px;padding:8px 10px}
+    .clinic-stat-label{font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#94a3b8;font-family:'Poppins',sans-serif}
+    .clinic-stat-value{font-family:'Poppins',sans-serif;font-size:1.1rem;font-weight:800;color:var(--navy);margin-top:2px}
+    .clinic-workers-list{margin-top:12px}
+    .clinic-workers-title{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#94a3b8;margin-bottom:6px;font-family:'Poppins',sans-serif}
+    .clinic-worker-chip{display:inline-flex;align-items:center;gap:5px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:999px;padding:3px 10px;font-size:0.72rem;font-weight:600;color:#1d4ed8;margin:2px}
+    .no-workers{font-size:0.75rem;color:#94a3b8;font-style:italic}
+    .clinic-actions{display:flex;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid #f1f5f9}
+
+    /* Worker detail table enhancements */
+    .worker-clinic-badge{display:inline-flex;align-items:center;gap:5px;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:999px;padding:3px 10px;font-size:0.72rem;font-weight:700;color:#065f46}
+    .worker-clinic-none{font-size:0.72rem;color:#94a3b8;font-style:italic}
+
+    /* Messaging */
+    .message-layout{display:grid;grid-template-columns:260px 1fr;gap:0;height:520px;overflow:hidden}
+    .msg-list{border-right:1px solid var(--border);overflow-y:auto;background:#fafbfc}
+    .msg-list-header{padding:14px 16px;font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);border-bottom:1px solid var(--border);font-family:'Poppins',sans-serif}
+    .msg-contact{padding:14px 16px;cursor:pointer;border-bottom:1px solid #f1f5f9;transition:background 0.15s}
+    .msg-contact:hover{background:#f1f5f9}
+    .msg-contact.active{background:#fffbeb;border-left:3px solid var(--gold)}
+    .msg-contact-name{font-weight:700;font-size:0.875rem;color:var(--navy);font-family:'Poppins',sans-serif}
+    .msg-contact-preview{font-size:0.75rem;color:var(--muted);margin-top:3px}
+    .msg-chat{display:flex;flex-direction:column;background:#fff}
+    .msg-chat-header{padding:14px 18px;border-bottom:1px solid var(--border);font-weight:700;font-size:0.9rem;color:var(--navy);display:flex;align-items:center;gap:10px;font-family:'Poppins',sans-serif}
+    .msg-chat-body{flex:1;padding:16px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:#f8fafc}
+    .msg-bubble{max-width:75%;padding:10px 14px;border-radius:14px;font-size:0.875rem;line-height:1.5}
+    .msg-bubble.sent{background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+    .msg-bubble.recv{background:#fff;color:var(--text);align-self:flex-start;border-bottom-left-radius:4px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+    .msg-input-row{padding:12px 16px;border-top:1px solid var(--border);display:flex;gap:10px;background:#fff}
+    .msg-input-row input{flex:1;border-radius:10px;padding:10px 14px;border:1.5px solid var(--border);outline:none;font-family:'DM Sans',sans-serif;font-size:0.85rem}
+    .msg-input-row input:focus{border-color:var(--gold)}
+
+    /* Forms */
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .form-group{display:flex;flex-direction:column;gap:6px}
+    .form-group.full{grid-column:1/-1}
+    label{font-size:0.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;font-family:'Poppins',sans-serif}
+    input,select,textarea{padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--text);background:#fff;outline:none;transition:border-color 0.18s,box-shadow 0.18s}
+    input:focus,select:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(217,119,6,0.1)}
+    textarea{resize:vertical;min-height:90px}
+    .save-bar{margin-top:20px;display:flex;gap:10px;align-items:center}
+    .success-msg{color:var(--green);font-size:0.85rem;font-weight:600;display:none}
+
+    .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(10,20,40,0.7);backdrop-filter:blur(4px);z-index:200;align-items:center;justify-content:center}
+    .modal-backdrop.open{display:flex}
+    .modal{background:#fff;border-radius:20px;padding:28px;width:min(600px,95vw);max-height:88vh;overflow-y:auto;animation:fadeUp 0.3s ease both;box-shadow:0 24px 80px rgba(10,20,40,0.35)}
+    .modal-title{font-family:'Poppins',sans-serif;font-size:1.25rem;font-weight:800;color:var(--navy);margin-bottom:20px;display:flex;justify-content:space-between;align-items:center}
+    .modal-close{background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--muted)}
+    .modal-close:hover{color:var(--text)}
+
+    .empty{text-align:center;padding:32px;color:var(--muted)}
+    .empty-icon{font-size:2.5rem;margin-bottom:8px}
+    .empty p{font-size:0.85rem;line-height:1.6}
+    .tc{text-align:center;padding:24px;color:var(--muted);font-size:0.875rem}
+
+    .worker-detail-section{margin-bottom:16px}
+    .worker-detail-section h4{font-size:0.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;font-family:'Poppins',sans-serif}
+    .worker-detail-section p{font-size:0.9rem;color:var(--text);line-height:1.6}
+    .skill-tag{display:inline-block;background:#f1f5f9;color:var(--navy);padding:4px 12px;border-radius:999px;font-size:0.78rem;font-weight:600;margin:3px}
+
+    .activity-item{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--border);gap:12px}
+    .activity-item:last-child{border-bottom:none}
+    .activity-left{display:flex;align-items:center;gap:12px}
+    .activity-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+    .activity-text{font-size:0.875rem;color:var(--text);line-height:1.4}
+    .activity-time{font-size:0.72rem;color:var(--muted);flex-shrink:0;white-space:nowrap}
+
+    .resume-tag{display:inline-flex;align-items:center;gap:4px;font-size:0.75rem;color:var(--blue);background:#eff6ff;padding:4px 10px;border-radius:999px;font-weight:600;cursor:pointer;border:none;font-family:'Poppins',sans-serif}
+    .resume-tag:hover{background:#dbeafe}
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="brand">
+      <div class="brand-icon">⚡</div>
+      <div class="brand-text">
+        <span><span class="brand-care">Care</span><span class="brand-via">Via</span></span>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="admin-badge">Admin</span>
+      <div class="logo-dot"></div>
+    </div>
+  </div>
+
+  <div class="sidebar-user">
+    <div class="user-card-row">
+      <div class="user-avatar" id="avatarInitial">A</div>
+      <div class="user-info">
+        <div class="user-name" id="sidebarName">Super Admin</div>
+        <div class="user-role">⚡ Full Access</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-label">Overview</div>
+    <a class="nav-item active" data-page="dashboard" onclick="showPage('dashboard',this)">
+      <span class="nav-icon">🏠</span><span class="nav-label-text">Dashboard</span>
+    </a>
+    <div class="nav-divider"></div>
+    <div class="nav-label">Manage</div>
+    <a class="nav-item" data-page="shifts" onclick="showPage('shifts',this)">
+      <span class="nav-icon">📋</span><span class="nav-label-text">All Shifts</span>
+    </a>
+    <a class="nav-item" data-page="workers" onclick="showPage('workers',this)">
+      <span class="nav-icon">👷</span><span class="nav-label-text">Workers</span>
+    </a>
+    <a class="nav-item" data-page="clinics" onclick="showPage('clinics',this)">
+      <span class="nav-icon">🏥</span><span class="nav-label-text">Clinics</span>
+    </a>
+    <a class="nav-item" data-page="applications" onclick="showPage('applications',this)">
+      <span class="nav-icon">📬</span><span class="nav-label-text">Applications</span>
+    </a>
+    <div class="nav-divider"></div>
+    <div class="nav-label">Communication</div>
+    <a class="nav-item" data-page="messages" onclick="showPage('messages',this)">
+      <span class="nav-icon">💬</span><span class="nav-label-text">Messages</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <div class="sb-help-card">
+      <div class="sb-help-text">Need help managing the platform?</div>
+      <button class="sb-help-btn" onclick="document.getElementById('supportModal').classList.add('open')">Contact Support</button>
+    </div>
+    <button class="logout-btn" onclick="doLogout()">
+      <span class="logout-icon">🚪</span><span>Log Out</span>
+    </button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- DASHBOARD -->
+  <div class="page active" id="page-dashboard">
+    <div class="topbar">
+      <div>
+        <h1>⚡ Super Admin</h1>
+        <p>Full platform overview — all users, shifts, and applications.</p>
+      </div>
+      <button class="btn btn-gold" onclick="loadAll()">↻ Refresh</button>
+    </div>
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(37,99,235,0.1);color:#2563eb">👥</div>
+        <div class="stat-label">Total Users</div>
+        <div class="stat-value" id="statUsers">—</div>
+        <div class="stat-sub" style="color:var(--blue)">Workers + Clinics</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(217,119,6,0.1);color:#d97706">📋</div>
+        <div class="stat-label">Total Shifts</div>
+        <div class="stat-value" id="statShifts">—</div>
+        <div class="stat-sub" style="color:var(--gold)">All time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(16,185,129,0.1);color:#10b981">📬</div>
+        <div class="stat-label">Applications</div>
+        <div class="stat-value" id="statApps">—</div>
+        <div class="stat-sub" style="color:var(--green)">Submitted</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(5,150,105,0.1);color:#059669">🏥</div>
+        <div class="stat-label">Clinics</div>
+        <div class="stat-value" id="statClinics">—</div>
+        <div class="stat-sub" style="color:var(--green)">Registered</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(124,58,237,0.1);color:#7c3aed">👷</div>
+        <div class="stat-label">Workers</div>
+        <div class="stat-value" id="statWorkers">—</div>
+        <div class="stat-sub" style="color:var(--purple)">Registered</div>
+      </div>
+    </div>
+
+    <!-- Pending clinic approvals banner -->
+    <div id="pendingBanner" style="display:none;background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(217,119,6,.08));border:1.5px solid rgba(245,158,11,.35);border-radius:14px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="font-size:1.5rem">⏳</span>
+        <div>
+          <div style="font-family:'Poppins',sans-serif;font-weight:700;font-size:0.92rem;color:#92400e" id="pendingBannerText">Clinics awaiting approval</div>
+          <div style="font-size:0.78rem;color:#b45309;margin-top:2px">Review and approve new clinic accounts so they can start posting shifts.</div>
+        </div>
+      </div>
+      <button class="btn btn-gold btn-sm" onclick="showPage('clinics',document.querySelector('[data-page=clinics]'));setTimeout(()=>document.getElementById('pendingFilterBtn')?.click(),200)">Review Now →</button>
+    </div>
+
+    <!-- Quick clinic signup feed -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+      <div class="card" style="margin-bottom:0">
+        <div class="card-title">🏥 New Clinic Sign-ups
+          <a href="#" onclick="showPage('clinics',document.querySelector('[data-page=clinics]'));return false;" style="font-size:0.8rem;color:var(--gold);text-decoration:none;font-weight:600;font-family:'DM Sans'">View all →</a>
+        </div>
+        <div id="recentClinics"><div class="empty"><div class="empty-icon">⏳</div><p>Loading...</p></div></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <div class="card-title">👷 New Worker Sign-ups
+          <a href="#" onclick="showPage('workers',document.querySelector('[data-page=workers]'));return false;" style="font-size:0.8rem;color:var(--gold);text-decoration:none;font-weight:600;font-family:'DM Sans'">View all →</a>
+        </div>
+        <div id="recentWorkers"><div class="empty"><div class="empty-icon">⏳</div><p>Loading...</p></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Recent Activity</div>
+      <div id="recentActivity"><div class="empty"><div class="empty-icon">⏳</div><p>Loading...</p></div></div>
+    </div>
+  </div>
+
+  <!-- SHIFTS -->
+  <div class="page" id="page-shifts">
+    <div class="topbar">
+      <div><h1>All Shifts</h1><p>Every shift posted across all clinics.</p></div>
+      <button class="btn btn-gold" onclick="openPostShift()">+ Post Shift</button>
+    </div>
+    <div class="card">
+      <div class="search-bar"><input type="text" id="shiftSearch" placeholder="🔍 Search shifts..." oninput="filterShifts()"/></div>
+      <div class="filters">
+        <button class="filter-btn active" onclick="setShiftFilter('all',this)">All</button>
+        <button class="filter-btn" onclick="setShiftFilter('open',this)">Open</button>
+        <button class="filter-btn" onclick="setShiftFilter('filled',this)">Filled</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Title</th><th>Clinic</th><th>Date</th><th>Rate</th><th>Location</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="shiftsBody"><tr><td colspan="7" class="tc">⏳ Loading shifts...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORKERS — enhanced with clinic affiliation -->
+  <div class="page" id="page-workers">
+    <div class="topbar">
+      <div><h1>Workers</h1><p>All registered dental professionals and their clinic affiliations.</p></div>
+    </div>
+    <div class="card">
+      <div class="search-bar">
+        <input type="text" id="workerSearch" placeholder="🔍 Search by name, email, or clinic..." oninput="filterWorkers()"/>
+        <div class="filters" style="margin:0">
+          <button class="filter-btn active" onclick="setWorkerFilter('all',this)">All</button>
+          <button class="filter-btn" onclick="setWorkerFilter('placed',this)">Placed</button>
+          <button class="filter-btn" onclick="setWorkerFilter('unplaced',this)">Unplaced</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Worker</th><th>Email</th><th>Phone</th><th>City</th><th>Clinic Affiliation</th><th>Applications</th><th>Joined</th><th>Actions</th></tr></thead>
+          <tbody id="workersBody"><tr><td colspan="8" class="tc">⏳ Loading workers...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLINICS — enhanced card view -->
+  <div class="page" id="page-clinics">
+    <div class="topbar">
+      <div><h1>Clinics</h1><p>All registered dental clinics, their shifts, and accepted workers.</p></div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <input type="text" id="clinicSearch" placeholder="🔍 Search clinics..." oninput="filterClinics()" style="padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;width:220px"/>
+        <button class="btn btn-outline btn-sm" id="pendingFilterBtn" onclick="togglePendingFilter(this)" style="border-color:rgba(245,158,11,.5);color:#d97706">⏳ Pending</button>
+        <button class="btn btn-outline btn-sm" onclick="toggleClinicView()" id="clinicViewBtn">📋 Table View</button>
+      </div>
+    </div>
+
+    <!-- Pending approvals section -->
+    <div id="pendingClinicsSection" style="display:none;margin-bottom:24px">
+      <div style="font-family:'Poppins',sans-serif;font-weight:700;font-size:0.88rem;color:#d97706;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;display:flex;align-items:center;gap:8px">
+        <span>⏳</span> Awaiting Approval
+        <span id="pendingCount" style="background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);border-radius:999px;padding:1px 10px;font-size:0.75rem;color:#f59e0b"></span>
+      </div>
+      <div class="clinic-grid" id="pendingClinicGrid"></div>
+    </div>
+
+    <!-- Card view (default) -->
+    <div id="clinicCardView">
+      <div class="clinic-grid" id="clinicCardsGrid">
+        <div class="empty"><div class="empty-icon">⏳</div><p>Loading clinics...</p></div>
+      </div>
+    </div>
+
+    <!-- Table view (toggle) -->
+    <div id="clinicTableView" style="display:none">
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Clinic Name</th><th>Email</th><th>Phone</th><th>City</th><th>Specialty</th><th>Shifts Posted</th><th>Accepted Workers</th><th>Joined</th><th>Actions</th></tr></thead>
+            <tbody id="clinicsBody"><tr><td colspan="9" class="tc">⏳ Loading clinics...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPLICATIONS -->
+  <div class="page" id="page-applications">
+    <div class="topbar"><div><h1>All Applications</h1><p>Every application across all shifts.</p></div></div>
+    <div class="card">
+      <div class="filters">
+        <button class="filter-btn active" onclick="setAppFilter('all',this)">All</button>
+        <button class="filter-btn" onclick="setAppFilter('pending',this)">Pending</button>
+        <button class="filter-btn" onclick="setAppFilter('accepted',this)">Accepted</button>
+        <button class="filter-btn" onclick="setAppFilter('rejected',this)">Rejected</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Worker</th><th>Shift</th><th>Clinic</th><th>Applied</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="appsBody"><tr><td colspan="6" class="tc">⏳ Loading applications...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- MESSAGES -->
+  <div class="page" id="page-messages">
+    <div class="topbar"><div><h1>Messages</h1><p>Send email announcements to all workers or all clinics.</p></div></div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <div class="message-layout">
+        <div class="msg-list">
+          <div class="msg-list-header">Broadcast</div>
+          <div class="msg-contact active" onclick="switchBroadcast('workers',this)">
+            <div class="msg-contact-name">👷 All Workers</div>
+            <div class="msg-contact-preview">Broadcast to dental professionals</div>
+          </div>
+          <div class="msg-contact" onclick="switchBroadcast('clinics',this)">
+            <div class="msg-contact-name">🏥 All Clinics</div>
+            <div class="msg-contact-preview">Broadcast to approved clinics</div>
+          </div>
+          <div class="msg-contact" onclick="switchBroadcast('all',this)">
+            <div class="msg-contact-name">📢 Everyone</div>
+            <div class="msg-contact-preview">Send to all users</div>
+          </div>
+        </div>
+        <div class="msg-chat" style="display:flex;flex-direction:column">
+          <div class="msg-chat-header">
+            <span id="broadcastIcon" style="width:32px;height:32px;background:linear-gradient(135deg,#1a3a6b,#2563eb);border-radius:9px;display:inline-flex;align-items:center;justify-content:center;font-size:0.85rem;flex-shrink:0">👷</span>
+            <span id="broadcastTitle">Broadcast to All Workers</span>
+            <span id="broadcastCount" style="margin-left:auto;font-size:0.75rem;color:#94a3b8;font-family:'Poppins',sans-serif"></span>
+          </div>
+
+          <!-- Sent messages log -->
+          <div class="msg-chat-body" id="adminMsgBody" style="flex:1">
+            <div style="text-align:center;color:#94a3b8;font-size:0.8rem;padding:20px 0">No messages sent yet. Compose one below.</div>
+          </div>
+
+          <!-- Compose area -->
+          <div style="padding:16px;border-top:1px solid #f1f5f9;background:#fff">
+            <input type="text" id="adminMsgSubject" placeholder="Subject line (e.g. New shifts available this week)"
+                   style="width:100%;padding:9px 14px;border:1.5px solid #e2e8f0;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.85rem;margin-bottom:10px;outline:none;box-sizing:border-box"
+                   onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='#e2e8f0'"/>
+            <div style="display:flex;gap:10px;align-items:flex-end">
+              <textarea id="adminMsgInput" rows="3" placeholder="Type your message here..."
+                        style="flex:1;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.875rem;resize:none;outline:none;line-height:1.5"
+                        onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='#e2e8f0'"
+                        onkeydown="if(event.key==='Enter'&&event.metaKey)sendAdminMsg()"></textarea>
+              <button class="btn" id="sendBroadcastBtn" onclick="sendAdminMsg()"
+                      style="background:linear-gradient(135deg,#1a3a6b,#2563eb);color:#fff;border-radius:10px;padding:12px 20px;font-family:'Poppins',sans-serif;font-weight:700;font-size:0.85rem;white-space:nowrap;align-self:stretch">
+                📨 Send
+              </button>
+            </div>
+            <div style="margin-top:8px;font-size:0.72rem;color:#94a3b8">Tip: ⌘+Enter to send · Messages are delivered via email to all recipients</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- POST SHIFT MODAL -->
+<div class="modal-backdrop" id="postShiftModal">
+  <div class="modal">
+    <div class="modal-title">Post a New Shift <button class="modal-close" onclick="closeModal('postShiftModal')">✕</button></div>
+    <div class="form-grid">
+      <div class="form-group"><label>Job Title</label><select id="sTitle"><option>Dental Hygienist</option><option>Dental Assistant</option><option>Dental Receptionist</option><option>Office Manager</option></select></div>
+      <div class="form-group"><label>Rate ($/hr)</label><input type="number" id="sRate" placeholder="62"/></div>
+      <div class="form-group"><label>Date</label><input type="date" id="sDate"/></div>
+      <div class="form-group"><label>Start Time</label><input type="time" id="sStart" value="08:00"/></div>
+      <div class="form-group"><label>End Time</label><input type="time" id="sEnd" value="17:00"/></div>
+      <div class="form-group"><label>Location</label><input type="text" id="sLocation" placeholder="Capitol Hill, Seattle"/></div>
+      <div class="form-group full"><label>Notes</label><textarea id="sNotes" placeholder="Special requirements, parking, software..."></textarea></div>
+    </div>
+    <div class="save-bar">
+      <button class="btn btn-gold" onclick="postShift()">Post Shift</button>
+      <button class="btn btn-outline" onclick="closeModal('postShiftModal')">Cancel</button>
+      <span class="success-msg" id="shiftPosted">✓ Posted!</span>
+    </div>
+  </div>
+</div>
+
+<!-- USER DETAIL MODAL -->
+<div class="modal-backdrop" id="workerModal">
+  <div class="modal">
+    <div class="modal-title"><span id="workerModalName">User</span><button class="modal-close" onclick="closeModal('workerModal')">✕</button></div>
+    <div id="workerModalBody"></div>
+  </div>
+</div>
+
+<!-- REJECT CLINIC MODAL -->
+<div class="modal-backdrop" id="rejectModal">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-title">
+      <span style="display:flex;align-items:center;gap:8px">
+        <span style="width:32px;height:32px;background:#fef2f2;border:1.5px solid #fecaca;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem">✗</span>
+        Reject Clinic Application
+      </span>
+      <button class="modal-close" onclick="closeModal('rejectModal')">✕</button>
+    </div>
+    <div style="padding:4px 0 8px">
+      <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:0.83rem;color:#dc2626;line-height:1.6">
+        <strong>⚠️ This action will:</strong> mark the clinic as rejected and send them an email notification. They will be able to re-apply with the same email.
+      </div>
+      <div style="margin-bottom:6px">
+        <label style="display:block;font-size:0.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-family:'Poppins',sans-serif">Rejection Reason <span style="font-weight:400;text-transform:none;color:#94a3b8">(optional — sent to clinic)</span></label>
+        <textarea id="rejectReasonInput" rows="3" placeholder="e.g. License could not be verified. Please resubmit with a clearer copy of your WA dental license."
+                  style="width:100%;padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.875rem;color:#1e293b;outline:none;resize:vertical;transition:border-color .2s;line-height:1.5"
+                  onfocus="this.style.borderColor='#ef4444'" onblur="this.style.borderColor='#e2e8f0'"></textarea>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px">
+        <button class="btn btn-outline" style="padding:11px;border-radius:10px;font-size:0.875rem" onclick="closeModal('rejectModal')">Cancel</button>
+        <button id="confirmRejectBtn" class="btn" style="padding:11px;border-radius:10px;font-size:0.875rem;background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;border:none;font-family:'Poppins',sans-serif;font-weight:700;cursor:pointer" onclick="confirmReject()">
+          Reject &amp; Notify Clinic
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOGOUT MODAL -->
+<div class="modal-backdrop" id="logoutModal" style="z-index:9999">
+  <div style="background:#fff;border-radius:20px;max-width:380px;width:96vw;overflow:hidden;animation:fadeUp 0.3s ease both;box-shadow:0 24px 80px rgba(10,20,40,0.4)">
+    <div style="background:linear-gradient(135deg,#060d1a 0%,#1a3a6b 100%);padding:32px 28px 24px;text-align:center">
+      <div style="width:56px;height:56px;background:rgba(239,68,68,0.15);border:1.5px solid rgba(239,68,68,0.3);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 16px">🚪</div>
+      <div style="font-family:'Poppins',sans-serif;font-size:1.25rem;font-weight:800;color:#fff;margin-bottom:8px">Leaving so soon?</div>
+      <div style="font-size:0.83rem;color:rgba(255,255,255,0.5);line-height:1.6">You'll need to sign back in to access the admin panel.</div>
+    </div>
+    <div style="background:#fff;padding:20px 28px 24px;display:flex;flex-direction:column;gap:10px">
+      <button onclick="confirmLogout()" style="width:100%;padding:12px;background:#ef4444;color:#fff;border:none;border-radius:12px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif">Yes, log me out</button>
+      <button onclick="closeModal('logoutModal')" style="width:100%;padding:12px;background:#f1f5f9;color:#334155;border:none;border-radius:12px;font-size:0.88rem;font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif">Stay signed in</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUPPORT MODAL -->
+<div class="modal-backdrop" id="supportModal" style="z-index:9999">
+  <div style="background:#fff;border-radius:20px;max-width:480px;width:96vw;overflow:hidden;animation:fadeUp 0.3s ease both;box-shadow:0 24px 80px rgba(10,20,40,0.4)">
+    <div style="background:linear-gradient(135deg,#060d1a 0%,#1a3a6b 100%);padding:28px 28px 22px;text-align:center">
+      <div style="width:52px;height:52px;background:rgba(245,158,11,0.2);border:1.5px solid rgba(245,158,11,0.35);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin:0 auto 14px">🛟</div>
+      <div style="font-family:'Poppins',sans-serif;font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:6px">How can we help?</div>
+      <div style="font-size:0.8rem;color:rgba(255,255,255,0.5)">Our team usually responds within a few hours.</div>
+    </div>
+    <div style="background:#fff;padding:22px 24px 26px">
+      <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px 16px;margin-bottom:16px">
+        <div style="width:38px;height:38px;background:#fef3c7;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">📞</div>
+        <div>
+          <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#94a3b8;margin-bottom:2px;font-family:'Poppins',sans-serif">Call Us</div>
+          <a href="tel:+12065550000" style="font-size:0.95rem;font-weight:700;color:#0f172a;text-decoration:none">(206) 555-0000</a>
+          <div style="font-size:0.72rem;color:#94a3b8;margin-top:1px">Mon–Fri, 9am–6pm PST</div>
+        </div>
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#64748b;display:block;margin-bottom:6px;font-family:'Poppins',sans-serif">Your Name</label>
+        <input id="supName" type="text" placeholder="Jane Smith" style="width:100%;padding:10px 13px;border:1.5px solid #e2e8f0;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.875rem;outline:none"/>
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#64748b;display:block;margin-bottom:6px;font-family:'Poppins',sans-serif">Your Email</label>
+        <input id="supEmail" type="email" placeholder="you@carevia.com" style="width:100%;padding:10px 13px;border:1.5px solid #e2e8f0;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.875rem;outline:none"/>
+      </div>
+      <div style="margin-bottom:18px">
+        <label style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#64748b;display:block;margin-bottom:6px;font-family:'Poppins',sans-serif">Message</label>
+        <textarea id="supMessage" rows="3" placeholder="Describe your issue or question..." style="width:100%;padding:10px 13px;border:1.5px solid #e2e8f0;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.875rem;outline:none;resize:vertical"></textarea>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button onclick="sendSupportEmail()" style="flex:1;padding:12px;background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff;border:none;border-radius:11px;font-family:'Poppins',sans-serif;font-weight:700;font-size:0.88rem;cursor:pointer">Send Message</button>
+        <button onclick="closeModal('supportModal')" style="padding:12px 18px;background:#f1f5f9;color:#334155;border:none;border-radius:11px;font-family:'Poppins',sans-serif;font-weight:600;font-size:0.88rem;cursor:pointer">Cancel</button>
+      </div>
+      <div id="supSuccess" style="display:none;text-align:center;margin-top:14px;font-size:0.85rem;font-weight:600;color:#059669">✅ Message sent! We'll be in touch shortly.</div>
+    </div>
+  </div>
+</div>
+
+<script src="js/auth.js"></script>
+<script>
+  const API = window.CAREVIA_API_BASE || "http://localhost:4000";
+  const token = () => localStorage.getItem("carevia_token");
+
+  let allShifts=[], allWorkers=[], allClinics=[], allApps=[];
+  let shiftFilter="all", appFilter="all", workerFilter="all";
+  let clinicViewMode = "cards"; // "cards" or "table"
+
+  // Worker → clinic affiliation map (workerEmail/id → [{clinicName, shiftRole}])
+  let workerClinicMap = {}; // workerId or workerEmail -> [{clinicName, role}]
+
+  window.addEventListener("DOMContentLoaded", async () => {
+    if (!token()) { window.location.href="login.html"; return; }
+    try {
+      const res = await fetch(`${API}/api/auth/me`, { headers:{ Authorization:`Bearer ${token()}` }});
+      if (!res.ok) { window.location.href="login.html"; return; }
+      const { profile } = await res.json();
+      if (profile) {
+        const name = profile.full_name || "Super Admin";
+        document.getElementById("sidebarName").textContent = name;
+        document.getElementById("avatarInitial").textContent = name.charAt(0).toUpperCase();
+      }
+    } catch(e) { console.error(e); }
+    loadAll();
+  });
+
+  async function loadAll() {
+    try { await Promise.all([loadShifts(), loadUsers()]); } catch(e) {}
+    try { await loadApplications(); } catch(e) {}
+    buildWorkerClinicMap();
+    updateDashboard();
+  }
+
+  /* ── SHIFTS ── */
+  async function loadShifts() {
+    try {
+      // Try admin endpoint first (all statuses), fall back to public endpoint
+      let res = await fetch(`${API}/api/shifts/admin/all`, { headers:{ Authorization:`Bearer ${token()}` }});
+      if (!res.ok) res = await fetch(`${API}/api/shifts`, { headers:{ Authorization:`Bearer ${token()}` }});
+      if (!res.ok) throw new Error(res.status);
+      const data = await res.json();
+      allShifts = data.shifts || data || [];
+      renderShifts();
+    } catch(e) {
+      allShifts = [];
+      document.getElementById("shiftsBody").innerHTML = `<tr><td colspan="7" class="tc">⚠️ Could not load shifts.</td></tr>`;
+    }
+  }
+
+  /* ── USERS ── */
+  async function loadUsers() {
+    try {
+      const res = await fetch(`${API}/api/auth/admin/users`, { headers:{ Authorization:`Bearer ${token()}` }});
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      const users = data.users || data || [];
+      allWorkers = users.filter(u => u.role === "worker");
+      allClinics = users.filter(u => u.role === "clinic");
+      renderWorkers();
+      renderClinics();
+      // Show pending banner if any clinics need approval
+      const pending = allClinics.filter(c => !c.status || c.status === 'pending');
+      const banner = document.getElementById('pendingBanner');
+      if (pending.length > 0) {
+        banner.style.display = 'flex';
+        document.getElementById('pendingBannerText').textContent = `${pending.length} clinic${pending.length>1?'s':''} awaiting approval`;
+      } else {
+        banner.style.display = 'none';
+      }
+    } catch(e) {
+      allWorkers = [];
+      allClinics = [];
+      console.error("loadUsers error:", e);
+      document.getElementById("workersBody").innerHTML = `<tr><td colspan="8" class="tc">⚠️ Could not load users.</td></tr>`;
+      document.getElementById("clinicCardsGrid").innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><p>Could not load clinics. Make sure your Supabase profile role is set to "admin".</p></div>`;
+      document.getElementById("clinicsBody").innerHTML = `<tr><td colspan="9" class="tc">⚠️ Could not load clinics.</td></tr>`;
+    }
+  }
+
+  /* ── APPLICATIONS ── */
+  async function loadApplications() {
+    document.getElementById("appsBody").innerHTML = `<tr><td colspan="6" class="tc">⏳ Loading applications...</td></tr>`;
+    try {
+      // Try admin endpoint first, fall back to worker's own applications
+      let res = await fetch(`${API}/api/applications/admin/all`, { headers:{ Authorization:`Bearer ${token()}` }});
+      if (!res.ok) res = await fetch(`${API}/api/applications/mine`, { headers:{ Authorization:`Bearer ${token()}` }});
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      const apps = data.applications || data || [];
+      allApps = apps.map(a => {
+        const shift = allShifts.find(s => s.id === a.shift_id);
+        return {
+          ...a,
+          shift_title: a.shift_title || shift?.role || '—',
+          clinic_name: a.clinic_name || shift?.clinic_name || '—',
+          clinic_id:   a.clinic_id   || shift?.clinic_id,
+          shift_date:  a.shift_date  || shift?.date
+        };
+      });
+      renderApps();
+    } catch(e) {
+      allApps = [];
+      console.error("loadApplications error:", e);
+      document.getElementById("appsBody").innerHTML = `<tr><td colspan="6" class="tc">⚠️ Could not load applications.</td></tr>`;
+    }
+  }
+
+  /* ── BUILD WORKER→CLINIC MAP ── */
+  function buildWorkerClinicMap() {
+    workerClinicMap = {};
+    // Build from accepted applications
+    allApps.forEach(a => {
+      if ((a.status || 'pending') !== 'accepted') return;
+      const key = a.worker_id || a.worker_email || a.worker_name;
+      if (!key) return;
+      if (!workerClinicMap[key]) workerClinicMap[key] = [];
+      // Avoid duplicates
+      const exists = workerClinicMap[key].some(x => x.clinicName === (a.clinic_name||'—'));
+      if (!exists) {
+        workerClinicMap[key].push({
+          clinicName: a.clinic_name || '—',
+          clinicId: a.clinic_id,
+          role: a.shift_title || 'Shift'
+        });
+      }
+    });
+  }
+
+  /* ── Helper: get clinic affiliations for a worker ── */
+  function getWorkerClinics(w) {
+    // Try multiple keys
+    const keys = [w.id, w.email, w.full_name].filter(Boolean);
+    for (const k of keys) {
+      if (workerClinicMap[k] && workerClinicMap[k].length) return workerClinicMap[k];
+    }
+    // Fallback: match by worker_name in apps
+    const nameMatch = allApps.filter(a =>
+            (a.status||'pending') === 'accepted' &&
+            (a.worker_name === w.full_name || a.worker_id === w.id)
+    );
+    const seen = new Set();
+    return nameMatch.reduce((acc, a) => {
+      const cn = a.clinic_name || '—';
+      if (!seen.has(cn)) { seen.add(cn); acc.push({ clinicName: cn, clinicId: a.clinic_id, role: a.shift_title||'Shift' }); }
+      return acc;
+    }, []);
+  }
+
+  /* ── Helper: get accepted workers for a clinic ── */
+  function getClinicWorkers(c) {
+    const clinicShiftIds = new Set(allShifts.filter(s => s.clinic_id === c.id).map(s => s.id));
+    const accepted = allApps.filter(a =>
+            (a.status||'pending') === 'accepted' &&
+            (a.clinic_id === c.id || a.clinic_name === (c.clinic_name||c.full_name) || clinicShiftIds.has(a.shift_id))
+    );
+    const seen = new Set();
+    return accepted.filter(a => {
+      const k = a.worker_name||a.worker_id;
+      if (seen.has(k)) return false;
+      seen.add(k); return true;
+    });
+  }
+
+  /* ── DASHBOARD ── */
+  function updateDashboard() {
+    document.getElementById("statShifts").textContent  = allShifts.length;
+    document.getElementById("statApps").textContent    = allApps.length;
+    document.getElementById("statWorkers").textContent = allWorkers.length;
+    document.getElementById("statClinics").textContent = allClinics.length;
+    document.getElementById("statUsers").textContent   = allWorkers.length + allClinics.length;
+
+    // Recent clinic sign-ups
+    const recentClinicsEl = document.getElementById("recentClinics");
+    if (allClinics.length) {
+      const sorted = [...allClinics].sort((a,b) => new Date(b.created_at||0) - new Date(a.created_at||0)).slice(0,5);
+      recentClinicsEl.innerHTML = sorted.map(c => {
+        const name = c.clinic_name || c.full_name || '—';
+        const initial = name.charAt(0).toUpperCase();
+        const joined = c.created_at ? new Date(c.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : 'Recently';
+        const shifts = allShifts.filter(s => s.clinic_id === c.id).length;
+        return `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+          <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#059669,#10b981);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:0.85rem;flex-shrink:0">${initial}</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-family:'Poppins',sans-serif;font-weight:700;font-size:0.85rem;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${name}</div>
+            <div style="font-size:0.72rem;color:var(--muted)">${c.email||'—'} · ${shifts} shift${shifts!==1?'s':''}</div>
+          </div>
+          <div style="font-size:0.7rem;color:var(--muted);flex-shrink:0">${joined}</div>
+        </div>`;
+      }).join('');
+    } else {
+      recentClinicsEl.innerHTML = `<div class="empty"><div class="empty-icon">🏥</div><p>No clinics yet.</p></div>`;
+    }
+
+    // Recent worker sign-ups
+    const recentWorkersEl = document.getElementById("recentWorkers");
+    if (allWorkers.length) {
+      const sorted = [...allWorkers].sort((a,b) => new Date(b.created_at||0) - new Date(a.created_at||0)).slice(0,5);
+      const palette = ["linear-gradient(135deg,#2563eb,#6366f1)","linear-gradient(135deg,#10b981,#059669)","linear-gradient(135deg,#f59e0b,#ef4444)","linear-gradient(135deg,#8b5cf6,#ec4899)"];
+      recentWorkersEl.innerHTML = sorted.map((w,i) => {
+        const name = w.full_name || '—';
+        const initial = name.charAt(0).toUpperCase();
+        const joined = w.created_at ? new Date(w.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : 'Recently';
+        const clinics = getWorkerClinics(w);
+        const bg = palette[i % palette.length];
+        return `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+          <div style="width:36px;height:36px;border-radius:10px;background:${bg};display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:0.85rem;flex-shrink:0">${initial}</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-family:'Poppins',sans-serif;font-weight:700;font-size:0.85rem;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${name}</div>
+            <div style="font-size:0.72rem;color:var(--muted)">${w.email||'—'}</div>
+          </div>
+          ${clinics.length ? `<span style="font-size:0.68rem;background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0;border-radius:999px;padding:2px 8px;font-weight:700;white-space:nowrap">🏥 ${clinics[0].clinicName}</span>` : `<span style="font-size:0.68rem;color:#94a3b8;font-style:italic">${joined}</span>`}
+        </div>`;
+      }).join('');
+    } else {
+      recentWorkersEl.innerHTML = `<div class="empty"><div class="empty-icon">👷</div><p>No workers yet.</p></div>`;
+    }
+
+    // Activity feed
+    const items = [
+      ...allClinics.slice(0,3).map(c=>({
+        color:"#10b981",
+        text:`🏥 Clinic signed up: <strong>${c.clinic_name||c.full_name||'Clinic'}</strong>`,
+        time: c.created_at ? new Date(c.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : ''
+      })),
+      ...allShifts.slice(0,3).map(s=>({
+        color:"#2563eb",
+        text:`📋 Shift posted: <strong>${s.role||'Shift'}</strong>${s.clinic_name?' — '+s.clinic_name:''}`,
+        time: s.created_at ? new Date(s.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : ''
+      })),
+      ...allApps.slice(0,3).map(a=>({
+        color:"#059669",
+        text:`📬 Application — <strong>${a.worker_name||'Worker'}</strong> → ${a.shift_title||'Shift'}${a.clinic_name?' at '+a.clinic_name:''}`,
+        time: a.created_at ? new Date(a.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : ''
+      }))
+    ];
+    document.getElementById("recentActivity").innerHTML = items.length
+            ? items.map(i=>`
+        <div class="activity-item">
+          <div class="activity-left">
+            <div class="activity-dot" style="background:${i.color}"></div>
+            <div class="activity-text">${i.text}</div>
+          </div>
+          <div class="activity-time">${i.time}</div>
+        </div>`).join("")
+            : `<div class="empty"><div class="empty-icon">📭</div><p>No recent activity yet.</p></div>`;
+  }
+
+  /* ── RENDER SHIFTS ── */
+  function renderShifts() {
+    const q = (document.getElementById("shiftSearch")?.value||"").toLowerCase();
+    const filtered = allShifts.filter(s=>{
+      const mf = shiftFilter==="all"||(s.status||"open")===shiftFilter;
+      const ms = !q||`${s.role} ${s.clinic_name} ${s.address} ${s.city}`.toLowerCase().includes(q);
+      return mf&&ms;
+    });
+    document.getElementById("shiftsBody").innerHTML = filtered.length
+            ? filtered.map(s=>`<tr>
+          <td><strong>${s.role||"Shift"}</strong></td>
+          <td><span style="font-weight:600">${s.clinic_name||"—"}</span></td>
+          <td>${s.date||"TBD"}</td>
+          <td style="color:var(--green);font-weight:700">${s.pay_per_hour?"$"+s.pay_per_hour+"/hr":"TBD"}</td>
+          <td>${s.address||s.city||"Seattle"}</td>
+          <td><span class="badge badge-${s.status||'open'}">${s.status||"open"}</span></td>
+          <td><button class="btn btn-red btn-sm" onclick="deleteShift('${s.id}')">Delete</button></td>
+        </tr>`).join("")
+            : `<tr><td colspan="7" class="tc">No shifts found.</td></tr>`;
+  }
+
+  /* ── RENDER WORKERS — with clinic affiliation column ── */
+  function renderWorkers() {
+    const q = (document.getElementById("workerSearch")?.value||"").toLowerCase();
+    let filtered = allWorkers.filter(w => {
+      if (q) {
+        const clinics = getWorkerClinics(w).map(c => c.clinicName.toLowerCase()).join(' ');
+        if (!`${w.full_name} ${w.email} ${clinics}`.toLowerCase().includes(q)) return false;
+      }
+      if (workerFilter === 'placed') return getWorkerClinics(w).length > 0;
+      if (workerFilter === 'unplaced') return getWorkerClinics(w).length === 0;
+      return true;
+    });
+
+    if (!filtered.length && !allWorkers.length) {
+      document.getElementById("workersBody").innerHTML = `<tr><td colspan="8" class="tc">No workers registered yet.</td></tr>`;
+      return;
+    }
+
+    const palette = ["linear-gradient(135deg,#2563eb,#6366f1)","linear-gradient(135deg,#10b981,#059669)","linear-gradient(135deg,#f59e0b,#ef4444)","linear-gradient(135deg,#8b5cf6,#ec4899)","linear-gradient(135deg,#0ea5e9,#2563eb)","linear-gradient(135deg,#f97316,#ef4444)"];
+
+    document.getElementById("workersBody").innerHTML = filtered.length ? filtered.map((w,i) => {
+      const name = w.full_name || '—';
+      const initials = name.split(" ").map(x=>x[0]).join("").slice(0,2).toUpperCase();
+      const bg = palette[i % palette.length];
+      const clinics = getWorkerClinics(w);
+      const appCount = allApps.filter(a => a.worker_id===w.id || a.worker_name===w.full_name).length;
+      const joined = w.created_at ? new Date(w.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—';
+      const clinicHtml = clinics.length
+              ? clinics.map(c=>`<span class="worker-clinic-badge">🏥 ${c.clinicName}</span>`).join(' ')
+              : `<span class="worker-clinic-none">No accepted shifts</span>`;
+
+      return `<tr>
+        <td>
+          <div style="display:flex;align-items:center;gap:9px">
+            <div class="w-avatar" style="background:${bg}">${initials}</div>
+            <div>
+              <div style="font-family:'Poppins',sans-serif;font-weight:700;font-size:0.88rem">${name}</div>
+              <div style="font-size:0.7rem;color:var(--muted)">${w.city||'Seattle'}</div>
+            </div>
+          </div>
+        </td>
+        <td style="font-size:0.82rem">${w.email||'—'}</td>
+        <td style="font-size:0.82rem">${w.phone||'—'}</td>
+        <td style="font-size:0.82rem">${w.city||'Seattle'}</td>
+        <td>${clinicHtml}</td>
+        <td><span style="font-family:'Poppins',sans-serif;font-weight:700;color:var(--navy)">${appCount}</span></td>
+        <td style="font-size:0.78rem;color:var(--muted)">${joined}</td>
+        <td><button class="resume-tag" onclick="viewWorkerDetail(${JSON.stringify(w).replace(/"/g,'&quot;')})">👤 View</button></td>
+      </tr>`;
+    }).join("") : `<tr><td colspan="8" class="tc">No workers match your search.</td></tr>`;
+  }
+
+  /* ── RENDER CLINICS — card & table views ── */
+  function renderClinics() {
+    const q = (document.getElementById("clinicSearch")?.value||"").toLowerCase();
+    const pendingOnly = document.getElementById('pendingFilterBtn')?.dataset.active === 'true';
+    const pending = allClinics.filter(c => !c.status || c.status === 'pending');
+    const approved = allClinics.filter(c => c.status === 'approved');
+
+    // Update pending count badge
+    const pCount = document.getElementById('pendingCount');
+    if (pCount) pCount.textContent = pending.length;
+
+    // Render pending section
+    const pendingGrid = document.getElementById('pendingClinicGrid');
+    if (pendingGrid) {
+      pendingGrid.innerHTML = pending.map(c => renderClinicCard(c, true)).join('') ||
+              '<div class="empty"><div class="empty-icon">✅</div><p>No clinics pending approval.</p></div>';
+    }
+
+    // Approved clinics for main grid
+    const source = pendingOnly ? pending : approved;
+    const filtered = source.filter(c => {
+      if (!q) return true;
+      const name = (c.clinic_name||c.full_name||'').toLowerCase();
+      return name.includes(q) || (c.email||'').toLowerCase().includes(q);
+    });
+
+    // Card view
+    const grid = document.getElementById("clinicCardsGrid");
+    if (!filtered.length) {
+      grid.innerHTML = `<div class="empty"><div class="empty-icon">${allClinics.length?'🔍':'🏥'}</div><p>${allClinics.length?'No clinics match your search.':'No clinics registered yet.'}</p></div>`;
+    } else {
+      grid.innerHTML = filtered.map(c => renderClinicCard(c, false)).join('');
+    }
+
+    // Table view
+    document.getElementById("clinicsBody").innerHTML = filtered.length
+            ? filtered.map(c => {
+              const name = c.clinic_name||c.full_name||'—';
+              const shiftsCount = allShifts.filter(s => s.clinic_id===c.id).length;
+              const workers = getClinicWorkers(c);
+              const joined = c.created_at ? new Date(c.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—';
+              return `<tr>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px">
+                <div style="width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#059669,#10b981);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:0.78rem;flex-shrink:0">${name.charAt(0).toUpperCase()}</div>
+                <span style="font-family:'Poppins',sans-serif;font-weight:700">${name}</span>
+              </div>
+            </td>
+            <td style="font-size:0.82rem">${c.email||'—'}</td>
+            <td style="font-size:0.82rem">${c.phone||'—'}</td>
+            <td style="font-size:0.82rem">${c.city||'Seattle'}</td>
+            <td style="font-size:0.82rem">${c.specialty||'General'}</td>
+            <td><span style="font-family:'Poppins',sans-serif;font-weight:700;color:var(--blue)">${shiftsCount}</span></td>
+            <td>
+              ${workers.length
+                      ? workers.slice(0,3).map(w=>`<span class="clinic-worker-chip">👤 ${w.worker_name||'Worker'}</span>`).join('')
+                      + (workers.length>3?`<span class="clinic-worker-chip" style="background:#f1f5f9;color:var(--muted);border-color:#e2e8f0">+${workers.length-3}</span>`:'')
+                      : `<span style="font-size:0.72rem;color:#94a3b8;font-style:italic">None yet</span>`}
+            </td>
+            <td style="font-size:0.78rem;color:var(--muted)">${joined}</td>
+            <td><button class="btn btn-outline btn-sm" onclick="viewClinicDetail(${JSON.stringify(c).replace(/"/g,'&quot;')})">View</button></td>
+          </tr>`;
+            }).join('')
+            : `<tr><td colspan="9" class="tc">No clinics found.</td></tr>`;
+  }
+
+  /* ── RENDER APPS ── */
+  function renderApps() {
+    const filtered = allApps.filter(a=>appFilter==="all"||(a.status||"pending")===appFilter);
+    document.getElementById("appsBody").innerHTML = filtered.length
+            ? filtered.map(a=>`<tr>
+          <td><strong>${a.worker_name||a.full_name||"Worker"}</strong></td>
+          <td>${a.shift_title||"Shift"}</td>
+          <td>${a.clinic_name||"—"}</td>
+          <td>${a.created_at?new Date(a.created_at).toLocaleDateString():"—"}</td>
+          <td><span class="badge badge-${(a.status||'pending').toLowerCase()}">${a.status||"Pending"}</span></td>
+          <td style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="btn btn-green btn-sm" onclick="updateApp('${a.id}','accepted')">✓ Accept</button>
+            <button class="btn btn-red btn-sm" onclick="updateApp('${a.id}','rejected')">✗ Reject</button>
+          </td>
+        </tr>`).join("")
+            : `<tr><td colspan="6" class="tc">No applications found.</td></tr>`;
+  }
+
+  /* ── VIEW DETAIL MODALS ── */
+  function viewWorkerDetail(w) {
+    const clinics = getWorkerClinics(w);
+    const apps = allApps.filter(a => a.worker_id===w.id || a.worker_name===w.full_name);
+    document.getElementById("workerModalName").textContent = w.full_name||"Worker";
+    document.getElementById("workerModalBody").innerHTML = `
+      <div class="worker-detail-section"><h4>Contact</h4><p>📧 ${w.email||"N/A"} &nbsp; 📞 ${w.phone||"N/A"}</p></div>
+      <div class="worker-detail-section"><h4>Location</h4><p>📍 ${w.city||"Seattle"}</p></div>
+      <div class="worker-detail-section">
+        <h4>Clinic Affiliations (Accepted Shifts)</h4>
+        ${clinics.length
+            ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">${clinics.map(c=>`<span class="worker-clinic-badge">🏥 ${c.clinicName} <span style="opacity:0.7;font-weight:500">· ${c.role}</span></span>`).join('')}</div>`
+            : `<p style="color:#94a3b8;font-style:italic">No accepted shifts yet.</p>`}
+      </div>
+      <div class="worker-detail-section">
+        <h4>Applications (${apps.length})</h4>
+        ${apps.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px">${apps.map(a=>`<span class="badge badge-${(a.status||'pending').toLowerCase()}" style="margin:2px">${a.shift_title||'Shift'} — ${a.status||'pending'}</span>`).join('')}</div>` : `<p style="color:#94a3b8;font-style:italic">No applications.</p>`}
+      </div>
+      <div class="worker-detail-section"><h4>Skills</h4><p>${(w.skills||"Not listed").split(",").map(s=>`<span class="skill-tag">${s.trim()}</span>`).join("")}</p></div>
+      <div class="worker-detail-section"><h4>Bio</h4><p>${w.bio||"No bio provided."}</p></div>
+      <div class="worker-detail-section"><h4>Resume</h4><p>${w.resume_url?`<a href="${w.resume_url}" target="_blank" class="btn btn-primary btn-sm">📄 Download Resume</a>`:"No resume uploaded yet."}</p></div>
+      <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-red btn-sm" onclick="deleteUser('${w.id}','worker')">🗑 Remove User</button>
+        <button class="btn btn-outline btn-sm" onclick="showPage('messages',document.querySelector('[data-page=messages]'));closeModal('workerModal')">💬 Message</button>
+      </div>`;
+    document.getElementById("workerModal").classList.add("open");
+  }
+
+  function renderDocRow(icon, label, doc, required) {
+    if (doc && (doc.url || doc.name)) {
+      const name = doc.name || doc;
+      const url = doc.url || null;
+      const ext = name.split('.').pop().toUpperCase();
+      const extColors = { PDF:'#ef4444', JPG:'#3b82f6', JPEG:'#3b82f6', PNG:'#8b5cf6' };
+      const extColor = extColors[ext] || '#64748b';
+      return `
+        <div style="display:flex;align-items:center;gap:12px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:10px 14px">
+          <div style="width:36px;height:36px;background:${extColor}15;border:1.5px solid ${extColor}30;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">${icon}</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:0.78rem;font-weight:700;color:#374151;font-family:'Poppins',sans-serif">${label}</div>
+            <div style="font-size:0.73rem;color:#6b7280;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${name}</div>
+          </div>
+          <span style="background:${extColor}15;color:${extColor};font-size:0.62rem;font-weight:800;font-family:'Poppins',sans-serif;padding:2px 7px;border-radius:4px;flex-shrink:0">${ext}</span>
+          ${url
+              ? `<a href="${url}" target="_blank" download style="display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,#1a3a6b,#2563eb);color:#fff;text-decoration:none;font-size:0.75rem;font-weight:700;font-family:'Poppins',sans-serif;padding:6px 12px;border-radius:7px;flex-shrink:0;white-space:nowrap">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 15l-4-4h3V4h2v7h3l-4 4z" fill="currentColor"/><path d="M20 18H4v2h16v-2z" fill="currentColor"/></svg>
+                Download
+              </a>`
+              : `<span style="font-size:0.72rem;color:#94a3b8;font-style:italic;flex-shrink:0">No link yet</span>`}
+        </div>`;
+    }
+    return required
+            ? `<div style="display:flex;align-items:center;gap:10px;background:#fef2f2;border:1.5px solid #fecaca;border-radius:10px;padding:10px 14px;font-size:0.8rem">
+           <span style="font-size:1rem">${icon}</span>
+           <div><div style="font-weight:700;color:#dc2626">${label}</div><div style="font-size:0.72rem;color:#ef4444;margin-top:1px">Not uploaded — required document</div></div>
+         </div>`
+            : `<div style="display:flex;align-items:center;gap:10px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:10px 14px;font-size:0.8rem">
+           <span style="font-size:1rem">${icon}</span>
+           <div style="color:#94a3b8">${label} <span style="font-size:0.72rem">(optional — not submitted)</span></div>
+         </div>`;
+  }
+
+  function viewClinicDetail(c) {
+    const name = c.clinic_name || c.full_name || '—';
+    const clinicShifts = allShifts.filter(s => s.clinic_id === c.id);
+    const workers = getClinicWorkers(c);
+    const isPending = !c.status || c.status === 'pending';
+
+    // Parse docs_submitted
+    let docs = c.docs_submitted || {};
+    if (typeof docs === 'string') { try { docs = JSON.parse(docs); } catch(_) { docs = {}; } }
+
+    document.getElementById("workerModalName").textContent = name + (isPending ? ' — Pending Application' : '');
+    document.getElementById("workerModalBody").innerHTML = `
+      ${isPending ? `<div style="background:rgba(245,158,11,.1);border:1.5px solid rgba(245,158,11,.3);border-radius:10px;padding:12px 16px;margin-bottom:18px;font-size:0.82rem;color:#d97706;font-weight:600">
+        ⏳ This clinic is awaiting your approval. Review all details below before approving.
+      </div>` : ''}
+
+      <div class="worker-detail-section"><h4>Contact</h4>
+        <p>📧 ${c.email||'N/A'} &nbsp; 📞 ${c.phone||'N/A'}</p>
+      </div>
+
+      <div class="worker-detail-section"><h4>Location</h4>
+        <p>📍 ${c.address ? c.address+', ' : ''}${c.city||'Seattle'}</p>
+      </div>
+
+      ${c.specialty ? `<div class="worker-detail-section"><h4>Specialty</h4><p>🦷 ${c.specialty}</p></div>` : ''}
+
+      ${isPending ? `
+      <div class="worker-detail-section"><h4>License &amp; Verification</h4>
+        <table style="width:100%;font-size:0.82rem;border-collapse:collapse">
+          <tr><td style="padding:5px 0;color:#64748b;width:180px;font-weight:600">NPI Number</td><td style="padding:5px 0;font-weight:600">${c.npi_number||'<span style="color:#94a3b8">Not provided</span>'}</td></tr>
+          <tr><td style="padding:5px 0;color:#64748b;font-weight:600">WA License #</td><td style="padding:5px 0;font-weight:600">${c.license_number||'<span style="color:#94a3b8">Not provided</span>'}</td></tr>
+        </table>
+      </div>
+
+      <div class="worker-detail-section"><h4>Submitted Documents</h4>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px">
+          ${renderDocRow('📄', 'Dental License', docs.dental_license, true)}
+          ${renderDocRow('💊', 'DEA Registration', docs.dea, false)}
+          ${renderDocRow('🏢', 'Business Registration / W-9', docs.business_reg, true)}
+        </div>
+      </div>
+
+      <div class="worker-detail-section"><h4>Requirements Confirmed</h4>
+        ${c.requirements_confirmed
+            ? `<div style="display:flex;align-items:center;gap:8px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 14px;color:#059669;font-weight:600;font-size:0.85rem">✅ All 5 compliance requirements confirmed by clinic</div>`
+            : `<div style="display:flex;align-items:center;gap:8px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 14px;color:#dc2626;font-weight:600;font-size:0.85rem">❌ Requirements not confirmed</div>`}
+      </div>
+
+      <div style="display:flex;gap:10px;margin-top:8px">
+        <button class="btn btn-sm" style="background:linear-gradient(135deg,#059669,#10b981);color:#fff;border-radius:999px;flex:1;padding:12px;font-size:0.88rem"
+          onclick="approveClinic('${c.id}',this);closeModal('workerModal')">✅ Approve Clinic</button>
+        <button class="btn btn-outline btn-sm" style="color:#ef4444;border-color:rgba(239,68,68,.35);flex:1;padding:12px;font-size:0.88rem"
+          onclick="rejectClinic('${c.id}',this);closeModal('workerModal')">✗ Reject</button>
+      </div>
+      ` : `
+      <div class="worker-detail-section">
+        <h4>Shifts Posted (${clinicShifts.length})</h4>
+        ${clinicShifts.length
+            ? `<div style="display:flex;flex-wrap:wrap;gap:4px">${clinicShifts.slice(0,8).map(s=>`<span class="badge badge-${s.status||'open'}" style="margin:2px">${s.role||'Shift'} · ${s.date||'TBD'}</span>`).join('')}</div>`
+            : `<p style="color:#94a3b8;font-style:italic">No shifts posted yet.</p>`}
+      </div>
+      <div class="worker-detail-section">
+        <h4>Accepted Workers (${workers.length})</h4>
+        ${workers.length
+            ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">${workers.map(w=>`<span class="worker-clinic-badge" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">👤 ${w.worker_name||'Worker'}</span>`).join('')}</div>`
+            : `<p style="color:#94a3b8;font-style:italic">No accepted workers yet.</p>`}
+      </div>
+      <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-red btn-sm" onclick="deleteUser('${c.id}','clinic')">🗑 Remove Clinic</button>
+        <button class="btn btn-outline btn-sm" onclick="showPage('messages',document.querySelector('[data-page=messages]'));closeModal('workerModal')">💬 Message</button>
+      </div>`}
+    `;
+    document.getElementById("workerModal").classList.add("open");
+  }
+
+  /* ── TOGGLE CLINIC VIEW ── */
+  function toggleClinicView() {
+    clinicViewMode = clinicViewMode === "cards" ? "table" : "cards";
+    document.getElementById("clinicCardView").style.display = clinicViewMode === "cards" ? "" : "none";
+    document.getElementById("clinicTableView").style.display = clinicViewMode === "table" ? "" : "none";
+    document.getElementById("clinicViewBtn").textContent = clinicViewMode === "cards" ? "📋 Table View" : "🃏 Card View";
+  }
+
+  /* ── ACTIONS ── */
+  async function deleteShift(id) {
+    if (!confirm("Delete this shift?")) return;
+    try {
+      await fetch(`${API}/api/shifts/${id}`, { method:"DELETE", headers:{ Authorization:`Bearer ${token()}` }});
+      loadShifts();
+    } catch(e) { alert("Could not delete."); }
+  }
+
+  async function updateApp(id, status) {
+    try {
+      const appId = Number(String(id).split(':')[0]);
+      // Use admin endpoint — no clinic ownership check required
+      const res = await fetch(`${API}/api/applications/admin/${appId}`, {
+        method:"PUT",
+        headers:{"Content-Type":"application/json", Authorization:`Bearer ${token()}`},
+        body:JSON.stringify({status})
+      });
+      if (res.ok) { await loadApplications(); buildWorkerClinicMap(); renderWorkers(); renderClinics(); }
+      else alert("Could not update application.");
+    } catch(e) { alert("Server error."); }
+  }
+
+  async function deleteUser(userId, type) {
+    if (!userId) return alert("No user ID available.");
+    const label = type === "clinic" ? "clinic" : "worker";
+    if (!confirm(`Are you sure you want to permanently remove this ${label}? This cannot be undone.`)) return;
+    try {
+      const res = await fetch(`${API}/api/auth/admin/users/${userId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token()}` }
+      });
+      if (res.ok) {
+        closeModal("workerModal");
+        await loadUsers();
+        updateDashboard();
+      } else {
+        const d = await res.json();
+        alert(d.error || "Could not remove user.");
+      }
+    } catch(e) { alert("Server error."); }
+  }
+
+
+  async function postShift() {
+    const body = {
+      role: document.getElementById("sTitle").value,
+      pay_per_hour: document.getElementById("sRate").value,
+      date: document.getElementById("sDate").value,
+      start_time: document.getElementById("sStart").value,
+      end_time: document.getElementById("sEnd").value,
+      address: document.getElementById("sLocation").value,
+      description: document.getElementById("sNotes").value,
+      city: "Seattle"
+    };
+    try {
+      const res = await fetch(`${API}/api/shifts`, { method:"POST", headers:{"Content-Type":"application/json", Authorization:`Bearer ${token()}`}, body:JSON.stringify(body) });
+      if (res.ok) {
+        document.getElementById("shiftPosted").style.display="block";
+        setTimeout(()=>{ closeModal("postShiftModal"); document.getElementById("shiftPosted").style.display="none"; loadShifts(); }, 1200);
+      } else { const d=await res.json(); alert(d.error||"Error posting shift"); }
+    } catch(e) { alert("Server error."); }
+  }
+
+  /* ── FILTERS ── */
+  function setShiftFilter(f,el){ shiftFilter=f; document.querySelectorAll("#page-shifts .filter-btn").forEach(b=>b.classList.remove("active")); el.classList.add("active"); renderShifts(); }
+  function setAppFilter(f,el){ appFilter=f; document.querySelectorAll("#page-applications .filter-btn").forEach(b=>b.classList.remove("active")); el.classList.add("active"); renderApps(); }
+  function setWorkerFilter(f,el){ workerFilter=f; document.querySelectorAll("#page-workers .filter-btn").forEach(b=>b.classList.remove("active")); el.classList.add("active"); renderWorkers(); }
+  function filterShifts(){ renderShifts(); }
+  function filterWorkers(){ renderWorkers(); }
+  function filterClinics(){ renderClinics(); }
+
+  function togglePendingFilter(btn) {
+    const active = btn.dataset.active === 'true';
+    btn.dataset.active = active ? 'false' : 'true';
+    btn.style.background = active ? '' : 'rgba(245,158,11,.12)';
+    btn.style.borderColor = active ? '' : 'rgba(245,158,11,.6)';
+    btn.style.color = active ? '' : '#d97706';
+    document.getElementById('pendingClinicsSection').style.display = active ? 'none' : 'block';
+    renderClinics();
+  }
+
+  function renderClinicCard(c, isPending) {
+    const name = c.clinic_name || c.full_name || '—';
+    const initial = name.charAt(0).toUpperCase();
+    const shiftsCount = allShifts.filter(s => s.clinic_id===c.id).length;
+    const workers = getClinicWorkers(c);
+    const joined = c.created_at ? new Date(c.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—';
+    const workerChips = workers.length
+            ? workers.slice(0,4).map(w=>`<span class="clinic-worker-chip">👤 ${w.worker_name||'Worker'}</span>`).join('')
+            + (workers.length>4 ? `<span class="clinic-worker-chip" style="background:#f1f5f9;color:var(--muted);border-color:#e2e8f0">+${workers.length-4} more</span>` : '')
+            : `<span class="no-workers">No accepted workers yet</span>`;
+
+    const statusBadge = isPending
+            ? `<span style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.35);color:#d97706;font-size:.67rem;font-weight:700;font-family:'Poppins',sans-serif;padding:2px 9px;border-radius:999px;text-transform:uppercase;letter-spacing:.07em">Pending</span>`
+            : `<span style="background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;font-size:.67rem;font-weight:700;font-family:'Poppins',sans-serif;padding:2px 9px;border-radius:999px;text-transform:uppercase;letter-spacing:.07em">Approved</span>`;
+
+    const actionButtons = isPending
+            ? `<button class="btn btn-outline btn-sm" style="flex:1" onclick="viewClinicDetail(${JSON.stringify(c).replace(/"/g,'&quot;')})">📋 View Application</button>
+         <button class="btn btn-sm" style="background:linear-gradient(135deg,#059669,#10b981);color:#fff;border-radius:999px" onclick="approveClinic('${c.id}', this)">✅ Approve</button>
+         <button class="btn btn-outline btn-sm" style="color:#ef4444;border-color:rgba(239,68,68,.35)" onclick="rejectClinic('${c.id}', this)">✗ Reject</button>`
+            : `<button class="btn btn-outline btn-sm" onclick="viewClinicDetail(${JSON.stringify(c).replace(/"/g,'&quot;')})">View Details</button>
+         <button class="btn btn-sm" style="background:linear-gradient(135deg,#1a3a6b,#2563eb);color:#fff;border-radius:999px" onclick="showPage('messages',document.querySelector('[data-page=messages]'))">💬 Message</button>`;
+
+    return `<div class="clinic-card" id="clinic-card-${c.id}" ${isPending ? 'style="border-color:rgba(245,158,11,.25);background:rgba(245,158,11,.03)"' : ''}>
+      <div class="clinic-card-header">
+        <div class="clinic-avatar" style="${isPending ? 'background:linear-gradient(135deg,#d97706,#f59e0b)' : ''}">${initial}</div>
+        <div style="flex:1;min-width:0">
+          <div class="clinic-name" style="display:flex;align-items:center;gap:7px">${name} ${statusBadge}</div>
+          <div class="clinic-email">${c.email||'—'}</div>
+          ${c.phone ? `<div style="font-size:0.72rem;color:var(--muted);margin-top:1px">📞 ${c.phone}</div>` : ''}
+        </div>
+      </div>
+      ${isPending ? '' : `<div class="clinic-stats">
+        <div class="clinic-stat">
+          <div class="clinic-stat-label">Shifts Posted</div>
+          <div class="clinic-stat-value" style="color:var(--blue)">${shiftsCount}</div>
+        </div>
+        <div class="clinic-stat">
+          <div class="clinic-stat-label">Accepted Workers</div>
+          <div class="clinic-stat-value" style="color:var(--green)">${workers.length}</div>
+        </div>
+      </div>
+      <div class="clinic-workers-list">
+        <div class="clinic-workers-title">Accepted Workers</div>
+        ${workerChips}
+      </div>`}
+      <div style="margin-top:10px;font-size:0.7rem;color:var(--muted)">
+        ${c.specialty ? `🦷 ${c.specialty} &nbsp;•&nbsp; ` : ''}Joined ${joined}
+      </div>
+      <div class="clinic-actions">${actionButtons}</div>
+    </div>`;
+  }
+
+  async function approveClinic(userId, btn) {
+    if (!confirm('Approve this clinic? They will receive an email notification.')) return;
+    const orig = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Approving…';
+    try {
+      const r = await fetch(`${API}/api/auth/admin/approve/${userId}`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token()}`, 'Content-Type': 'application/json' }
+      });
+      const d = await r.json();
+      if (!r.ok) { alert(d.error || 'Failed to approve clinic'); return; }
+      // Update local data and re-render
+      const c = allClinics.find(x => x.id === userId);
+      if (c) c.status = 'approved';
+      renderClinics();
+      // Refresh banner
+      const pending = allClinics.filter(c => !c.status || c.status === 'pending');
+      const banner = document.getElementById('pendingBanner');
+      if (pending.length > 0) {
+        banner.style.display = 'flex';
+        document.getElementById('pendingBannerText').textContent = `${pending.length} clinic${pending.length>1?'s':''} awaiting approval`;
+      } else { banner.style.display = 'none'; }
+    } catch(e) { alert('Connection error'); }
+    finally { btn.disabled = false; btn.textContent = orig; }
+  }
+
+  let _rejectTargetId = null;
+  let _rejectTargetBtn = null;
+
+  function rejectClinic(userId, btn) {
+    _rejectTargetId = userId;
+    _rejectTargetBtn = btn;
+    document.getElementById('rejectReasonInput').value = '';
+    document.getElementById('rejectModal').classList.add('open');
+  }
+
+  async function confirmReject() {
+    const userId = _rejectTargetId;
+    const reason = document.getElementById('rejectReasonInput').value.trim() || null;
+    const confirmBtn = document.getElementById('confirmRejectBtn');
+    confirmBtn.disabled = true; confirmBtn.textContent = 'Rejecting…';
+    try {
+      const r = await fetch(`${API}/api/auth/admin/reject/${userId}`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token()}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reason })
+      });
+      const d = await r.json();
+      if (!r.ok) { alert(d.error || 'Failed to reject clinic'); return; }
+      closeModal('rejectModal');
+      closeModal('workerModal');
+      const c = allClinics.find(x => x.id === userId);
+      if (c) c.status = 'rejected';
+      allClinics = allClinics.filter(x => x.id !== userId);
+      renderClinics();
+      const pending = allClinics.filter(c => !c.status || c.status === 'pending');
+      const banner = document.getElementById('pendingBanner');
+      if (pending.length > 0) {
+        banner.style.display = 'flex';
+        document.getElementById('pendingBannerText').textContent = `${pending.length} clinic${pending.length>1?'s':''} awaiting approval`;
+      } else { banner.style.display = 'none'; }
+    } catch(e) { alert('Connection error'); }
+    finally { confirmBtn.disabled = false; confirmBtn.textContent = 'Reject & Notify Clinic'; }
+  }
+
+  /* ── MESSAGING ── */
+  let broadcastType = 'workers';
+
+  function switchBroadcast(type, el) {
+    broadcastType = type;
+    document.querySelectorAll('.msg-contact').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    const titles = { workers: 'Broadcast to All Workers', clinics: 'Broadcast to All Clinics', all: 'Broadcast to Everyone' };
+    const icons  = { workers: '👷', clinics: '🏥', all: '📢' };
+    document.getElementById('broadcastTitle').textContent = titles[type];
+    document.getElementById('broadcastIcon').textContent = icons[type];
+    // Show recipient count from loaded users
+    const counts = {
+      workers: (typeof allUsers !== 'undefined' ? allUsers.filter(u => u.role === 'worker').length : 0),
+      clinics: (typeof allClinics !== 'undefined' ? allClinics.filter(c => c.status === 'approved').length : 0),
+      all: (typeof allUsers !== 'undefined' ? allUsers.length : 0),
+    };
+    document.getElementById('broadcastCount').textContent = `${counts[type] || 0} recipients`;
+    document.getElementById('adminMsgBody').innerHTML = '<div style="text-align:center;color:#94a3b8;font-size:0.8rem;padding:20px 0">No messages sent yet. Compose one below.</div>';
+  }
+
+  async function sendAdminMsg() {
+    const subject = document.getElementById('adminMsgSubject').value.trim();
+    const msg = document.getElementById('adminMsgInput').value.trim();
+    if (!subject) { document.getElementById('adminMsgSubject').focus(); document.getElementById('adminMsgSubject').style.borderColor='#ef4444'; return; }
+    if (!msg) { document.getElementById('adminMsgInput').focus(); return; }
+
+    const btn = document.getElementById('sendBroadcastBtn');
+    btn.disabled = true; btn.textContent = 'Sending…';
+
+    try {
+      const r = await fetch(`${API}/api/auth/admin/broadcast`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token()}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: broadcastType, subject, message: msg })
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error || 'Failed to send');
+
+      // Show success in chat log
+      const body = document.getElementById('adminMsgBody');
+      const time = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      // Remove placeholder
+      const placeholder = body.querySelector('div[style*="text-align:center"]');
+      if (placeholder) placeholder.remove();
+
+      body.innerHTML += `
+        <div style="margin-bottom:16px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span style="font-size:0.72rem;font-weight:700;color:#1a3a6b;font-family:'Poppins',sans-serif">You</span>
+            <span style="font-size:0.68rem;color:#94a3b8">${time}</span>
+            <span style="font-size:0.68rem;background:#f0fdf4;color:#059669;border:1px solid #bbf7d0;padding:1px 7px;border-radius:999px;font-weight:600">✓ Sent to ${d.sent || 0} recipients</span>
+          </div>
+          <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px 14px;max-width:80%">
+            <div style="font-weight:700;font-size:0.82rem;color:#1e293b;margin-bottom:4px">${subject}</div>
+            <div style="font-size:0.83rem;color:#475569;line-height:1.55">${msg.replace(/\n/g,'<br>')}</div>
+          </div>
+        </div>`;
+      body.scrollTop = body.scrollHeight;
+      document.getElementById('adminMsgInput').value = '';
+      document.getElementById('adminMsgSubject').value = '';
+    } catch(e) {
+      alert('Failed to send: ' + e.message);
+    } finally {
+      btn.disabled = false; btn.innerHTML = '📨 Send';
+    }
+  }
+
+  /* ── NAV & MODALS ── */
+  function showPage(name,el){
+    document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+    document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));
+    document.getElementById("page-"+name).classList.add("active");
+    if(el) el.classList.add("active");
+  }
+  function openPostShift(){ document.getElementById("postShiftModal").classList.add("open"); }
+  function closeModal(id){ document.getElementById(id).classList.remove("open"); }
+  function doLogout(){ document.getElementById("logoutModal").classList.add("open"); }
+  function confirmLogout(){ localStorage.removeItem("carevia_token"); window.location.href="login.html"; }
+
+  function sendSupportEmail(){
+    const name=document.getElementById("supName").value.trim();
+    const email=document.getElementById("supEmail").value.trim();
+    const message=document.getElementById("supMessage").value.trim();
+    if(!name||!email||!message){alert("Please fill in all fields.");return;}
+    window.location.href=`mailto:support@carevia.com?subject=${encodeURIComponent("Admin Support Request from "+name)}&body=${encodeURIComponent("From: "+name+"\nEmail: "+email+"\n\nMessage:\n"+message)}`;
+    document.getElementById("supSuccess").style.display="block";
+    setTimeout(()=>closeModal("supportModal"),2500);
+  }
+</script>
+</body>
+</html>

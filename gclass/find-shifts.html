@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#1a3a6b" />
+  <title>Find Shifts — CareVia Solutions LLC</title>
+  <meta name="description" content="Browse available dental shifts near Seattle. Search roles, neighborhoods, and apply quickly." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="find-shifts">
+
+<!-- NAV -->
+<div class="nav-wrap">
+  <div class="container">
+    <nav class="nav">
+      <a class="logo" href="index.html"><div class="logo-mark"></div><span><span class="logo-text"><span class="care">Care</span><span class="via">Via</span></span><span class="logo-sub">Solutions</span></span></a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="find-shifts.html" class="active">Find Shifts</a>
+        <a href="for-clinics.html">For Clinics</a>
+        <a href="how-it-works.html">How It Works</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <a class="pill btn-outline" href="login.html">Log In</a>
+        <a class="pill btn-primary" href="signup.html">Sign Up</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </nav>
+    <div class="mobile-panel" id="mobilePanel" hidden>
+      <div class="stack">
+        <a href="index.html">Home</a><a href="find-shifts.html">Find Shifts</a><a href="for-clinics.html">For Clinics</a><a href="how-it-works.html">How It Works</a><a href="contact.html">Contact</a>
+        <div class="actions"><a class="pill btn-outline" href="login.html">Log In</a><a class="pill btn-primary" href="signup.html">Sign Up</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="page-hero">
+  <div class="container">
+    <div class="reveal">
+      <div class="chip">Shift board</div>
+      <h1 class="page-title">Available Shifts Near Seattle</h1>
+      <p class="page-sub">Live shifts posted by clinics. Log in to apply — it only takes a minute.</p>
+    </div>
+  </div>
+</header>
+
+<!-- SHIFTS -->
+<main class="section section-tight">
+  <div class="container">
+
+    <!-- Search + Filters -->
+    <div class="search-row reveal">
+      <div class="searchbar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="rgba(26,58,107,.7)" stroke-width="2"/><path d="M16.2 16.2 21 21" stroke="rgba(26,58,107,.7)" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="shiftSearch" type="text" placeholder="Search role, clinic, or neighborhood…" />
+      </div>
+      <button class="filter-pill active" data-filter="all">All Roles</button>
+      <button class="filter-pill" data-filter="hygienist">Hygienist</button>
+      <button class="filter-pill" data-filter="assistant">Assistant</button>
+      <button class="filter-pill" data-filter="front desk">Front Desk</button>
+    </div>
+
+    <!-- Live shift grid -->
+    <div class="shift-grid" id="shiftGrid">
+      <!-- loading state -->
+      <div id="shiftStatus" style="grid-column:1/-1;text-align:center;padding:56px 0">
+        <div style="font-size:2rem;margin-bottom:10px">⏳</div>
+        <div style="font-family:'Poppins',sans-serif;font-weight:600;color:var(--navy);font-size:.95rem">Loading shifts…</div>
+      </div>
+    </div>
+
+    <div id="shiftCount" style="margin-top:16px;text-align:center;font-size:.82rem;color:var(--muted);font-weight:500"></div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot">
+      <div class="reveal">
+        <a class="logo" href="index.html"><div class="logo-mark"></div><span><span class="logo-text"><span class="care">Care</span><span class="via">Via</span></span><span class="logo-sub">Solutions</span></span></a>
+        <p class="tagline">Dental staffing for Seattle, WA — simple shifts for professionals and clinics.</p>
+        <div class="copyright">© 2025 CareVia Solutions LLC</div>
+      </div>
+      <div class="foot-links reveal">
+        <div class="links"><a href="how-it-works.html">About</a><a href="contact.html#privacy">Privacy Policy</a><a href="contact.html#terms">Terms</a><a href="contact.html">Contact</a></div>
+        <div class="contact"><div><strong>Seattle Office</strong></div><div>Phone: <a href="tel:+12065550199">(206) 555-0199</a></div><div>Email: <a href="mailto:ceravia0@gmail.com">ceravia0@gmail.com</a></div></div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- DEMO FAB -->
+<button class="demo-fab" id="demoFab">
+  <span class="bubble"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 3v3M17 3v3" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M4 8h16" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M6 6h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z" stroke="white" stroke-width="2"/></svg></span>
+  <span class="label">Schedule a Demo</span>
+</button>
+
+<!-- DEMO MODAL -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <header><h3>Schedule a Demo</h3><button class="close" id="modalClose"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></button></header>
+    <div class="body">
+      <p>Tell us where to send demo details. We'll follow up with a quick walkthrough.</p>
+      <form id="demoForm" novalidate>
+        <div class="form-row"><input type="email" name="email" placeholder="Work email address" required /><button class="pill btn-green" type="submit">Request Demo</button></div>
+        <div class="error" id="demoError"></div>
+        <div class="success" id="demoSuccess"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN WALL — shown when unauthenticated user clicks Apply -->
+<div class="login-wall" id="loginWall">
+  <div class="login-wall-box">
+    <div class="login-wall-header">
+      <div class="icon">🔒</div>
+      <h3>Log in to Apply</h3>
+      <p id="loginWallMsg">Create a free account or log in to apply for this shift instantly.</p>
+    </div>
+    <div class="login-wall-body">
+      <a class="pill btn-primary" href="login.html">Log In</a>
+      <a class="pill btn-green" href="signup.html">Create Free Account</a>
+      <button class="login-wall-dismiss" id="loginWallDismiss">Maybe later</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ─────────────────────────────────────────────
+  // CONFIG — swap to your real API base in prod
+  // ─────────────────────────────────────────────
+  const API_BASE = window.CAREVIA_API_BASE || 'http://localhost:4000';
+
+  // ─── Reveal animation
+  const revealObs = new IntersectionObserver(
+          entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+          { threshold: 0.08 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+  // ─── Hamburger
+  document.getElementById('hamburger')?.addEventListener('click', function() {
+    const panel = document.getElementById('mobilePanel');
+    const open = panel.hidden;
+    panel.hidden = !open;
+    this.setAttribute('aria-expanded', String(open));
+  });
+
+  // ─── Demo FAB + modal
+  document.getElementById('demoFab')?.addEventListener('click', () => document.getElementById('modalBackdrop').classList.add('open'));
+  document.getElementById('modalClose')?.addEventListener('click', () => document.getElementById('modalBackdrop').classList.remove('open'));
+  document.getElementById('modalBackdrop')?.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('open'); });
+  document.getElementById('demoForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = this.email.value.trim();
+    if (!email || !email.includes('@')) { document.getElementById('demoError').textContent = 'Please enter a valid email.'; return; }
+    document.getElementById('demoError').textContent = '';
+    document.getElementById('demoSuccess').textContent = "Thanks! We'll be in touch soon.";
+    this.reset();
+  });
+
+  // ─── Login wall
+  document.getElementById('loginWallDismiss')?.addEventListener('click', () => document.getElementById('loginWall').classList.remove('open'));
+  document.getElementById('loginWall')?.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('open'); });
+
+  function requireLogin(roleName) {
+    document.getElementById('loginWallMsg').textContent = 'Log in or sign up to apply for: ' + roleName;
+    document.getElementById('loginWall').classList.add('open');
+  }
+
+  // ─── State
+  var allShifts = [];
+  var activeFilter = 'all';
+
+  // ─── Helpers
+  function fmtDate(d) {
+    if (!d) return '—';
+    try { return new Date(d + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }); }
+    catch(e) { return d; }
+  }
+
+  function fmtTime(t) {
+    if (!t) return null;
+    try {
+      var parts = t.split(':');
+      var h = parseInt(parts[0]), m = parts[1];
+      var ampm = h >= 12 ? 'PM' : 'AM';
+      return (h % 12 || 12) + ':' + m + ' ' + ampm;
+    } catch(e) { return t; }
+  }
+
+  function isNew(createdAt) {
+    if (!createdAt) return false;
+    return (Date.now() - new Date(createdAt).getTime()) < 3 * 24 * 60 * 60 * 1000;
+  }
+
+  function buildCard(s) {
+    var role       = s.role        || 'Dental Role';
+    var clinic     = s.clinic_name || 'Clinic';
+    var city       = s.city        || s.address || 'Seattle';
+    var pay        = s.pay_per_hour ? '$' + s.pay_per_hour + '/hr' : 'Rate TBD';
+    var date       = fmtDate(s.date);
+    var startT     = fmtTime(s.start_time);
+    var endT       = fmtTime(s.end_time);
+    var timeStr    = (startT && endT) ? startT + ' – ' + endT : '—';
+    var desc       = s.description  || '';
+    var req        = s.requirements || '';
+    var badge      = isNew(s.created_at) ? '<span class="badge-new">New</span>' : '<span style="font-size:.78rem;color:var(--muted);font-weight:600">' + pay + '</span>';
+
+    return '<article class="shift-card lift" data-role="' + role.toLowerCase() + '" data-city="' + city.toLowerCase() + '" data-clinic="' + clinic.toLowerCase() + '">'
+            + '<div class="top">'
+            +   '<div>'
+            +     '<h3>' + role + '</h3>'
+            +     '<div style="margin-top:5px;display:flex;align-items:center;gap:6px;flex-wrap:wrap">'
+            +       '<span class="chip" style="background:rgba(37,99,235,.07);border-color:rgba(37,99,235,.15);color:var(--navy2);font-size:.63rem">' + city + '</span>'
+            +       '<span style="font-size:.72rem;color:var(--muted);font-weight:600">' + clinic + '</span>'
+            +     '</div>'
+            +   '</div>'
+            +   '<div class="rate">' + pay + '</div>'
+            + '</div>'
+            + '<div class="info">'
+            +   '<div>📅 ' + date + '</div>'
+            +   '<div>🕗 ' + timeStr + '</div>'
+            +   (desc ? '<div style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:220px">' + desc + '</div>' : '')
+            +   (req  ? '<div style="font-size:.78rem;color:var(--blue);font-weight:600">Req: ' + req + '</div>' : '')
+            + '</div>'
+            + '<div class="footer">'
+            +   badge
+            +   '<button class="pill btn-primary" onclick="requireLogin(\'' + role.replace(/'/g, "\\'") + '\')">Apply Now</button>'
+            + '</div>'
+            + '</article>';
+  }
+
+  // ─── Filter + search
+  function renderShifts() {
+    var q = (document.getElementById('shiftSearch').value || '').toLowerCase().trim();
+    var filtered = allShifts.filter(function(s) {
+      var haystack = [s.role, s.city, s.clinic_name, s.address, s.description, s.requirements]
+              .filter(Boolean).join(' ').toLowerCase();
+      var matchFilter = activeFilter === 'all' || haystack.indexOf(activeFilter) !== -1;
+      var matchSearch = !q || haystack.indexOf(q) !== -1;
+      return matchFilter && matchSearch;
+    });
+
+    var grid = document.getElementById('shiftGrid');
+    var countEl = document.getElementById('shiftCount');
+
+    if (filtered.length === 0 && allShifts.length === 0) {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:64px 0">'
+              + '<div style="font-size:2.5rem;margin-bottom:12px">🦷</div>'
+              + '<div style="font-family:\'Poppins\',sans-serif;font-weight:700;color:var(--navy);font-size:1.05rem;margin-bottom:8px">No shifts posted yet</div>'
+              + '<div style="font-size:.875rem;color:var(--muted)">Check back soon — clinics are getting set up. Or <a href="for-clinics.html" style="color:var(--blue);font-weight:700">post a shift</a> if you\'re a clinic.</div>'
+              + '</div>';
+      countEl.textContent = '';
+    } else if (filtered.length === 0) {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px 0">'
+              + '<div style="font-size:2rem;margin-bottom:10px">🔍</div>'
+              + '<div style="font-family:\'Poppins\',sans-serif;font-weight:600;color:var(--navy);margin-bottom:6px">No shifts match your search</div>'
+              + '<div style="font-size:.85rem;color:var(--muted)">Try a different role or clear your filters.</div>'
+              + '</div>';
+      countEl.textContent = '';
+    } else {
+      grid.innerHTML = filtered.map(buildCard).join('');
+      // animate new cards in
+      grid.querySelectorAll('.shift-card').forEach(function(el) {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(14px)';
+        el.style.transition = 'opacity .4s, transform .4s';
+        setTimeout(function() { el.style.opacity = '1'; el.style.transform = 'none'; }, 30);
+      });
+      var n = filtered.length;
+      countEl.innerHTML = 'Showing <strong>' + n + '</strong> open shift' + (n !== 1 ? 's' : '')
+              + ' &nbsp;·&nbsp; <a href="signup.html" style="color:var(--blue);font-weight:700">Sign up free</a> to apply instantly';
+    }
+  }
+
+  // ─── Filter pill clicks
+  document.querySelectorAll('.filter-pill').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      activeFilter = this.dataset.filter;
+      document.querySelectorAll('.filter-pill').forEach(function(b) { b.classList.remove('active'); });
+      this.classList.add('active');
+      renderShifts();
+    });
+  });
+
+  // ─── Search input
+  document.getElementById('shiftSearch').addEventListener('input', renderShifts);
+
+  // ─── Fetch live shifts from GET /api/shifts
+  async function loadShifts() {
+    try {
+      var res = await fetch(API_BASE + '/api/shifts');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      var data = await res.json();
+      allShifts = data.shifts || [];
+      renderShifts();
+    } catch(err) {
+      document.getElementById('shiftGrid').innerHTML =
+              '<div style="grid-column:1/-1;text-align:center;padding:56px 0">'
+              + '<div style="font-size:2rem;margin-bottom:10px">⚠️</div>'
+              + '<div style="font-family:\'Poppins\',sans-serif;font-weight:600;color:var(--navy);margin-bottom:6px">Could not load shifts</div>'
+              + '<div style="font-size:.85rem;color:var(--muted)">Please try refreshing, or <a href="contact.html" style="color:var(--blue);font-weight:700">contact us</a> if the problem persists.</div>'
+              + '</div>';
+      document.getElementById('shiftCount').textContent = '';
+    }
+  }
+
+  loadShifts();
+</script>
+</body>
+</html>
